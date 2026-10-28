@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070b13">
+  <meta name="description" content="SNSで知り合った相手と会う前に、危険なサインと安全な判断を体験する3D教育ゲーム。">
+  <title>既読の向こう側 — SNSリスク体験</title>
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div id="boot" class="boot">
+    <div class="boot-mark">K / 01</div>
+    <div class="boot-line"><span></span></div>
+    <p>夜の街を準備しています…</p>
+  </div>
+
+  <main id="app" class="app is-hidden">
+    <div id="world" class="world" aria-label="3Dゲーム画面"></div>
+    <div class="world-grain" aria-hidden="true"></div>
+    <div class="world-vignette" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="タイトル画面">
+        <span class="brand-symbol">K</span>
+        <span><strong>既読の向こう側</strong><small>INTERACTIVE SAFETY FILE / 01</small></span>
+      </a>
+      <div class="top-status"><span class="live-dot"></span><span id="chapter">CASE 01　夜の帰り道</span></div>
+      <button id="support-open-top" class="secondary-button" style="min-height:36px;padding:0 12px;font-size:11px;" title="外部相談窓口を開く">🚨 相談窓口 ↗</button>
+      <button id="settings-open" class="icon-button" aria-label="設定を開く" title="設定">⚙</button>
+    </header>
+
+    <section id="title-screen" class="overlay title-screen">
+      <div class="title-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> INTERACTIVE SAFETY FILE  /  01</div>
+        <div class="tester-badge">🧪 テストプレイヤー：ゆうた 専用モード</div>
+        <h1>既読の<br><em>向こう側</em></h1>
+        <p class="title-lead">画面の向こうの人を、<br>どこまで信じますか。</p>
+        <p class="title-description">SNSで知り合った「マサヒロ」と会う約束をしてしまった。<br>背後から迫る足音。道しるべに従って<strong>【交番】</strong>へ逃げ込み、<br>自分を守る選択をしてください。</p>
+        <div class="title-actions">
+          <button id="start-button" class="primary-button"><span>体験を開始する</span><b>↗</b></button>
+          <a class="secondary-button" href="snskaisetsu.html">学習レポートを見る ↗</a>
+          <button id="support-open-title" class="secondary-button">公的相談窓口 ↗</button>
+          <button id="brief-button" class="text-button">操作方法・注意事項 <span>＋</span></button>
+        </div>
+        <div id="brief" class="brief hidden">
+          <p><b>PC</b>　WASD / 矢印キーで移動・方向転換、マウスで視点変更、Shiftで走る、Eで調べる、Fでライト、Escで一時停止。</p>
+          <p><b>スマホ</b>　画面内の移動パッドと「調べる」ボタンを使用。</p>
+          <p><b>ルール</b>　マサヒロのメッセージ選択を間違えると敵の足がどんどん速くなります！ 道路の光の道しるべを進み、ゴールにある【交番】へ逃げ込んでください。</p>
+        </div>
+        <div class="title-foot"><span>3D BROWSER EXPERIENCE</span><span>TESTER: YUTA / FICTIONAL SCENARIO</span></div>
+      </div>
+      <div class="title-side">
+        <div class="side-frame">
+          <div class="frame-top"><span>FIELD RECORDING</span><span>00:01:37</span></div>
+          <div class="side-scene">
+            <div class="moon"></div><div class="side-building b1"></div><div class="side-building b2"></div>
+            <div class="side-road"></div><div class="side-lamp"><i></i></div>
+            <div class="side-person"><i></i><b></b></div>
+            <div class="side-scan"></div>
+            <div class="side-caption">UNKNOWN CONTACT<br><strong>距離：不明</strong></div>
+          </div>
+          <div class="frame-bottom"><span>LOCATION: UNKNOWN</span><span class="red-text">SIGNAL LOST</span></div>
+        </div>
+        <div class="side-note"><span class="note-index">01</span><p>「秘密にして」「ひとりで来て」<br>その言葉に、違和感はありませんか。</p></div>
+      </div>
+    </section>
+
+    <section id="game-ui" class="game-ui hidden" aria-live="polite">
+      <div class="objective-card glass">
+        <div class="mini-label">MISSION OBJECTIVE</div>
+        <div id="objective-title" class="objective-title">🚨 交番（警察署）へ逃げ込む</div>
+        <div class="objective-progress"><span id="progress-fill"></span></div>
+        <div class="objective-meta"><span id="objective-meta">交番まで 104 m</span><span id="clue-count">サイン 0 / 3</span></div>
+      </div>
+
+      <div class="waypoint-hud" id="waypoint-hud">
+        <span class="nav-pulse">▲</span>
+        <span id="waypoint-text">道しるべの光に沿って進め！ 交番まで 104 m</span>
+      </div>
+
+      <div class="status-stack">
+        <div class="status-card glass">
+          <div class="status-head"><span>危険度</span><strong id="risk-value">18%</strong></div>
+          <div class="meter"><span id="risk-meter"></span></div>
+          <div id="risk-description" class="status-description">マサヒロの要求を確認しよう</div>
+        </div>
+        <div class="status-card glass">
+          <div class="status-head"><span>体力</span><strong id="stamina-value">100%</strong></div>
+          <div class="meter stamina-meter"><span id="stamina-meter"></span></div>
+        </div>
+      </div>
+
+      <div class="compass glass"><span>N</span><div class="compass-dial"><i id="compass-needle"></i></div><small id="distance-label">KOBAN</small></div>
+
+      <div id="center-prompt" class="center-prompt hidden"><span class="prompt-key">E</span><span id="prompt-copy">スマホを調べる</span></div>
+      <div id="chase-warning" class="chase-warning hidden"><span class="warning-symbol">!</span><span><b id="warning-head">マサヒロが追ってきている！</b><small id="warning-sub">立ち止まるな！ 交番の明かりを目指せ！</small></span></div>
+
+      <!-- Live Smartphone HUD on the bottom-right -->
+      <div id="phone-hud" class="phone-hud">
+        <div class="phone-case">
+          <div class="phone-speaker"></div>
+          <div class="phone-screen">
+            <div class="phone-header">
+              <span class="phone-time">19:42</span>
+              <span class="phone-contact">マサヒロ 👤</span>
+              <span class="phone-battery">84% 🔋</span>
+            </div>
+            <div class="phone-chat-list" id="phone-chat-list">
+              <div class="chat-bubble them">今どこ？ 迎えに行くよ</div>
+            </div>
+            <div class="phone-footer">
+              <span class="typing-indicator" id="phone-typing">マサヒロがメッセージ入力中…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-hud">
+        <div class="log-card glass"><div class="mini-label">LIVE LOG</div><p id="live-log">マサヒロからメッセージが届いている…</p></div>
+        <div class="control-hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>移動</span><kbd>SHIFT</kbd><span>走る</span><kbd>E</kbd><span>調べる</span></div>
+      </div>
+
+      <div class="mobile-pad" id="mobile-pad">
+        <div class="pad-arrows">
+          <button data-move="forward" aria-label="前進">▲</button>
+          <div><button data-move="left" aria-label="左へ">◀</button><button data-move="back" aria-label="後退">▼</button><button data-move="right" aria-label="右へ">▶</button></div>
+        </div>
+        <div class="pad-actions"><button id="mobile-run">走る</button><button id="mobile-interact">調べる</button><button id="mobile-light">ライト</button></div>
+      </div>
+    </section>
+
+    <!-- Enlarged, highly visible decision modal -->
+    <section id="event-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="event-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card large-modal">
+        <div class="modal-top"><span class="modal-kicker">INCOMING MESSAGE / DECISION POINT</span><span id="event-number">01 / 03</span></div>
+        <div class="event-header-row">
+          <div id="event-icon" class="event-icon">▣</div>
+          <h2 id="event-title">メッセージを確認する</h2>
+        </div>
+        <p id="event-body" class="event-body"></p>
+        <div id="event-quote" class="message-quote"></div>
+        <div id="event-choices" class="choice-list large-choice-list"></div>
+        <p class="modal-footnote">※間違った選択肢を選ぶと、<strong>マサヒロの移動速度が急激に速くなります！</strong> 慎重に選んでください。</p>
+      </div>
+    </section>
+
+    <section id="pause-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card compact-card">
+        <div class="modal-top"><span class="modal-kicker">SYSTEM PAUSED</span><span>ESC</span></div>
+        <h2 id="pause-title">いったん立ち止まる</h2>
+        <p class="event-body">落ち着いて状況を確認しよう。現実でも、違和感があれば無理に約束を続ける必要はありません。</p>
+        <button id="resume-button" class="primary-button full-button"><span>体験に戻る</span><b>↗</b></button>
+        <button id="support-open-pause" class="secondary-button full-button">🚨 公的相談窓口（外部） ↗</button>
+        <button id="quit-button" class="secondary-button full-button">タイトルに戻る</button>
+      </div>
+    </section>
+
+    <section id="support-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="support-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card" style="max-width:620px;">
+        <div class="modal-top"><span class="modal-kicker">EXTERNAL SUPPORT / SAFETY HOTLINES</span><span>OFFICIAL</span></div>
+        <h2 id="support-title" style="margin-top:16px;">困ったときの公的相談窓口</h2>
+        <p class="event-body">現実で不安や危険を感じたときは、ひとりで悩まずに相談してください。<br>下記のリンクはすべて外部の安全な公式サイトへ新しいタブで開きます。</p>
+        <div class="choice-list" style="gap:12px;margin:18px 0 20px;">
+          <a class="choice-button" href="https://www.npa.go.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;">
+            <div>
+              <b style="color:var(--cyan);display:block;margin-bottom:3px;">警察庁 相談窓口 / 警察相談専用電話 #9110</b>
+              <span style="color:#b0c3d5;font-size:11px;">危険を感じたとき、事件か迷うときの警察相談窓口（緊急時は110番）</span>
+            </div>
+            <small style="color:var(--cyan);">外部を開く ↗</small>
+          </a>
+          <a class="choice-button" href="https://www.mhlw.go.jp/mamorouyokokoro/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;">
+            <div>
+              <b style="color:var(--cyan);display:block;margin-bottom:3px;">まもろうよ こころ（厚生労働省）</b>
+              <span style="color:#b0c3d5;font-size:11px;">SNS（LINE等）や電話で誰でも無料で相談できる窓口</span>
+            </div>
+            <small style="color:var(--cyan);">外部を開く ↗</small>
+          </a>
+          <a class="choice-button" href="https://childline.or.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;">
+            <div>
+              <b style="color:var(--cyan);display:block;margin-bottom:3px;">チャイルドライン（18歳以下専用）</b>
+              <span style="color:#b0c3d5;font-size:11px;">18歳までの子どものための無料電話・チャット相談</span>
+            </div>
+            <small style="color:var(--cyan);">外部を開く ↗</small>
+          </a>
+          <a class="choice-button" href="https://www.internethotline.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;">
+            <div>
+              <b style="color:var(--cyan);display:block;margin-bottom:3px;">インターネット・ホットラインセンター</b>
+              <span style="color:#b0c3d5;font-size:11px;">ネット上の違法・有害情報（脅迫や無断画像共有など）の通報窓口</span>
+            </div>
+            <small style="color:var(--cyan);">外部を開く ↗</small>
+          </a>
+        </div>
+        <button id="support-close" class="primary-button full-button"><span>閉じる</span><b>✓</b></button>
+      </div>
+    </section>
+
+    <section id="settings-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card compact-card">
+        <div class="modal-top"><span class="modal-kicker">PREFERENCES</span><span>SETUP</span></div>
+        <h2 id="settings-title">体験の設定</h2>
+        <label class="setting-row"><span><b>環境音・効果音</b><small>足音・心音・ホラー演出音</small></span><input type="checkbox" id="sound-toggle" checked></label>
+        <label class="setting-row"><span><b>恐怖演出の強化</b><small>捕獲時の演出・異形の接近演出</small></span><input type="checkbox" id="scare-toggle" checked></label>
+        <label class="setting-row"><span><b>ライトのちらつき</b><small>怪異時のライト異常点滅</small></span><input type="checkbox" id="flicker-toggle" checked></label>
+        <label class="setting-row"><span><b>視点感度（初期：ゆっくり）</b><small>マウス移動の速さ</small></span><input type="range" id="sensitivity" min="1" max="10" value="4"></label>
+        <button id="settings-close" class="primary-button full-button"><span>設定を保存</span><b>✓</b></button>
+      </div>
+    </section>
+
+    <!-- Police rescue modal when reaching Koban -->
+    <section id="police-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card large-modal police-card">
+        <div class="modal-top"><span class="modal-kicker">KOBAN / POLICE INTERVENTION</span><span>RESCUED</span></div>
+        <div class="police-icon">🚓🚨</div>
+        <h2 style="color:#82e5e7;margin:14px 0 10px;">交番に逃げ込みました！</h2>
+        <div class="police-quote">
+          <p><b>警察官：</b>「大丈夫か！ 早く中に入りなさい！」</p>
+          <p><b>警察官：</b>「おい、そこの男！ 止まりなさい！ 職務質問だ！」</p>
+        </div>
+        <p class="event-body" style="font-size:13px;line-height:2.1;margin-top:14px;">
+          すぐ背後まで迫っていたマサヒロは、交番の赤色灯と警察官を見るなり青ざめて逃走を図りましたが、駆けつけたパトカーの警察官にその場で身柄を確保されました。<br>
+          勇気を出して危険な要求を拒絶し、明るい交番へ逃げ込んだあなたの賢明な判断が命を救いました。
+        </p>
+        <button id="police-continue-btn" class="primary-button full-button" style="margin-top:18px;min-height:52px;font-size:13px;">
+          <span>事件後の経緯・レポートへ進む</span><b>↗</b>
+        </button>
+      </div>
+    </section>
+
+    <section id="ending-screen" class="overlay ending-screen hidden">
+      <div class="ending-copy">
+        <div id="ending-stamp" class="ending-stamp">CASE CLOSED</div>
+        <div class="eyebrow"><span class="eyebrow-line"></span> FIELD REPORT / FINAL</div>
+        <h1 id="ending-title">交番に逃げ込み、保護された</h1>
+        <p id="ending-lead" class="title-lead"></p>
+        <p id="ending-description" class="title-description"></p>
+        
+        <!-- Detailed After-Story Section -->
+        <div class="story-box" id="ending-story-box">
+          <div class="mini-label" style="color:var(--cyan);margin-bottom:8px;">CASE 01 / その後の経緯（アフターストーリー）</div>
+          <h3 id="story-title" style="margin:0 0 12px;font-size:18px;color:#fff;">マサヒロの正体と、その後の結末</h3>
+          <p id="story-body" style="font-size:12px;line-height:2.2;color:#b2c5d8;margin:0;"></p>
+        </div>
+
+        <div class="report-grid">
+          <div><span>危険サイン</span><b id="ending-clues">0 / 3</b></div>
+          <div><span>最終危険度</span><b id="ending-risk">0%</b></div>
+          <div><span>選択の記録</span><b id="ending-decisions">0</b></div>
+        </div>
+        <div class="ending-actions">
+          <button id="retry-button" class="primary-button"><span>もう一度体験する</span><b>↻</b></button>
+          <a class="secondary-button" href="../index.html?completed=offline_meeting" id="back-portal-link">課題研究トップへ戻る ↗</a>
+          <a class="secondary-button" href="snskaisetsu.html">学習レポートを見る ↗</a>
+          <a class="secondary-button" href="https://www.npa.go.jp/" target="_blank" rel="noopener noreferrer">警察庁 相談窓口 ↗</a>
+          <a class="secondary-button" href="https://www.mhlw.go.jp/mamorouyokokoro/" target="_blank" rel="noopener noreferrer">まもろうよ こころ ↗</a>
+        </div>
+        <p class="safety-reminder">実際に危険を感じたときは、相手と二人きりにならず、近くの大人・学校・警察などに相談してください。</p>
+      </div>
+    </section>
+
+    <!-- Jumpscare horror overlay for caught sequence -->
+    <div id="scare-overlay" class="scare-overlay hidden" aria-hidden="true">
+      <div class="scare-flash"></div>
+      <div class="scare-face">
+        <div class="scare-eyes">
+          <div class="scare-eye left"></div>
+          <div class="scare-eye right"></div>
+          <div class="scare-eye extra1"></div>
+          <div class="scare-eye extra2"></div>
+        </div>
+        <div class="scare-mouth"></div>
+      </div>
+      <div class="scare-text">逃ゲラレナイ</div>
+      <div class="scare-noise"></div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </main>
+
+  <!-- Classic script build is intentionally used so this file can be opened directly from disk for local testing. -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+  <script src="JavaScript/game.js"></script>
+</body>
+</html>

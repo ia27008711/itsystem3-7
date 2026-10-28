@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER SECURITY REPORT | サイバー犯罪の現状と対策</title>
+  <link rel="stylesheet" href="./css/Cyber.css">
+</head>
+<body>
+
+  <!-- カスタムカーソル -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-outline"></div>
+
+  <!-- スクロール進捗バー -->
+  <div id="progress-bar"></div>
+
+  <!-- パーティクル描画用 Canvas -->
+  <canvas id="cyber-canvas"></canvas>
+
+  <!-- オープニング画面（ネオン＆グリッチ） -->
+  <div id="opening-screen">
+    <div class="opening-content">
+      <div class="glitch-wrapper">
+        <h1 class="glitch" data-glitch="CYBER CRIMES">CYBER CRIMES</h1>
+      </div>
+      <p class="loading-text"><span class="terminal-prompt">&gt;</span> SYSTEM INITIALIZING...</p>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+    </div>
+  </div>
+
+  <!-- ヒーローヘッダー -->
+  <header class="hero-header">
+    <div class="container">
+      <div class="cyber-badge"><span class="blink-dot"></span> SECURITY KNOWLEDGE 2026</div>
+      <h1 class="glitch-title" data-glitch="サイバー犯罪の現状と対策">サイバー犯罪の現状と対策</h1>
+      <p class="lead-typing"><span id="typing-text"></span><span class="cursor-blink">|</span></p>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="container">
+
+    <!-- セクション：定義 -->
+    <section class="card cyber-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">DEFINITION</div>
+      <h2>そもそもサイバー犯罪とは何なのか</h2>
+      <p>
+        サイバー犯罪とは、主にコンピュータやネットワーク上で行われる犯罪の総称であり、「ネット犯罪」とも称されています。
+      </p>
+      <p>
+        インターネットの普及に伴い、個人から企業、さらには国家までもが被害の対象となっており、近年においても犯罪数や規模が増加しています。手口も年々巧妙化しており、誰もが被害者にも加害者にもなり得る身近な問題となっています。
+      </p>
+      <div class="source-tag">SOURCE: Wikipedia</div>
+    </section>
+
+    <!-- セクション：概要 -->
+    <section class="card cyber-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">OVERVIEW</div>
+      <h2>概要</h2>
+      <p>
+        ネットワーク上の不法取引やデータの大量配布による著作権侵害、法律に違反するデータの公開などが主ですが、その他に匿名掲示板を用いた信用毀損や業務妨害、名誉毀損もあります。
+      </p>
+      <p>
+        SNSやオンライン掲示板を利用した誹謗中傷は、被害者の社会的信用や精神面に深刻なダメージを与えるケースも少なくありません。
+      </p>
+    </section>
+
+    <!-- セクション：種類 -->
+    <section class="card cyber-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">CATEGORIES</div>
+      <h2>サイバー犯罪の主な種類</h2>
+      <p>サイバー犯罪は大きく分けて次のように分類されます。</p>
+
+      <div class="grid-list">
+        <div class="type-item">
+          <div class="num">01</div>
+          <h3>不正アクセス</h3>
+          <p>他人のIDやパスワードを盗用してシステムに侵入する行為。</p>
+        </div>
+        <div class="type-item">
+          <div class="num">02</div>
+          <h3>マルウェア感染</h3>
+          <p>ウイルスやランサムウェアによってデータを破壊・暗号化し、金銭を要求する行為。</p>
+        </div>
+        <div class="type-item">
+          <div class="num">03</div>
+          <h3>フィッシング詐欺</h3>
+          <p>金融機関などを装った偽サイトへ誘導し、個人情報を盗み取る行為。</p>
+        </div>
+        <div class="type-item">
+          <div class="num">04</div>
+          <h3>DDoS攻撃</h3>
+          <p>大量のアクセスを集中させてサーバーを機能停止に追い込む行為。</p>
+        </div>
+      </div>
+      <p class="note">※これらは単独で発生することもあれば、複合的に組み合わさって被害を拡大させることもあります。</p>
+    </section>
+
+    <!-- セクション：事例と法律 -->
+    <section class="card cyber-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">CASES & LAW</div>
+      <h2>具体的な事例と法律</h2>
+      <p>
+        日本では<strong class="highlight-blue">不正アクセス禁止法</strong>や<strong class="highlight-blue">著作権法</strong>などによってサイバー犯罪への対策が図られていますが、犯罪者は国境を越えて活動するため摘発が難しいという課題があります。
+      </p>
+      <p>
+        実際に、企業の顧客情報が大規模に流出する事件や、ランサムウェアによって病院や自治体のシステムが停止する事件も報告されており、社会インフラそのものを脅かす深刻な問題となっています。
+      </p>
+    </section>
+
+    <!-- セクション：対策 -->
+    <section class="card cyber-card highlight-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">PROTECTION</div>
+      <h2>私たちにできる対策</h2>
+      <p>サイバー犯罪から身を守るために、以下のセキュリティ対策を徹底しましょう。</p>
+      <ul class="check-list">
+        <li>パスワードを複雑にし、他のサービスと使い回さない</li>
+        <li>不審なメールや添付ファイル、リンクを開かない</li>
+        <li>OSやソフトウェア（アプリ）を常に最新の状態に保つ</li>
+        <li>個人情報をむやみにインターネット上へ公開しない</li>
+        <li>暗号化されていない公共Wi-Fiの利用に注意を払う</li>
+      </ul>
+      <p>一人ひとりの意識が被害の拡大を防ぐ第一歩となります。</p>
+    </section>
+
+    <!-- セクション：まとめ -->
+    <section class="card cyber-card summary-card" data-scroll>
+      <div class="card-glow"></div>
+      <div class="card-tag">CONCLUSION</div>
+      <h2>まとめ</h2>
+      <p>
+        サイバー犯罪は私たちの生活に身近な脅威であり、誰もが被害者になり得る一方で、知らないうちに加害者になってしまう危険性もはらんでいます。
+      </p>
+      <p>
+        正しい知識を身につけ、日頃から適切な対策を心がけることが、安全なネット社会を実現するために欠かせません。
+      </p>
+    </section>
+
+    <!-- ナビゲーション -->
+    <div class="back-home" data-scroll>
+      <a href="index.html" class="cyber-btn">
+        <span>HOME</span>
+        <div class="btn-glow"></div>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 11班. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 1. パーティクルキャンバスアニメーション
+    const canvas = document.getElementById('cyber-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.8;
+        this.speedY = (Math.random() - 0.5) * 0.8;
+        this.color = Math.random() > 0.5 ? '#00f0ff' : '#00ff88';
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 2. カスタムカーソル
+    const dot = document.getElementById('cursor-dot');
+    const outline = document.getElementById('cursor-outline');
+
+    window.addEventListener('mousemove', (e) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+      dot.style.left = `${posX}px`;
+      dot.style.top = `${posY}px`;
+      outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+    });
+
+    // 3. オープニング演出
+    window.addEventListener('DOMContentLoaded', () => {
+      const opening = document.getElementById('opening-screen');
+      if (sessionStorage.getItem('visited')) {
+        opening.style.display = 'none';
+        startTyping();
+      } else {
+        setTimeout(() => {
+          opening.classList.add('is-hidden');
+          sessionStorage.setItem('visited', 'true');
+          startTyping();
+        }, 2200);
+      }
+    });
+
+    // 4. タイピングアニメーション
+    const textToType = "誰もが被害者にも加害者にもなり得る身近な脅威。正しい知識と対策を。";
+    let typeIndex = 0;
+    function startTyping() {
+      const target = document.getElementById('typing-text');
+      if (typeIndex < textToType.length) {
+        target.innerHTML += textToType.charAt(typeIndex);
+        typeIndex++;
+        setTimeout(startTyping, 40);
+      }
+    }
+
+    // 5. スクロールプログレスバー
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+    });
+
+    // 6. スクロールふわっと表示
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('[data-scroll]').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

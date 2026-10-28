@@ -1,0 +1,191 @@
+@charset "UTF-8";
+
+* {
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* シミュレーター外枠 */
+.simulator-container {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+/* チャットヘッダー */
+.chat-header {
+    background: #1da1f2;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* チャットメッセージ表示エリア */
+.chat-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #e6ecf0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.received {
+    background: #ffffff;
+    color: #14171a;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.sent {
+    background: #1da1f2;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.system-message {
+    align-self: center;
+    background: rgba(0, 0, 0, 0.08);
+    color: #657786;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.system-message.alert {
+    background: #ffebe9;
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+/* 操作パネル */
+.controls {
+    padding: 15px;
+    background: #ffffff;
+    border-top: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-size: 0.85rem;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-danger {
+    background: #e0245e;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c91f52;
+}
+
+.btn-safe {
+    background: #17bf63;
+    color: white;
+}
+
+.btn-safe:hover {
+    background: #149b50;
+}
+
+/* 詐欺被害時の警告・解説メッセージ */
+.warning-box {
+    display: none;
+    background: #fff0f0;
+    border-top: 3px solid #e0245e;
+    padding: 15px;
+    font-size: 0.85rem;
+    color: #333333;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.warning-title {
+    color: #e0245e;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.warning-box h4 {
+    margin: 10px 0 5px 0;
+    font-size: 0.85rem;
+    color: #14171a;
+}
+
+.warning-box ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.warning-box li {
+    margin-bottom: 4px;
+}
+/* Full-window responsive simulation */
+html, body { width:100%; height:100%; margin:0; }
+body { padding:0; min-height:100dvh; display:block; }
+.simulator-container { width:100%; max-width:none; height:100dvh; min-height:0; border-radius:0; box-shadow:none; }
+.chat-body { min-height:0; padding:clamp(16px,3vw,36px); }
+.message { max-width:min(75%,780px); font-size:clamp(.95rem,1.3vw,1.1rem); }
+.chat-header { padding:18px clamp(16px,3vw,36px); }
+.controls { padding:16px clamp(16px,3vw,36px); }
+.warning-box { max-height:35dvh; padding:18px clamp(16px,3vw,36px); }
+.completion-panel { padding:14px clamp(16px,3vw,36px) 22px; background:white; border-top:1px solid #e1e8ed; text-align:center; }
+.completion-panel[hidden] { display:none; }
+.completion-panel p { margin:0 0 12px; color:#334155; }
+.btn-home { background:#1769aa; color:white; padding:13px 32px; }
+.btn-home:hover { background:#10558c; }
+@media(max-width:600px) { .message { max-width:90%; } .warning-box { max-height:40dvh; } }

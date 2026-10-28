@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ネット危険性体験シミュレータ＆見極めクイズ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./CSS/oss.css">
+</head> 
+<body class="font-size-large">
+
+<div id="container">
+
+  <!-- ========================================================
+       1. ヘッダー
+       ======================================================== -->
+  <header>
+    <div id="logo">
+      <a href="index.html">
+        <div class="logo-badge">防犯</div>
+        <div>
+          <span class="logo-text">ネット安全体験シミュレータ</span>
+          <span class="logo-sub">なりすまし・写真要求・密会の危険を見極める</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- メニューバー -->
+    <div id="menubar">
+      <nav>
+        <ul>
+          <li><button id="tab-btn-sim" class="active" data-tab="tab-sim">トーク体験</button></li>
+          <li><button id="tab-btn-quiz" data-tab="tab-quiz">見極めクイズ</button></li>
+          <li><button id="tab-btn-guide" data-tab="tab-guide">危険シグナル図鑑</button></li>
+          <li><button id="tab-btn-sos" data-tab="tab-sos">相談窓口</button></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- ツールボタン群 -->
+    <div class="header-actions">
+      <button id="btn-font-toggle" class="btn-header-tool" title="文字サイズ変更">
+        文字サイズ: <span id="font-status-text">大</span>
+      </button>
+      <button id="btn-ruby-toggle" class="btn-header-tool" title="ふりがな表示切替">
+        ふりがな: <span id="ruby-status-text">ON</span>
+      </button>
+      <button id="btn-sound-toggle" class="btn-sound-action" title="効果音切替">
+        効果音: <span id="sound-status-text">ON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       2. コンテンツエリア
+       ======================================================== -->
+  <div id="contents">
+    <main>
+
+      <!-- ========================================================
+           TAB 1: LINE風 チャット体験シミュレータ
+           ======================================================== -->
+      <section id="tab-sim" class="tab-panel active">
+        <div class="panel-header-row">
+          <h2 class="page-title">ネット危険性 疑似体験トーク</h2>
+          <span class="page-subtitle">Online Safety Simulation</span>
+        </div>
+
+        <!-- シナリオ選択バー -->
+        <div class="scenario-selector-box">
+          <span class="scenario-label">体験ケースを選択：</span>
+          <div class="scenario-chips-list" id="scenario-chips">
+            <!-- JSで動的生成 -->
+          </div>
+        </div>
+
+        <!-- スマホシミュレータ + サイド解説パネル -->
+        <div class="phone-simulator-wrapper">
+
+          <!-- スマホ本体モックアップ -->
+          <div class="phone-mockup">
+            <div class="phone-screen">
+
+              <!-- スマホ最上部 ステータスバー（15:22等） -->
+              <div class="phone-status-bar">
+                <span id="phone-clock" class="phone-time-text">15:22</span>
+                <div class="phone-notch"></div>
+                <div class="phone-status-right">
+                  <span class="signal-tag">5G</span>
+                  <span class="battery-tag">100%</span>
+                </div>
+              </div>
+
+              <!-- LINE風 トークルームヘッダー -->
+              <div class="line-header">
+                <div class="line-header-left">
+                  <span class="line-btn-back">戻る</span>
+                  <div class="line-partner-info">
+                    <div class="line-partner-avatar" id="line-partner-avatar">さ</div>
+                    <div class="line-partner-name-col">
+                      <span class="line-partner-name" id="line-partner-name">さくら (小5女子)</span>
+                      <span class="line-partner-status" id="line-partner-status">最終ログイン: たった今</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="line-header-actions">
+                  <button class="header-action-btn">通話</button>
+                  <button class="header-action-btn">メニュー</button>
+                </div>
+              </div>
+
+              <!-- 危険度アラートバナー -->
+              <div class="danger-alert-banner">
+                <div class="danger-meter-row">
+                  <span class="danger-label-text">危険度:</span>
+                  <span id="danger-percent-text" class="danger-percent-text">0%</span>
+                  <span class="danger-tag safe" id="danger-status-badge">安全</span>
+                </div>
+                <span class="scene-step-text" id="sim-scene-step">放課後のトーク</span>
+              </div>
+
+              <!-- トークメッセージ表示エリア -->
+              <div class="line-chat-body" id="chat-messages-container">
+                <div class="line-date-divider" id="chat-date-divider">今日 2026年8月28日(金)</div>
+                <!-- JSで動的生成 -->
+              </div>
+
+              <!-- タイピング中インジケータ -->
+              <div class="line-typing-row" id="typing-indicator" style="display: none;">
+                <div class="line-dots"><span></span><span></span><span></span></div>
+                <span id="typing-username">さくら</span> が入力中...
+              </div>
+
+              <!-- 返信・選択肢ドック -->
+              <div class="line-footer-dock" id="chat-options-bar">
+                <div class="line-dock-title">
+                  <span>みらい君の返信を選んでください：</span>
+                </div>
+                <div class="line-options-container" id="options-buttons-grid">
+                  <!-- JSで動的生成 -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- スマホ横のリアルタイム防犯解説パネル -->
+          <div class="sim-side-panel">
+            
+            <div class="side-card">
+              <h3 class="side-card-title">現在のやり取りの防犯ポイント</h3>
+              <div class="redflag-live-card" id="redflag-live-box">
+                <div class="redflag-live-title" id="redflag-live-title">
+                  <span>観察ポイント</span>
+                </div>
+                <p class="redflag-live-desc" id="redflag-live-desc">
+                  トークが進むと、相手の言葉に潜む「あやしいサイン（危険シグナル）」がここにリアルタイムで表示されます。
+                </p>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <h3 class="side-card-title">トーク相手のプロフィール</h3>
+              <div class="target-profile-grid">
+                <span class="profile-label">自称：</span>
+                <span class="profile-val" id="side-fake-name">さくら (小学5年生)</span>
+                <span class="profile-label">ステータス：</span>
+                <span class="profile-val" id="side-fake-status">ゲーム大好き！仲良くしてね</span>
+                <span class="profile-label">LINE ID：</span>
+                <span class="profile-val" id="side-fake-id">sakura_game_love</span>
+                <span class="profile-label">相手の正体：</span>
+                <span class="profile-val" style="color: #dc2626; font-weight: 700;">（※体験終了後にネタばらし）</span>
+              </div>
+            </div>
+
+            <div class="side-card safe-card">
+              <h4 class="safe-card-title">ネット防犯の重要ルール</h4>
+              <ul class="safe-rules-list">
+                <li>ネット上の「子供」の正体は大人の可能性がある</li>
+                <li>「親に内緒」「二人だけの秘密」は警戒すべきサイン</li>
+                <li>写真の要求や「会おう」と言われたらすぐに親や警察へ相談</li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+           TAB 2: 見極めクイズ
+           ======================================================== -->
+      <section id="tab-quiz" class="tab-panel">
+        <div class="panel-header-row">
+          <h2 class="page-title">ネット防犯 見極めクイズ</h2>
+          <span class="page-subtitle">Safety Knowledge Quiz</span>
+        </div>
+
+        <div class="quiz-wrapper">
+          <div class="quiz-top-card">
+            <div class="quiz-bar-info">
+              <span id="quiz-progress-text">第 1 問 / 全 12 問</span>
+              <span id="quiz-score-live">スコア: 0 点</span>
+            </div>
+            <div class="quiz-track">
+              <div class="quiz-fill" id="quiz-progress-fill" style="width: 8%;"></div>
+            </div>
+          </div>
+
+          <div id="quiz-play-view" class="quiz-card">
+            <div class="quiz-chat-preview" id="quiz-chat-card">
+              <div class="preview-sender" id="quiz-sender-name">相手からのメッセージ</div>
+              <div class="preview-bubble" id="quiz-chat-bubble">「メッセージ」</div>
+            </div>
+
+            <div>
+              <div class="q-label" id="quiz-question-num">第 1 問</div>
+              <h3 class="q-title" id="quiz-question-text">質問文</h3>
+            </div>
+
+            <div class="quiz-choices" id="quiz-answers-grid">
+              <!-- JSで動的生成 -->
+            </div>
+          </div>
+
+          <div id="quiz-result-view" class="cert-box" style="display: none;">
+            <div class="cert-badge">認定証</div>
+            <h3 class="cert-main-title">ネット防犯見極めマスター</h3>
+            <div class="cert-score-num" id="cert-score-val">100 点</div>
+            <div class="cert-rank" id="cert-rank-badge">Sランク：防犯の達人</div>
+            <p class="cert-desc" id="cert-comment-text">コメント文</p>
+            <div class="cert-date-text" id="cert-date-text">認定日: 2026年</div>
+            <button id="btn-quiz-restart" class="btn-restart-action">
+              もう一度挑戦する
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           TAB 3: 危険シグナル図鑑
+           ======================================================== -->
+      <section id="tab-guide" class="tab-panel">
+        <div class="panel-header-row">
+          <h2 class="page-title">危険シグナル図鑑</h2>
+          <span class="page-subtitle">Grooming Steps & Red Flags</span>
+        </div>
+
+        <div class="guide-wrapper">
+          <h3 class="guide-section-title">グルーミング（手なずけ）の5つのステップ</h3>
+          <div id="grooming-steps-container" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- JSで動的生成 -->
+          </div>
+
+          <h3 class="guide-section-title" style="margin-top: 24px;">危険ワード（警戒サイン）辞典</h3>
+          <div id="redflag-words-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+            <!-- JSで動的生成 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           TAB 4: SOS相談窓口
+           ======================================================== -->
+      <section id="tab-sos" class="tab-panel">
+        <div class="panel-header-row">
+          <h2 class="page-title">各種相談窓口・緊急連絡先</h2>
+          <span class="page-subtitle">Helpline & Emergency Contacts</span>
+        </div>
+
+        <div class="sos-wrapper">
+          <div class="sos-intro-box">
+            <p style="margin: 0; font-weight: 700; line-height: 1.6;">
+              「写真を送ってしまった」「脅されて怖い」「ネットの人に会おうと言われた」など、一人で抱え込まずにすぐに専門機関や警察に相談してください。警察や相談員は必ずあなたの味方になって安全を守ります。
+            </p>
+          </div>
+
+          <div class="sos-grid" id="sos-cards-container">
+            <!-- JSで動的生成 -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       3. フッター
+       ======================================================== -->
+  <ul id="footermenu">
+    <li><a href="#" onclick="window.safetyApp.switchTab('tab-sim'); return false;">トーク体験</a></li>
+    <li><a href="#" onclick="window.safetyApp.switchTab('tab-quiz'); return false;">見極めクイズ</a></li>
+    <li><a href="#" onclick="window.safetyApp.switchTab('tab-guide'); return false;">危険シグナル図鑑</a></li>
+    <li><a href="#" onclick="window.safetyApp.switchTab('tab-sos'); return false;">相談窓口</a></li>
+  </ul>
+
+  <footer>
+    <small>ネット安全体験シミュレータ - 青少年ネット防犯教育教材</small>
+  </footer>
+
+</div>
+
+<!-- ========================================================
+     モーダル: 解説ダイアログ
+     ======================================================== -->
+<div class="explanation-modal-backdrop" id="modal-explanation" style="display: none;">
+  <div class="explanation-modal-card">
+    <div class="exp-header">
+      <div class="exp-title-row">
+        <span class="exp-badge">解説</span>
+        <h3 class="exp-title">ここでチェック！</h3>
+      </div>
+    </div>
+
+    <div class="exp-body">
+      <p class="exp-text" id="exp-modal-text">解説文</p>
+      <div class="exp-callout" id="exp-modal-callout-box">
+        <span class="callout-lead-badge" id="callout-lead-badge">注意</span>
+        <span id="exp-modal-callout">アドバイス文</span>
+      </div>
+      <div class="exp-footnote">
+        ※ここから先は、危険性を学習するための疑似体験です。実際の送受信は行われません。
+      </div>
+    </div>
+
+    <div class="exp-footer">
+      <button id="btn-exp-back" class="btn-exp-back">戻る</button>
+      <button id="btn-exp-proceed" class="btn-exp-proceed">解説を確認して進む</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================
+     モーダル: 正体ネタばらし ＆ 防犯エンディング
+     ======================================================== -->
+<div class="explanation-modal-backdrop" id="modal-reveal" style="display: none;">
+  <div class="reveal-modal-card">
+    <div class="reveal-header">
+      <div class="reveal-badge perfect" id="reveal-badge">完全防犯クリア</div>
+      <h3 class="reveal-title" id="reveal-title">相手の企みを完全に見破った！</h3>
+      <p class="reveal-sub" id="reveal-sub">冷静な判断で身を守ることができました。</p>
+    </div>
+
+    <div class="reveal-body">
+      <div class="compare-container">
+        <div class="compare-heading">ネット上の相手の「真の正体」</div>
+        <div class="compare-grid">
+          <div class="compare-box">
+            <div class="compare-box-label">LINE上の自称</div>
+            <div class="compare-avatar-circle" id="reveal-fake-avatar">さ</div>
+            <div class="compare-name" id="reveal-fake-name">さくら (小5女子)</div>
+            <p class="compare-desc" id="reveal-fake-desc">プロフィール</p>
+          </div>
+          <div class="compare-box danger-box">
+            <div class="compare-box-label">実際の正体</div>
+            <div class="compare-avatar-circle danger-avatar" id="reveal-real-avatar">男</div>
+            <div class="compare-name danger" id="reveal-real-name">48歳 無職男性</div>
+            <p class="compare-desc" id="reveal-real-desc">犯罪目的</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-story-box">
+        <h4 class="reveal-box-title">結末ストーリー</h4>
+        <p class="reveal-story-text" id="reveal-story-text">結末文章</p>
+      </div>
+
+      <div class="reveal-lesson-box">
+        <h4 class="reveal-box-title lesson-title">このケースの防犯ポイント</h4>
+        <ul class="lesson-items" id="reveal-lessons-list"></ul>
+      </div>
+    </div>
+
+    <div class="reveal-footer">
+      <button id="btn-reveal-restart" class="btn-exp-back" style="padding: 10px 18px;">やり直す</button>
+      <button id="btn-reveal-next" class="btn-exp-proceed" style="padding: 10px 22px;">次のケースへ</button>
+    </div>
+  </div>
+</div>
+
+<script src="./JavaScript/scenarios.js"></script>
+<script src="./JavaScript/app.js"></script>
+</body>
+</html>

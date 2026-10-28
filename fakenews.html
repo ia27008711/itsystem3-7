@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>緊急報道デスク - 記事ファクトチェック</title>
+  <link rel="stylesheet" href="./CSS/fakenews.css">
+</head>
+<body id="body">
+
+<div class="news-container">
+  <div class="news-header">
+    <span>BREAKING NEWS / 報道検証デスク</span>
+    <span class="badge">● LIVE</span>
+  </div>
+
+  <div class="status-bar" id="status-bar">
+    <span id="question-number">第 1 問 / 全 3 問</span>
+    <span class="timer-display">制限時間: <span id="timer">10</span>秒</span>
+  </div>
+
+  <div id="quiz-area">
+    <div class="news-media" id="news-media">
+      <div class="news-media-overlay" id="media-source">出所: 海外SNS投稿（未検証）</div>
+    </div>
+
+    <div class="news-content">
+      <h2 class="news-title" id="news-title">読み込み中...</h2>
+      <p class="news-body" id="news-body"></p>
+    </div>
+
+    <div class="action-buttons" id="button-group">
+      <button class="btn btn-real" onclick="checkAnswer(true)">【報道】本物として配信</button>
+      <button class="btn btn-fake" onclick="checkAnswer(false)">【却下】フェイクとして見送る</button>
+    </div>
+  </div>
+
+  <div class="result-box" id="result-box">
+    <div class="result-title" id="result-title"></div>
+    <div class="result-explain" id="result-explain"></div>
+    <button class="btn btn-next" onclick="nextQuestion()">次の速報へ進む ➔</button>
+  </div>
+
+  <div class="final-screen" id="final-screen">
+    <h2>検証シミュレーション終了</h2>
+    <p>あなたの判定精度結果</p>
+    <div class="final-score" id="final-score">0 / 3</div>
+    <p id="final-comment" style="line-height: 1.6; color: #94a3b8;"></p>
+    <button class="btn btn-next" id="final-action-btn" onclick="handleFinalButtonClick()">もう一度リトライする</button>
+  </div>
+</div>
+
+<script>
+  // 問題データプール（全10問）
+  const questionPool = [
+    {
+      title: "【超速報】大谷翔平選手、電撃の「現役引退＆サッカー転向」を公式発表か！？公式AI動画が拡散",
+      body: "本日未明、大谷選手が会見で「野球を極めたので次はサッカーで世界を目指す」と語る高画質な動画が拡散。口の動きや声も本人そっくりで、SNSは大騒ぎになっています。",
+      source: "出所: X（旧Twitter）上で10万リツイート超",
+      bgImage: "https://images.unsplash.com/photo-1508344928928-7165b67de128?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク】</b><br>これはAI（ディープフェイク）で生成された偽動画です。大谷選手級の超ビッグニュースの場合、SNS動画だけでなく球団公式サイトや大手報道機関（NHKや主要紙）が同時に報じているかを必ず確認しましょう。"
+    },
+    {
+      title: "【気象庁発表】大型台風接近に伴い、首都圏の全鉄道が「明日始発から完全終日運休」とSNSで話題",
+      body: "明日猛烈な台風が直撃する予報に伴い、運行会社のロゴが入った「全線運休のお知らせ」画像が拡散。不安に思ったユーザーが一斉にリポストしています。",
+      source: "出所: ニュースまとめアカウントの投稿",
+      bgImage: "https://images.unsplash.com/photo-1516834474-48c0abc2a902?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク】</b><br>過去の台風時の画像が再利用された「デマ情報」でした。交通インフラの運休情報は、まとめアカウントではなく必ず<b>「各鉄道会社の公式Webサイト・公式X」</b>を直接確認してください。"
+    },
+    {
+      title: "【科学】月面で「未知の巨大建造物」を発見？NASAが写真を一般公開",
+      body: "NASAの月周回衛星が撮影した高解像度画像に、人工物のような鋭角な構造物が写っていると話題に。世界中の天文ファンが解析を開始しています。",
+      source: "出所: NASA（アメリカ航空宇宙局）公式データベース",
+      bgImage: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=600",
+      isReal: true,
+      explain: "<b>【判定：本物（実在のニュース）】</b><br>これは公式データベースで公開された実際の写真です（後に岩石と影の錯覚と判明）。「怪しい」と思っても、出所がNASAなど信頼できる一次機関であればニュース価値があると判定できます。"
+    },
+    {
+      title: "【緊急速報】有名通信キャリアで大規模障害「今日から1週間データ通信が完全停止」と文書画像が流出",
+      body: "「社内リーク」と称された文書のキャプチャ画像が投稿され拡散。復旧には1週間以上かかる見込みと記載されていますが、公式サイトに障害報告はありません。",
+      source: "出所: 匿名掲示板およびSNS",
+      bgImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク】</b><br>社内文書を模した偽画像です。「完全停止」といった極端な内容や不安を煽る文章は拡散されやすいですが、一次情報（通信会社の公式障害情報ページ）に出ていない場合は偽情報と判断できます。"
+    },
+    {
+      title: "【IT】国内大手IT企業、週休3日制を「全社員対象に導入決定」と公式プレスリリース",
+      body: "給与を減額せずに週休3日（年間休日150日以上）とする新たな働き方を導入。企業公式のプレスリリース配信サイトにて正式発表されました。",
+      source: "出所: PR TIMES（公式プレスリリース配信サイト）",
+      bgImage: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=600",
+      isReal: true,
+      explain: "<b>【判定：本物（実在のニュース）】</b><br>公式のプレスリリース配信サービスから発表された正式なニュースです。「うますぎる話」に見えても、公式な発表ルートで確認が取れれば正しい情報です。"
+    },
+    {
+      title: "【グルメデマ】人気ドーナツチェーンで「店頭で特定合言葉を言うと無料」TikTok動画が300万再生",
+      body: "TikTokで「裏技！レジで『〇〇』と言うと好きなドーナツがタダになる」という動画が大バズり。実際に店舗に押し寄せる若者が相次ぎ、現場が大混乱しています。",
+      source: "出所: 料理系インフルエンサーのTikTok動画",
+      bgImage: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク】</b><br>再生数（インプレッション）稼ぎ目的で作られた完全な嘘動画です。SNS動画の「裏技」「お得情報」は、店舗やブランドの公式発表でない限り信じてはいけません。"
+    },
+    {
+      title: "【災害デマ】「地震で動物園からライオンが脱走した」街中を歩くライオンの画像が拡散",
+      body: "大きな地震の直後、路上を徘徊するライオンの写真とともに「近所の動物園から逃げ出した模様。外出危険！」という投稿が拡散されパニックに。",
+      source: "出所: 個人SNSアカウントの投稿",
+      bgImage: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク】</b><br>海外で撮影された昔の写真やAI画像を悪用した悪質な「災害デマ」です。災害時は善意や驚きから未確認情報を拡散しがちですが、警察や自治体・公式報道の発表を待つのが鉄則です。"
+    },
+    {
+      title: "【社会】大手コーヒーチェーン、すべてのプラスチック容器・ストローを「完全廃止」と公式発表",
+      body: "環境保護の取り組みとして、テイクアウト用カップやフタも含めたすべてのプラスチック製品を紙およびバイオマス素材へ移行することを企業が公式発表しました。",
+      source: "出所: 大手新聞社の公式Webニュース",
+      bgImage: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600",
+      isReal: true,
+      explain: "<b>【判定：本物（実在のニュース）】</b><br>大手新聞社などの報道機関が裏取りを行って配信している一次報道です。公式な報道機関が扱っている情報は信用度が高くなります。"
+    },
+    {
+      title: "【注意】「マイナポイントの追加付与開始」メールが届き、専用URLへ誘導する事例が急増",
+      body: "「国からの重要なお知らせ：マイナポイント第3弾として15,000円分を給付します」という本文と、申請用リンクが記載されたSMSやメールが届く報告が相次いでいます。",
+      source: "出所: スマートフォンのショートメッセージ（SMS）",
+      bgImage: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=600",
+      isReal: false,
+      explain: "<b>【判定：フェイク（フィッシング詐欺）】</b><br>政府機関や自治体がSMSで申請用URLを直接送りつけることはありません。お金やポイント還元を口実にした偽サイト（フィッシング）ですので、絶対にリンクを開いてはいけません。"
+    },
+    {
+      title: "【テクノロジー】「本物の肉」を使わず細胞培養で作った「人工鶏肉」がレストランで提供承認",
+      body: "海外の食品安全当局が、動物を屠殺せずに細胞から育てる「培養肉」の販売を正式許可。限定レストランで実際にメニューとして提供が開始されたと報じられました。",
+      source: "出所: 海外大手通信社（AP通信・ロイター）の報道",
+      bgImage: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600",
+      isReal: true,
+      explain: "<b>【判定：本物（実在のニュース）】</b><br>一見SFのように思える驚くべき技術ニュースですが、各国の食品安全当局の認可を受けた実際の事実です。「ありえない」と直感で捨てずに、海外の信頼できる通信社（ロイターやAP等）の情報か確認することが重要です。"
+    }
+  ];
+
+  let questions = [];
+  let currentIdx = 0;
+  let score = 0;
+  let timeLeft = 10;
+  let timerId = null;
+
+  // ゲームのプレイ回数をカウント（初期値：0）
+  let playCount = 0;
+
+  function shuffleArray(array) {
+    const clone = [...array];
+    for (let i = clone.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [clone[i], clone[j]] = [clone[j], clone[i]];
+    }
+    return clone;
+  }
+
+  function initGame() {
+    // ゲーム開始ごとにカウントを+1する
+    playCount++;
+
+    const shuffled = shuffleArray(questionPool);
+    questions = shuffled.slice(0, 3);
+    
+    currentIdx = 0;
+    score = 0;
+    
+    document.getElementById('quiz-area').style.display = 'block';
+    document.getElementById('result-box').style.display = 'none';
+    document.getElementById('final-screen').style.display = 'none';
+    document.getElementById('status-bar').style.display = 'flex';
+
+    loadQuestion();
+  }
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playSound(freq, type = 'sine', duration = 0.1) {
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+  }
+
+  function loadQuestion() {
+    document.getElementById('body').classList.add('emergency-flash');
+    document.getElementById('quiz-area').style.display = 'block';
+    document.getElementById('result-box').style.display = 'none';
+    
+    const q = questions[currentIdx];
+    document.getElementById('question-number').innerText = `第 ${currentIdx + 1} 問 / 全 ${questions.length} 問`;
+    document.getElementById('news-title').innerText = q.title;
+    document.getElementById('news-body').innerText = q.body;
+    document.getElementById('media-source').innerText = q.source;
+    document.getElementById('news-media').style.backgroundImage = `url('${q.bgImage}')`;
+
+    playSound(880, 'square', 0.15);
+    setTimeout(() => playSound(880, 'square', 0.15), 200);
+
+    timeLeft = 10;
+    document.getElementById('timer').innerText = timeLeft;
+    clearInterval(timerId);
+    timerId = setInterval(() => {
+      timeLeft--;
+      document.getElementById('timer').innerText = timeLeft;
+      if (timeLeft <= 3) {
+        playSound(440, 'sine', 0.05);
+      }
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        checkAnswer(null);
+      }
+    }, 1000);
+  }
+
+  function checkAnswer(userChoice) {
+    clearInterval(timerId);
+    document.getElementById('body').classList.remove('emergency-flash');
+    document.getElementById('quiz-area').style.display = 'none';
+    
+    const resultBox = document.getElementById('result-box');
+    const resultTitle = document.getElementById('result-title');
+    const resultExplain = document.getElementById('result-explain');
+    
+    resultBox.style.display = 'block';
+    const q = questions[currentIdx];
+
+    if (userChoice === null) {
+      playSound(150, 'sawtooth', 0.4);
+      resultTitle.innerText = "⏰ タイムアップ！判断遅れ";
+      resultTitle.style.color = "var(--warning-yellow)";
+      resultExplain.innerHTML = `速報の波に飲まれてしまいました。<br>${q.explain}`;
+    } else if (userChoice === q.isReal) {
+      playSound(523.25, 'sine', 0.3);
+      score++;
+      resultTitle.innerText = "⭕️ 見事！正しいファクトチェックです";
+      resultTitle.style.color = "var(--accent-green)";
+      resultExplain.innerHTML = q.explain;
+    } else {
+      playSound(150, 'sawtooth', 0.4);
+      resultTitle.innerText = "❌ 誤報！デマを拡散してしまいました";
+      resultTitle.style.color = "var(--accent-red)";
+      resultExplain.innerHTML = q.explain;
+    }
+  }
+
+  function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < questions.length) {
+      loadQuestion();
+    } else {
+      showFinalScreen();
+    }
+  }
+
+  // ===== ホームページ進捗連携 =====
+  // ホーム側で使用している体験IDと同じ「fake_news」を保存します。
+  const EXPERIENCE_ID = "fake_news";
+  const HOME_PAGE = "index.html";
+
+  function completeExperienceAndReturnHome() {
+    sessionStorage.setItem(`cyber_experience_${EXPERIENCE_ID}`, "completed");
+    window.location.href = `${HOME_PAGE}?completed=${EXPERIENCE_ID}#cases`;
+  }
+
+  // 結果画面のボタンが押された時の処理
+  function handleFinalButtonClick() {
+    if (playCount >= 2) {
+      // 2回の体験が終了したら完了情報を保存し、ホームへ戻る
+      completeExperienceAndReturnHome();
+    } else {
+      // 1回目の終了ならそのまま2回目のゲームを開始
+      initGame();
+    }
+  }
+
+  function showFinalScreen() {
+    document.getElementById('quiz-area').style.display = 'none';
+    document.getElementById('result-box').style.display = 'none';
+    document.getElementById('status-bar').style.display = 'none';
+    
+    const finalScreen = document.getElementById('final-screen');
+    finalScreen.style.display = 'block';
+    
+    document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+    
+    const comment = document.getElementById('final-comment');
+    if (score === 3) {
+      comment.innerHTML = "<b>完璧なジャーナリスト級のリテラシーです！</b><br>あなたはAI動画やSNSの拡散力に惑わされず、一次情報を冷静に見極める力を持っています。";
+    } else if (score >= 1) {
+      comment.innerHTML = "<b>あと一歩！</b><br>現代のフェイクニュースはAI技術などで精巧になっています。「有名人の発言」「緊急ニュース」ほど一歩立ち止まる習慣をつけましょう。";
+    } else {
+      comment.innerHTML = "<b>危険度「高」です！</b><br>焦りや驚きから、うっかりフェイクニュースを加害者として拡散してしまうリスクがあります。情報の出所（一次情報）を確認する癖をつけましょう！";
+    }
+
+    // ボタンの文字と色をプレイ回数（playCount）に応じて変更
+    const finalBtn = document.getElementById('final-action-btn');
+    if (playCount >= 2) {
+      finalBtn.innerText = "体験を終了してホームに戻る ✓";
+      finalBtn.style.backgroundColor = "#dc2626"; // 赤色に変更
+    } else {
+      finalBtn.innerText = "もう一度リトライする";
+      finalBtn.style.backgroundColor = "#3b82f6"; // 青色
+    }
+  }
+
+  // 最初の1回目のゲーム開始
+  window.onload = initGame;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1112 @@
+/* ==================================================
+   基本設定
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+/* ==================================================
+   画面チカチカ演出
+================================================== */
+
+#screen-effect {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(255, 0, 0, 0.35);
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 9999;
+}
+
+
+/* =========================
+   フラッシュ
+========================= */
+
+#screen-effect.flash {
+    animation: screenFlash 0.15s linear;
+}
+
+@keyframes screenFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.9;
+    }
+
+    40% {
+        opacity: 0.2;
+    }
+
+    60% {
+        opacity: 0.75;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* ==================================================
+   支払い画面
+================================================== */
+
+#payment-screen {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: #050505;
+
+    color: white;
+
+    padding: 30px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   赤い画面端
+========================= */
+
+#payment-screen::before {
+
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 8px solid rgba(255, 0, 0, 0.4);
+
+    box-shadow:
+        inset 0 0 50px rgba(255, 0, 0, 0.5);
+
+    pointer-events: none;
+
+    animation: redBorder 2.5s infinite;
+
+    z-index: 5;
+}
+
+
+@keyframes redBorder {
+
+    0% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+
+}
+
+
+/* ==================================================
+   支払いボックス
+================================================== */
+
+.payment-page {
+
+    width: 90%;
+
+    max-width: 600px;
+
+    padding: 40px;
+
+    border: 3px solid red;
+
+    background: #111;
+
+    text-align: center;
+
+    box-shadow:
+        0 0 20px red,
+        0 0 60px rgba(255, 0, 0, 0.25);
+
+    position: relative;
+
+    z-index: 20;
+
+    animation: pageShake 7s infinite;
+}
+
+
+/* =========================
+   画面揺れ
+========================= */
+
+@keyframes pageShake {
+
+    0%,
+    92%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    93% {
+        transform: translate(-3px, 2px);
+    }
+
+    94% {
+        transform: translate(3px, -2px);
+    }
+
+    95% {
+        transform: translate(-4px, 1px);
+    }
+
+    96% {
+        transform: translate(2px, -2px);
+    }
+
+    97% {
+        transform: translate(0, 0);
+    }
+
+}
+
+
+/* ==================================================
+   SECURITY ALERT
+================================================== */
+
+.glitch-warning {
+
+    color: #ff0000;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 15px;
+
+    animation: warningBlink 0.8s infinite;
+
+}
+
+
+@keyframes warningBlink {
+
+    0%,
+    45%,
+    100% {
+        opacity: 1;
+    }
+
+    50%,
+    70% {
+        opacity: 0.2;
+    }
+
+}
+
+
+/* ==================================================
+   タイトル
+================================================== */
+
+.payment-page h1 {
+
+    color: red;
+
+    margin-top: 0;
+
+    font-size: 40px;
+
+    text-shadow:
+        0 0 10px red;
+}
+
+
+/* ==================================================
+   PAYMENT REQUIRED
+================================================== */
+
+.payment-warning {
+
+    color: red;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    animation: warningBlink 1.2s infinite;
+}
+
+
+/* ==================================================
+   支払い情報
+================================================== */
+
+.payment-details {
+
+    text-align: left;
+
+    border: 2px solid white;
+
+    padding: 20px;
+
+    margin: 30px 0;
+
+    background: #000;
+}
+
+
+.payment-details p {
+
+    color: white;
+
+    line-height: 1.8;
+
+    font-size: 18px;
+}
+
+
+/* ==================================================
+   危険メッセージ
+================================================== */
+
+.danger-message {
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+    border: 2px solid red;
+
+    color: red;
+
+    background: #220000;
+
+    font-weight: bold;
+
+    animation: dangerPulse 1.5s infinite;
+}
+
+
+@keyframes dangerPulse {
+
+    0% {
+        box-shadow: 0 0 5px red;
+    }
+
+    50% {
+        box-shadow: 0 0 25px red;
+    }
+
+    100% {
+        box-shadow: 0 0 5px red;
+    }
+
+}
+
+
+/* ==================================================
+   支払い確認ボタン
+================================================== */
+
+#confirm-payment {
+
+    width: 100%;
+
+    padding: 15px;
+
+    background: red;
+
+    color: white;
+
+    border: none;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-bottom: 15px;
+
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+
+#confirm-payment:hover {
+
+    background: #cc0000;
+
+    box-shadow: 0 0 25px red;
+
+}
+
+
+/* ==================================================
+   戻るボタン
+================================================== */
+
+#back-button {
+
+    width: 100%;
+
+    padding: 12px;
+
+    background: #222;
+
+    color: white;
+
+    border: 1px solid white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+#back-button:hover {
+
+    background: #333;
+
+}
+
+
+/* ==================================================
+   デモ説明
+================================================== */
+
+.demo-note {
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   疑似体験終了・まとめ画面
+================================================== */
+
+#summary-screen {
+
+    min-height: 100vh;
+
+    background: #f4f6f8;
+
+    color: #222;
+
+    padding: 50px 20px;
+}
+
+
+/* ==================================================
+   まとめ全体
+================================================== */
+
+.summary-page {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+}
+
+
+/* ==================================================
+   ヘッダー
+================================================== */
+
+.summary-header {
+
+    text-align: center;
+
+    background: white;
+
+    padding: 40px 30px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.08);
+
+    margin-bottom: 25px;
+}
+
+
+.summary-icon {
+
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #2e8b57;
+
+    color: white;
+
+    font-size: 45px;
+
+    font-weight: bold;
+
+    line-height: 70px;
+}
+
+
+.summary-header h1 {
+
+    margin: 0;
+
+    font-size: 36px;
+
+    color: #222;
+}
+
+
+.summary-header p {
+
+    color: #666;
+
+    font-size: 18px;
+}
+
+
+/* ==================================================
+   支払い結果
+================================================== */
+
+.fake-payment-result {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: #edf8f1;
+
+    border: 2px solid #5bad78;
+
+    border-radius: 12px;
+
+    padding: 20px 25px;
+
+    margin-bottom: 25px;
+}
+
+
+.result-icon {
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #2e8b57;
+
+    color: white;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    line-height: 50px;
+}
+
+
+.fake-payment-result strong {
+
+    color: #247044;
+
+    font-size: 20px;
+}
+
+
+.fake-payment-result p {
+
+    color: #555;
+
+    font-size: 14px;
+
+    margin: 5px 0 0;
+}
+
+
+/* ==================================================
+   セクション
+================================================== */
+
+.summary-section {
+
+    display: flex;
+
+    gap: 25px;
+
+    background: white;
+
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+.section-number {
+
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    background: #315b8c;
+
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.summary-section h2 {
+
+    margin-top: 0;
+
+    color: #315b8c;
+
+    font-size: 25px;
+}
+
+
+.summary-section p {
+
+    color: #444;
+
+    font-size: 16px;
+
+    line-height: 1.9;
+}
+
+
+/* ==================================================
+   体験フロー
+================================================== */
+
+.experience-flow {
+
+    margin-top: 20px;
+}
+
+
+.flow-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    background: #f5f7fa;
+
+    border-left: 5px solid #315b8c;
+
+    color: #333;
+
+    font-weight: bold;
+}
+
+
+.flow-item span {
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    background: #315b8c;
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.flow-arrow {
+
+    text-align: center;
+
+    color: #315b8c;
+
+    font-size: 25px;
+
+    padding: 5px;
+}
+
+
+/* ==================================================
+   危険性カード
+================================================== */
+
+.danger-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+
+.danger-card {
+
+    background: #fff5f5;
+
+    border: 1px solid #e8aaaa;
+
+    border-radius: 10px;
+
+    padding: 20px;
+}
+
+
+.danger-icon {
+
+    width: 40px;
+    height: 40px;
+
+    background: #d9534f;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+.danger-card h3 {
+
+    color: #a83232;
+
+    font-size: 18px;
+}
+
+
+.danger-card p {
+
+    font-size: 14px;
+
+    color: #555;
+}
+
+
+/* ==================================================
+   行動リスト
+================================================== */
+
+.action-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.action-item {
+
+    display: flex;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    background: #f5f8fb;
+
+    border-radius: 10px;
+
+    border-left: 5px solid #315b8c;
+}
+
+
+.action-item > span {
+
+    width: 35px;
+    height: 35px;
+
+    flex-shrink: 0;
+
+    background: #315b8c;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+
+.action-item strong {
+
+    color: #315b8c;
+
+    font-size: 18px;
+}
+
+
+.action-item p {
+
+    margin: 5px 0 0;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   最重要ポイント
+================================================== */
+
+.important-section {
+
+    background: #fffbea;
+
+    border: 3px solid #e2b93b;
+
+    border-radius: 15px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.important-title {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #876b00;
+
+    margin-bottom: 15px;
+}
+
+
+.important-section > p {
+
+    color: #444;
+
+    font-size: 18px;
+}
+
+
+.important-section strong {
+
+    color: #b00000;
+}
+
+
+/* ==================================================
+   STOP → REPORT → CONSULT
+================================================== */
+
+.stop-flow {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+
+.stop-flow > div:not(.stop-arrow) {
+
+    min-width: 160px;
+
+    padding: 20px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    border: 2px solid #d0aa30;
+}
+
+
+.stop-flow span {
+
+    display: block;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #315b8c;
+}
+
+
+.stop-flow small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #555;
+
+    font-size: 14px;
+}
+
+
+.stop-arrow {
+
+    font-size: 30px;
+
+    color: #876b00;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   最後のメッセージ
+================================================== */
+
+.final-message {
+
+    background: #315b8c;
+
+    color: white;
+
+    border-radius: 15px;
+
+    padding: 40px;
+
+    text-align: center;
+}
+
+
+.final-message h2 {
+
+    font-size: 28px;
+
+    margin-top: 0;
+}
+
+
+.final-message p {
+
+    color: white;
+
+    font-size: 16px;
+}
+
+
+.final-message strong {
+
+    color: #fff3a8;
+}
+
+
+.final-mark {
+
+    display: inline-block;
+
+    margin-top: 20px;
+
+    padding: 10px 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    letter-spacing: 3px;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   スマホ対応
+================================================== */
+
+@media (max-width: 700px) {
+
+    #payment-screen {
+        padding: 20px 15px;
+    }
+
+
+    .payment-page {
+        width: 100%;
+
+        padding: 25px 20px;
+    }
+
+
+    .payment-page h1 {
+        font-size: 30px;
+    }
+
+
+    .payment-warning {
+        font-size: 20px;
+    }
+
+
+    .glitch-warning {
+        font-size: 14px;
+
+        letter-spacing: 2px;
+    }
+
+
+    #summary-screen {
+        padding: 25px 12px;
+    }
+
+
+    .summary-header {
+        padding: 30px 20px;
+    }
+
+
+    .summary-header h1 {
+        font-size: 28px;
+    }
+
+
+    .summary-section {
+        flex-direction: column;
+
+        padding: 22px;
+
+        gap: 15px;
+    }
+
+
+    .section-number {
+        width: 45px;
+        height: 45px;
+    }
+
+
+    .danger-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .stop-flow {
+        flex-direction: column;
+    }
+
+
+    .stop-arrow {
+        transform: rotate(90deg);
+    }
+
+
+    .stop-flow > div:not(.stop-arrow) {
+        width: 100%;
+    }
+
+
+    .important-section {
+        padding: 25px 15px;
+    }
+
+
+    .final-message {
+        padding: 30px 20px;
+    }
+
+}

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サイバー犯罪について学ぶ</title>
+    
+    <!-- Google Fonts 読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@500;700&family=Shippori+Mincho:wght@400;600;800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./CSS/style.css">
+    <style>
+        /* カード全体をクリック可能に見せるためのカーソルスタイル設定 */
+        .type-item {
+            cursor: pointer;
+        }
+
+        /* 100%達成時のコングラチュレーションテキストアニメーション */
+        @keyframes congrats-pop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .congrats-text-active {
+            animation: congrats-pop 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. カスタムカーソル -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <!-- 2. 背景キャンバス -->
+    <canvas id="cyber-canvas"></canvas>
+
+    <!-- 3. 読込プログレスバー -->
+    <div id="progress-bar"></div>
+
+    <!-- 4. オープニング画面 -->
+    <div id="opening-screen">
+        <div style="text-align: center;">
+            <div class="glitch">CYBER SECURITY</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-text">
+                <span class="terminal-prompt">&gt;</span> INITIALIZING SECURITY SYSTEM...
+            </div>
+        </div>
+    </div>
+
+    <!-- 最上部ナビゲーション -->
+    <nav class="top-nav">
+        <div class="container nav-container">
+            <!-- ハンバーガーボタン -->
+            <button class="hamburger" id="js-hamburger" aria-label="メニューを開く">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- ナビゲーションメニュー -->
+            <ul class="nav-menu" id="js-nav-menu">
+                <li><a href="#intro">サイバー犯罪について</a></li>
+                <li><a href="#cases">具体的な事例</a></li>
+                <li><a href="#experience">解説</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- 背景暗転用オーバーレイ -->
+    <div class="nav-overlay" id="js-nav-overlay"></div>
+
+    <div class="container">
+
+        <!-- 6. ヒーローヘッダー (メインビジュアル) -->
+        <header class="hero-header" data-scroll>
+            <div class="cyber-badge">
+                <span class="blink-dot"></span>
+                WARNING: CYBER THREAT DETECTED
+            </div>
+            <h1>【あなたは見抜けるか？】<br><span class="highlight-blue">日常に潜むウイルス感染</span><br>の恐怖をリアル体験</h1>
+        </header>
+
+        <!-- メインコンテンツエリア -->
+        <main class="main-content">
+
+            <!-- 「はじめに」セクション (7. ガラスモーフィズム カードデザイン) -->
+            <section id="intro" class="cyber-card" data-scroll>
+                <div class="card-tag">SEC_01 // INTRODUCTION</div>
+                <h2>はじめに</h2>
+                <div class="intro-center">
+                    <p class="intro-text">
+                        私はインターネットなしでは生きていけません。<br>
+                        いろんな人がネットワークを利用するなか、犯罪にも使う人もいます！<br>
+                        それをサイバー犯罪と言い、事前に防ぐための体験サイトを作りました。
+                    </p>
+                    <div class="intro-image">
+                        <img src="./image/2pageme.png" alt="パソコンを操作する様子">
+                    </div>
+                </div>
+            </section>
+
+            <!-- サイバー犯罪の検挙件数の推移 (ガラスモーフィズム Card) -->
+            <section class="cyber-card highlight-card" data-scroll>
+                <div class="card-tag">SEC_02 // STATISTICS</div>
+                <h2>サイバー犯罪の検挙件数の推移</h2>
+                <div class="stats-center">
+                    <div class="stats-graph">
+                        <img src="./image/saibakensuu.png" alt="サイバー犯罪の検挙件数の推移 グラフ">
+                    </div>
+                    <div class="stats-text">
+                        <p>サイバー検挙数は年々増加しており、ネットの危険に巻き込まれている</p>
+                        <p>引用：警察庁　令和７年におけるサイバー空間をめぐる脅威の情勢等について</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 事例・体験カードグリッド (8. リスト＆グリッド) -->
+            <section id="cases" class="cyber-card" data-scroll>
+                <div class="card-tag">SEC_03 // CASES & EXPERIENCE</div>
+                <h2>具体的な事例・体験</h2>
+
+                <!-- 体験サイトの学習進捗 -->
+                <div id="experience-progress" style="margin: 24px 0 32px; padding: 24px; border: 1px solid rgba(0,240,255,.35); border-radius: 14px; background: rgba(0,20,30,.45);">
+                    <div style="display:flex; justify-content:space-between; gap:16px; align-items:center; margin-bottom:10px;">
+                        <strong>学習進捗</strong>
+                        <span id="experience-progress-text">0 / 6 完了（0%）</span>
+                    </div>
+                    <div style="height:12px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.12);">
+                        <div id="experience-progress-fill" style="width:0%; height:100%; border-radius:999px; background:#00f0ff; transition:width .45s ease;"></div>
+                    </div>
+                    <!-- 100%達成時に表示される大型メッセージ（文字サイズ・余白・光彩効果を強化） -->
+                    <p id="experience-congrats-message" style="display: none; margin-top: 24px; font-weight: 800; color: #00f0ff; text-align: center; font-size: 1.6rem; letter-spacing: 0.08em; text-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 0 30px rgba(0, 240, 255, 0.4); line-height: 1.5;">
+                        🎉 Congratulations!<br style="display:none;" class="sp-br">すべての体験を終えました！
+                    </p>
+                </div>
+
+                <div class="card-grid">
+                    
+                    <!-- カード1 -->
+                    <div class="type-item" data-experience-id="offline_meeting">
+                        <div class="num">01.</div>
+                        <div class="card-img">
+                            <a href="sns_horror_premium/index.html">
+                                <img src="./image/onlinemeet.png" alt="ネットの人とオフラインで会う危険について">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="sns_horror_premium/index.html">ネットの人とオフラインで会う危険について</a></p>
+                        <p class="experience-status" data-status-for="offline_meeting" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                    <!-- カード2 -->
+                    <div class="type-item" data-experience-id="malware">
+                        <div class="num">02.</div>
+                        <div class="card-img">
+                            <a href="malware.html">
+                                <img src="./image/malwarePC.png" alt="マルウェアに感染した時の疑似体験">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="malware.html">マルウェアに感染した時の疑似体験</a></p>
+                        <p class="experience-status" data-status-for="malware" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                    <!-- カード3 -->
+                    <div class="type-item" data-experience-id="transaction">
+                        <div class="num">03.</div>
+                        <div class="card-img">
+                            <a href="snstransaction.html">
+                                <img src="./image/transaction.png" alt="オンライン上での電子取引について">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="snstransaction.html">オンライン上での電子取引について</a></p>
+                        <p class="experience-status" data-status-for="transaction" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                    <!-- カード4 -->
+                    <div class="type-item" data-experience-id="sns_fire">
+                        <div class="num">04.</div>
+                        <div class="card-img">
+                            <a href="enjyou.html">
+                                <img src="./image/backlash.png" alt="SNSでの炎上について">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="enjyou.html">SNSでの炎上について</a></p>
+                        <p class="experience-status" data-status-for="sns_fire" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                    <!-- カード5 -->
+                    <div class="type-item" data-experience-id="dark_job">
+                        <div class="num">05.</div>
+                        <div class="card-img">
+                            <a href="yamibaito.html">
+                                <img src="./image/blackpart.png" alt="闇バイトについて">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="yamibaito.html">闇バイトについて</a></p>
+                        <p class="experience-status" data-status-for="dark_job" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                    <!-- カード6 -->
+                    <div class="type-item" data-experience-id="fake_news">
+                        <div class="num">06.</div>
+                        <div class="card-img">
+                            <a href="fakenews.html">
+                                <img src="./image/fakenews.png" alt="フェイクニュースについて">
+                            </a>
+                        </div>
+                        <p class="card-title"><a href="fakenews.html">フェイクニュースについて</a></p>
+                        <p class="experience-status" data-status-for="fake_news" style="margin-top:8px; font-weight:700; opacity:.75;">未体験</p>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 9. ネオンボタン -->
+        <div class="back-home" data-scroll>
+            <a href="Cyber.html" class="cyber-btn">解説を見る</a>
+        </div>
+
+    </div>
+
+    <!-- フッターエリア -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">サイバー犯罪について学ぶ</div>
+                <p class="footer-desc">日常に潜むネットの恐怖と防犯知識を疑似体験で学ぶサイトです。</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">ホーム</a></li>
+                    <li><a href="#intro">サイバー犯罪について</a></li>
+                    <li><a href="#cases">具体的な事例</a></li>
+                    <li><a href="#experience">体験</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="copyright">Copyright© サイバー犯罪について学ぶ All Rights Reserved.</p>
+    </footer>
+
+    <!-- スクリプト -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // --- 1. オープニング画面非表示 ---
+        const openingScreen = document.getElementById('opening-screen');
+        setTimeout(() => {
+            openingScreen.classList.add('is-hidden');
+        }, 1800);
+
+        // --- 2. カスタムカーソル ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 250, fill: "forwards" });
+        });
+
+        // --- 3. スクロールプログレスバー ---
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            progressBar.style.width = `${scrolled}%`;
+        });
+
+        // --- 4. スクロールアニメーション [data-scroll] ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll("[data-scroll]").forEach((target) => observer.observe(target));
+
+        // --- 5. 背景キャンバス（パーティクル描画） ---
+        const canvas = document.getElementById('cyber-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = Array.from({ length: 45 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2 + 1,
+            speedY: Math.random() * -0.8 - 0.2,
+            opacity: Math.random() * 0.5 + 0.2
+        }));
+
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00f0ff';
+            particles.forEach(p => {
+                ctx.globalAlpha = p.opacity;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                p.y += p.speedY;
+                if (p.y < 0) {
+                    p.y = canvas.height;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(drawCanvas);
+        }
+        drawCanvas();
+
+        // --- 6. 体験サイトの完了状況・進捗 ---
+        const experiences = [
+            "offline_meeting",
+            "malware",
+            "transaction",
+            "sns_fire",
+            "dark_job",
+            "fake_news"
+        ];
+
+        function updateExperienceProgress() {
+            let completedCount = 0;
+
+            experiences.forEach((id) => {
+                const completed = sessionStorage.getItem(`cyber_experience_${id}`) === "completed";
+                const status = document.querySelector(`[data-status-for="${id}"]`);
+                const card = document.querySelector(`[data-experience-id="${id}"]`);
+
+                if (completed) {
+                    completedCount++;
+                    if (status) {
+                        status.textContent = "✓ 体験完了";
+                        status.style.color = "#00f0ff";
+                        status.style.opacity = "1";
+                    }
+                    if (card) card.classList.add("experience-completed");
+                } else {
+                    if (status) {
+                        status.textContent = "未体験";
+                        status.style.color = "";
+                        status.style.opacity = ".75";
+                    }
+                    if (card) card.classList.remove("experience-completed");
+                }
+            });
+
+            const percent = Math.round((completedCount / experiences.length) * 100);
+            const text = document.getElementById("experience-progress-text");
+            const fill = document.getElementById("experience-progress-fill");
+            const congratsMsg = document.getElementById("experience-congrats-message");
+
+            if (text) text.textContent = `${completedCount} / ${experiences.length} 完了（${percent}%）`;
+            if (fill) fill.style.width = `${percent}%`;
+
+            // 100%達成時にメッセージを表示
+            if (congratsMsg) {
+                if (completedCount === experiences.length) {
+                    congratsMsg.style.display = "block";
+                    congratsMsg.classList.add("congrats-text-active");
+                } else {
+                    congratsMsg.style.display = "none";
+                    congratsMsg.classList.remove("congrats-text-active");
+                }
+            }
+        }
+
+        updateExperienceProgress();
+        window.addEventListener("pageshow", updateExperienceProgress);
+
+        // URLパラメータによる完了判定の補助
+        const completedFromUrl = new URLSearchParams(window.location.search).get("completed");
+        if (experiences.includes(completedFromUrl)) {
+            sessionStorage.setItem(`cyber_experience_${completedFromUrl}`, "completed");
+            updateExperienceProgress();
+            history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+        }
+
+        // --- 7. カード全体のクリックイベント設定（枠内どこを押してもリンク移動） ---
+        const typeItems = document.querySelectorAll('.type-item');
+        typeItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // 既にaタグ自体が直接クリックされた場合は重複移動を防ぐ
+                if (e.target.tagName === 'A' || e.target.closest('a')) {
+                    return;
+                }
+                const link = item.querySelector('a');
+                if (link && link.href) {
+                    window.location.href = link.href;
+                }
+            });
+        });
+
+        // --- 8. ハンバーガーメニュー制御 ---
+        const hamburger = document.getElementById("js-hamburger");
+        const navMenu = document.getElementById("js-nav-menu");
+        const overlay = document.getElementById("js-nav-overlay");
+        const navLinks = document.querySelectorAll("#js-nav-menu a");
+
+        function toggleMenu() {
+            hamburger.classList.toggle("is-active");
+            navMenu.classList.toggle("is-active");
+            overlay.classList.toggle("is-active");
+            document.body.classList.toggle("is-locked");
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove("is-active");
+            navMenu.classList.remove("is-active");
+            overlay.classList.remove("is-active");
+            document.body.classList.remove("is-locked");
+        }
+
+        hamburger.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", closeMenu);
+        navLinks.forEach(link => link.addEventListener("click", closeMenu));
+    });
+    </script>
+
+</body>
+</html>

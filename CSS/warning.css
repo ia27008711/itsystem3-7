@@ -1,0 +1,358 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   警告画面
+========================= */
+
+#warning-screen {
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.main-area {
+    display: flex;
+    gap: 30px;
+    padding: 0 30px;
+}
+
+
+/* =========================
+   タイトル
+========================= */
+
+.top-title {
+    background: #b30000;
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    border: 2px solid white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.sub-title {
+    text-align: center;
+    font-size: 24px;
+    color: #ff3b3b;
+    font-weight: bold;
+    margin: 25px 0 40px;
+}
+
+
+/* =========================
+   左側：タイマー
+========================= */
+
+.left-panel {
+    width: 28%;
+    border: 2px solid red;
+    background: #1a1a1a;
+    padding: 20px;
+    text-align: center;
+    height: fit-content;
+}
+
+.time-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#timer {
+    font-size: 48px;
+    color: red;
+    font-weight: bold;
+    border: 2px solid red;
+    padding: 20px;
+    background: black;
+    letter-spacing: 4px;
+}
+
+
+/* =========================
+   右側
+========================= */
+
+.right-panel {
+    width: 72%;
+}
+
+.mid-title {
+    background: #b30000;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 12px 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-left: 6px solid white;
+}
+
+p {
+    color: white;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+
+/* =========================
+   支払い情報
+========================= */
+
+.payment-info {
+    background: #b30000;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 12px 20px;
+    margin-top: 30px;
+    border-left: 6px solid white;
+}
+
+.money {
+    background: #1a1a1a;
+    padding: 20px;
+    border: 2px solid red;
+}
+
+
+/* =========================
+   Bitcoinボタン
+========================= */
+
+#pay-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#pay-button:hover {
+    background: #cc0000;
+}
+
+
+/* =========================
+   支払い前の学習解説
+========================= */
+
+#payment-popup {
+    display: none;
+    margin-top: 25px;
+    animation: popupAppear 0.5s ease;
+}
+
+@keyframes popupAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.popup-bubble {
+    position: relative;
+    background: white;
+    color: #222;
+    padding: 25px;
+    border-radius: 20px;
+    border: 3px solid #4a6fa5;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* 吹き出し */
+
+.popup-bubble::before {
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 18px solid #4a6fa5;
+}
+
+
+.popup-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #315b8c;
+    margin-bottom: 15px;
+}
+
+.popup-bubble p {
+    color: #222;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.popup-bubble strong {
+    color: #315b8c;
+}
+
+
+/* 学習ポイント */
+
+.popup-question {
+    margin-top: 20px;
+    padding: 15px;
+    background: #eef5fc;
+    border-left: 5px solid #4a6fa5;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: #315b8c;
+}
+
+
+/* デモ説明 */
+
+.demo-note {
+    color: #777 !important;
+    font-size: 13px !important;
+}
+
+
+/* ボタン */
+
+.popup-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    flex: 1;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* 戻る */
+
+#cancel-payment {
+    background: #ddd;
+    color: #333;
+    border: 1px solid #999;
+}
+
+#cancel-payment:hover {
+    background: #ccc;
+}
+
+
+/* 解説確認 */
+
+#continue-payment {
+    background: #4a6fa5;
+    color: white;
+    border: none;
+}
+
+#continue-payment:hover {
+    background: #315b8c;
+}
+
+
+/* =========================
+   復号キー
+========================= */
+
+.key-box {
+    margin-top: 20px;
+    border: 2px solid red;
+    padding: 20px;
+    background: #1b1b1b;
+}
+
+#recovery-key {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background: black;
+    color: white;
+    border: 2px solid red;
+    margin-bottom: 15px;
+}
+
+#unlock-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#unlock-btn:hover {
+    background: #b30000;
+}
+
+
+/* =========================
+   スマホ対応
+========================= */
+
+@media (max-width: 700px) {
+
+    .main-area {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .left-panel,
+    .right-panel {
+        width: 100%;
+    }
+
+    .top-title {
+        font-size: 30px;
+    }
+
+    .sub-title {
+        font-size: 18px;
+    }
+
+    #timer {
+        font-size: 36px;
+    }
+
+    .popup-buttons {
+        flex-direction: column;
+    }
+}

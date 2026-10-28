@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d18">
+  <title>CYBER CASE | 詐欺調査掲示板</title>
+  <link rel="stylesheet" href="./CSS/test.css">
+  <script src="./JS/test.js" defer></script>
+</head>
+<body>
+  <div class="background-grid"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./index.html">
+      <span class="brand-icon">◆</span>
+      CYBER<span class="brand-accent"> CASE</span>
+    </a>
+    <div class="topbar-status"><span class="status-dot"></span> 調査システム稼働中</div>
+    <div class="topbar-actions">
+      <div class="case-number">CASE FILE <strong>001</strong></div>
+      <a class="home-button" href="../index.html" id="returnMainHome">⌂ 大元のサイトに戻る</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 最初に大きく表示する事件ファイル -->
+    <section class="case-intro panel" id="caseIntro">
+      <div class="intro-topline">
+        <span class="eyebrow">SPECIAL INVESTIGATION FILE</span>
+        <span class="classification">CONFIDENTIAL / 001</span>
+      </div>
+
+      <div class="intro-content">
+        <div class="intro-copy">
+          <span class="case-tag">CASE 001 / 電子マネー取引詐欺</span>
+          <h1>消えたゲームコードと<br><span class="gradient-text">電子マネー詐欺</span></h1>
+          <p class="intro-description">
+            SNSで見つけた「ゲーム特典コードを電子マネーと交換する」という取引。
+            相手の指示どおりに送金した直後、出品者との連絡が途絶えた。
+            掲示板に残された投稿やメッセージを調査し、事件の真相を突き止めよう。
+          </p>
+
+          <div class="case-meta">
+            <div><span>事件の種類</span><strong>個人間取引詐欺</strong></div>
+            <div><span>難易度</span><strong class="green">NORMAL</strong></div>
+            <div><span>調査する証拠</span><strong>全5件</strong></div>
+          </div>
+        </div>
+
+        <div class="case-visual" aria-hidden="true">
+          <div class="visual-orbit orbit-one"></div>
+          <div class="visual-orbit orbit-two"></div>
+          <div class="visual-file">
+            <div class="file-top">INVESTIGATION <span>●</span></div>
+            <div class="file-icon">⌕</div>
+            <div class="file-lines"><span></span><span></span><span></span></div>
+            <div class="file-stamp">CASE<br>001</div>
+            <div class="file-bottom">EVIDENCE REQUIRED</div>
+          </div>
+          <div class="floating-label label-top">! <span><strong>UNRESOLVED</strong><small>未解決事件</small></span></div>
+          <div class="floating-label label-bottom">⌕ <span><strong>5 EVIDENCE</strong><small>証拠を分析せよ</small></span></div>
+        </div>
+      </div>
+
+      <div class="intro-bottom">
+        <p>⚠ 証拠を順番に調査し、詐欺の手口を解明してください。</p>
+        <button class="primary-button" id="startInvestigation" type="button">
+          調査を開始する <span>→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 調査開始後に表示する掲示板画面 -->
+    <section class="workspace hidden" id="workspace">
+      <div class="workspace-heading">
+        <div>
+          <span class="eyebrow">INVESTIGATION ROOM / LIVE BOARD</span>
+          <h1>事件調査掲示板</h1>
+          <p>投稿や記録を読み解き、取引相手の不審な点を見つけよう。</p>
+        </div>
+        <button class="text-button" id="backToCase" type="button">事件ファイルへ ↑</button>
+      </div>
+
+      <div class="workspace-grid">
+        <!-- 左：事件ファイルを常時表示 -->
+        <aside class="left-sidebar">
+          <section class="sidebar-panel case-sidebar">
+            <div class="sidebar-title">
+              <span class="panel-symbol">▤</span>
+              <div><strong>事件ファイル</strong><small>CASE INFORMATION</small></div>
+            </div>
+
+            <div class="case-cover">
+              <span>CASE 001</span>
+              <div class="case-cover-icon">⌕</div>
+              <strong>消えたゲームコードと電子マネー詐欺</strong>
+              <small>個人間取引 / SNS</small>
+            </div>
+
+            <div class="case-facts">
+              <div><span>発生場所</span><strong>SNS・DM</strong></div>
+              <div><span>被害内容</span><strong>送金後に連絡途絶</strong></div>
+              <div><span>送金額</span><strong>3,000円</strong></div>
+              <div><span>コードの受領</span><strong class="red">未確認</strong></div>
+            </div>
+
+            <div class="sidebar-note">
+              <strong>調査目的</strong>
+              <p>証拠を集めて、取引相手が詐欺を行った可能性を判断する。</p>
+            </div>
+
+            <div class="left-progress">
+              <div class="progress-heading"><span>調査の進行度</span><strong id="progressText">0 / 5</strong></div>
+              <div class="progress-track"><span id="progressFill"></span></div>
+              <small id="progressCaption">まだ調査していません</small>
+            </div>
+          </section>
+        </aside>
+
+        <!-- 中央：掲示板 -->
+        <section class="forum-column">
+          <div class="forum-toolbar">
+            <div class="forum-heading">
+              <span class="online-dot"></span>
+              <div><h2>取引調査スレッド</h2><small>THREAD #001 · 証拠を順番に確認</small></div>
+            </div>
+            <span class="thread-status">捜査中</span>
+          </div>
+
+          <div class="thread-intro">
+            <div class="thread-avatar">捜</div>
+            <div>
+              <strong>調査本部 <span class="official-badge">公式</span></strong>
+              <p>以下の投稿・記録は事件に関係する証拠です。投稿を開いて内容を確認してください。最初の証拠から順番に調査できます。</p>
+              <small>システムメッセージ · 調査開始</small>
+            </div>
+          </div>
+
+          <div class="forum-feed" id="evidenceList">
+            <article class="forum-post available" data-evidence="0">
+              <div class="post-head">
+                <div class="post-avatar avatar-blue">S</div>
+                <div class="post-author"><strong>ゲーム交換屋</strong><small>@game_trade_001 · 公開投稿</small></div>
+                <span class="post-number">#001</span>
+              </div>
+              <div class="post-body">
+                <span class="post-category">SNS POST</span>
+                <h3>ゲーム特典コード交換します！</h3>
+                <p>限定特典コードを電子マネーと交換します。先払いできる方を優先！ 気になる方はDMしてください。</p>
+              </div>
+              <div class="post-foot">
+                <span class="post-state">● 調査可能</span>
+                <button class="inspect-button" type="button">投稿を調査する →</button>
+              </div>
+            </article>
+
+            <article class="forum-post locked" data-evidence="1">
+              <div class="post-head">
+                <div class="post-avatar avatar-purple">DM</div>
+                <div class="post-author"><strong>ダイレクトメッセージ</strong><small>非公開のやり取り</small></div>
+                <span class="post-number">#002</span>
+              </div>
+              <div class="post-body">
+                <span class="post-category">DIRECT MESSAGE</span>
+                <h3>取引相手とのメッセージ</h3>
+                <p>取引条件をめぐるメッセージの記録。</p>
+              </div>
+              <div class="post-foot"><span class="post-state">🔒 未解放</span><button class="inspect-button" type="button" disabled>前の証拠を確認</button></div>
+            </article>
+
+            <article class="forum-post locked" data-evidence="2">
+              <div class="post-head">
+                <div class="post-avatar avatar-green">¥</div>
+                <div class="post-author"><strong>送金履歴</strong><small>電子マネーの取引記録</small></div>
+                <span class="post-number">#003</span>
+              </div>
+              <div class="post-body">
+                <span class="post-category">PAYMENT RECORD</span>
+                <h3>電子マネーの送金記録</h3>
+                <p>送金先・金額・取引状況を確認する。</p>
+              </div>
+              <div class="post-foot"><span class="post-state">🔒 未解放</span><button class="inspect-button" type="button" disabled>前の証拠を確認</button></div>
+            </article>
+
+            <article class="forum-post locked" data-evidence="3">
+              <div class="post-head">
+                <div class="post-avatar avatar-orange">＠</div>
+                <div class="post-author"><strong>アカウント調査</strong><small>プロフィール・投稿履歴</small></div>
+                <span class="post-number">#004</span>
+              </div>
+              <div class="post-body">
+                <span class="post-category">ACCOUNT PROFILE</span>
+                <h3>取引相手のアカウント</h3>
+                <p>アカウントの作成時期や取引実績を調べる。</p>
+              </div>
+              <div class="post-foot"><span class="post-state">🔒 未解放</span><button class="inspect-button" type="button" disabled>前の証拠を確認</button></div>
+            </article>
+
+            <article class="forum-post locked" data-evidence="4">
+              <div class="post-head">
+                <div class="post-avatar avatar-red">!</div>
+                <div class="post-author"><strong>最後のメッセージ</strong><small>連絡が途絶える直前</small></div>
+                <span class="post-number">#005</span>
+              </div>
+              <div class="post-body">
+                <span class="post-category">FINAL MESSAGE</span>
+                <h3>送金後の連絡記録</h3>
+                <p>コードが届かなかった後のメッセージを確認する。</p>
+              </div>
+              <div class="post-foot"><span class="post-state">🔒 未解放</span><button class="inspect-button" type="button" disabled>前の証拠を確認</button></div>
+            </article>
+          </div>
+
+          <div class="forum-end hidden" id="forumEnd">
+            <span>✓</span>
+            <strong>すべての証拠を確認しました</strong>
+            <p>右側の最終判定から事件の真相を確認できます。</p>
+          </div>
+        </section>
+
+        <!-- 右：捜査情報 -->
+        <aside class="right-sidebar">
+          <section class="sidebar-panel">
+            <div class="sidebar-title">
+              <span class="panel-symbol">♙</span>
+              <div><strong>出品者情報</strong><small>SUSPECT PROFILE</small></div>
+              <span class="lock-label" id="suspectLock">🔒</span>
+            </div>
+
+            <div class="locked-content" id="suspectLocked">
+              <div class="lock-graphic">🔒</div>
+              <strong>情報は未解放です</strong>
+              <p>証拠を2件調査すると出品者情報を確認できます。</p>
+              <div class="mini-track"><span id="suspectMiniProgress"></span></div>
+              <small id="suspectProgressText">0 / 2 件</small>
+            </div>
+
+            <div class="suspect-details hidden" id="suspectDetails">
+              <div class="suspect-avatar">?</div>
+              <strong>ゲーム交換屋</strong>
+              <small>@game_trade_001</small>
+              <div class="fact-list">
+                <div><span>アカウント作成</span><strong>約2週間前</strong></div>
+                <div><span>過去の取引</span><strong class="red">確認できず</strong></div>
+                <div><span>プロフィール</span><strong>情報が少ない</strong></div>
+              </div>
+              <p class="caution-note">⚠ 新規アカウントで取引実績が確認できない点に注意。</p>
+            </div>
+          </section>
+
+          <section class="sidebar-panel verdict-panel">
+            <div class="sidebar-title">
+              <span class="panel-symbol purple-symbol">⚑</span>
+              <div><strong>最終判定</strong><small>FINAL VERDICT</small></div>
+            </div>
+            <div class="locked-content" id="verdictLocked">
+              <div class="lock-graphic">?</div>
+              <strong>真相はまだ不明</strong>
+              <p>掲示板の全証拠を調査すると判定できます。</p>
+              <div class="mini-track"><span id="verdictMiniProgress"></span></div>
+              <small id="verdictProgressText">0 / 5 件</small>
+            </div>
+            <div class="verdict-ready hidden" id="verdictReady">
+              <span class="ready-dot"></span>
+              <strong>全証拠の確認が完了</strong>
+              <p>証拠を整理して事件の真相を確認しよう。</p>
+              <button class="primary-button full-button" id="showVerdict" type="button">判定結果を見る →</button>
+            </div>
+            <div class="verdict-result hidden" id="verdictResult">
+              <span class="result-stamp">CASE SOLVED</span>
+              <h3>詐欺の可能性が高い</h3>
+              <p>送金後にコードが届かず、相手からの連絡も途絶えています。取引実績が確認できない点も含め、詐欺を疑うべき状況です。</p>
+              <div class="result-checklist">
+                <span>✓ 先払いを要求された</span>
+                <span>✓ コードが届かなかった</span>
+                <span>✓ 送金後に連絡が途絶えた</span>
+              </div>
+              <div class="safety-advice">
+                <strong>実際に被害に遭った場合</strong>
+                <p>送金履歴やメッセージを保存し、決済サービス・SNSの公式窓口へ相談してください。</p>
+              </div>
+              <button class="secondary-button" id="restartInvestigation" type="button">最初からやり直す ↻</button>
+            </div>
+          </section>
+
+          <div class="hint-panel">
+            <span>✦</span>
+            <div><strong>調査のヒント</strong><p>相手の説明だけでなく、送金記録やアカウント情報も照らし合わせよう。</p></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- 全画面で表示する最終判定 -->
+  <section class="final-verdict-screen hidden" id="finalVerdictScreen" aria-labelledby="finalVerdictTitle">
+    <div class="final-verdict-card">
+      <div class="final-verdict-topline"><span class="eyebrow">INVESTIGATION COMPLETE / FINAL REPORT</span><span class="final-classification">CASE 001 · CLOSED</span></div>
+      <div class="final-verdict-icon" id="finalVerdictIcon" aria-hidden="true">?</div>
+      <p class="final-verdict-kicker">あなたの最終判断</p>
+      <h1 id="finalVerdictTitle">詐欺か、詐欺ではないか？</h1>
+      <p class="final-verdict-lead" id="finalVerdictLead">すべての証拠を確認しました。証拠をもとに、あなたの最終判断を選んでください。</p>
+      <div class="final-choice-area" id="finalChoiceArea">
+        <p class="final-choice-prompt">この取引は詐欺だと思いますか？</p>
+        <div class="final-choice-buttons">
+          <button class="final-choice-button fraud-choice" data-choice="fraud" type="button">⚠ 詐欺だと思う</button>
+          <button class="final-choice-button safe-choice" data-choice="not-fraud" type="button">✓ 詐欺ではないと思う</button>
+        </div>
+      </div>
+      <p class="final-choice-outcome hidden" id="finalChoiceOutcome"></p>
+      <div class="final-verdict-grid hidden" id="finalVerdictDetails">
+        <section class="final-evidence-summary">
+          <h2>判定の根拠</h2>
+          <ul>
+            <li><span>01</span> 取引前に電子マネーでの先払いを要求された</li>
+            <li><span>02</span> 送金後も約束されたコードが届かなかった</li>
+            <li><span>03</span> アカウントの取引実績を確認できなかった</li>
+            <li><span>04</span> 送金後に相手からの返信が途絶えた</li>
+          </ul>
+        </section>
+        <section class="final-safety-summary">
+          <h2>実際に被害に遭った場合</h2>
+          <p>送金履歴・取引番号・相手のプロフィール・メッセージのスクリーンショットを保存し、決済サービスとSNSの公式窓口へ相談してください。追加の送金や、相手が案内する不審な返金手続きには応じないでください。</p>
+        </section>
+      </div>
+      <div class="final-verdict-bottom"><span>CYBER CASE / DIGITAL SAFETY TRAINING</span><div class="final-verdict-actions"><a class="home-button final-home-button" href="../index.html" id="returnMainHomeFinal">⌂ 大元のサイトに戻る</a><button class="primary-button" id="finalRestartInvestigation" type="button">最初からやり直す ↻</button></div></div>
+      <p class="final-disclaimer">この事件は学習用の架空の事例です。判定は提示された証拠に基づく学習上の判断であり、実際の事件では追加の確認が必要です。</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span>CYBER CASE / DIGITAL SAFETY TRAINING</span>
+    <span>この事件は学習用の架空の事例です。</span>
+  </footer>
+
+  <!-- 証拠の詳細 -->
+  <div class="modal-backdrop hidden" id="evidenceModal" aria-hidden="true">
+    <section class="evidence-modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <div class="modal-topline">
+        <span class="eyebrow">EVIDENCE ANALYSIS</span>
+        <button class="modal-close" id="closeModalX" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="modal-title-row">
+        <span class="modal-number" id="dialogNumber">01</span>
+        <div><h2 id="dialogTitle">証拠のタイトル</h2><p id="dialogSubtitle"></p></div>
+      </div>
+      <div class="dialog-content" id="dialogContent"></div>
+      <div class="analysis-box"><span>捜査メモ / ANALYSIS</span><p id="dialogAnalysis"></p></div>
+      <section class="suspicious-points" aria-labelledby="suspiciousPointsTitle">
+        <div class="suspicious-heading"><span>02 / FIND THE CLUES</span><h3 id="suspiciousPointsTitle">怪しいポイントを見つける</h3><p>本文の気になる箇所をクリックして赤丸を付けよう。どこにでも丸を付けられます。最後に「答え合わせ」を押してください。</p></div>
+        <div id="suspiciousPointsList" class="suspicious-points-list"></div>
+        <p id="suspiciousFeedback" class="suspicious-feedback" aria-live="polite">怪しいポイントを選ぶと、ここに進行状況が表示されます。</p>
+      </section>
+      <div class="modal-footer">
+        <small id="dialogProgress">EVIDENCE 01 / 05</small>
+        <button class="primary-button" id="confirmEvidence" type="button">答え合わせ</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="screen-flash" id="screenFlash"></div>
+  <div class="shockwave-layer" id="screenShockwave"></div>
+  <div class="particle-layer" id="particleLayer"></div>
+  <div class="unlock-banner" id="unlockBanner">
+    <span class="unlock-check">✓</span>
+    <span><strong id="unlockBannerTitle">証拠を確認しました</strong><small id="unlockBannerText">次の証拠を調査できます</small></span>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+:root {
+  --bg-color: #0b0f19;
+  --card-bg: #1e293b;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --warning-yellow: #f59e0b;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: #ffffff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 警告発生時の画面点滅アニメーション */
+.emergency-flash {
+  animation: flash-animation 1s infinite alternate;
+}
+
+@keyframes flash-animation {
+  0% { box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.3); }
+  100% { box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.9); }
+}
+
+/* カード全体の幅と枠線をスケールアップ */
+.news-container {
+  max-width: 800px; /* 650px → 800px に拡大 */
+  width: 100%;
+  background-color: var(--card-bg);
+  border: 3px solid #334155;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+/* 報道番組ヘッダー（文字と余白を拡大） */
+.news-header {
+  background: linear-gradient(90deg, #991b1b, #dc2626);
+  padding: 16px 24px;
+  font-weight: bold;
+  font-size: 1.2rem; /* サイズ拡大 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 1.5px;
+}
+
+.badge {
+  background-color: #000;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 1rem; /* サイズ拡大 */
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* 進行状況 ＆ カウントダウン */
+.status-bar {
+  background-color: #0f172a;
+  padding: 14px 24px;
+  font-size: 1.1rem; /* サイズ拡大 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #334155;
+}
+
+.timer-display {
+  font-size: 1.4rem; /* サイズ拡大 */
+  font-weight: bold;
+  color: var(--warning-yellow);
+}
+
+/* ニュース画像・テロップエリアの高さを拡大 */
+.news-media {
+  position: relative;
+  background-color: #000;
+  height: 280px; /* 200px → 280px に拡大 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.news-media-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border-left: 6px solid var(--accent-red);
+  font-size: 1.05rem; /* サイズ拡大 */
+  color: #e2e8f0;
+}
+
+/* ニュース本文（テキストサイズアップ） */
+.news-content {
+  padding: 28px;
+}
+
+.news-title {
+  font-size: 1.6rem; /* 1.3rem → 1.6rem に拡大 */
+  margin: 0 0 16px 0;
+  color: #f8fafc;
+  line-height: 1.4;
+}
+
+.news-body {
+  color: #cbd5e1;
+  line-height: 1.7;
+  font-size: 1.15rem; /* 0.95rem → 1.15rem に拡大 */
+  margin: 0;
+}
+
+/* ボタン（押しやすく大きく変更） */
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  padding: 0 28px 28px;
+}
+
+.btn {
+  flex: 1;
+  padding: 20px; /* 16px → 20px に拡大 */
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem; /* 1rem → 1.2rem に拡大 */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-real { background-color: var(--accent-green); color: white; }
+.btn-real:hover { background-color: #16a34a; transform: translateY(-3px); }
+
+.btn-fake { background-color: var(--accent-red); color: white; }
+.btn-fake:hover { background-color: #dc2626; transform: translateY(-3px); }
+
+.btn-next {
+  background-color: #3b82f6;
+  color: white;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* 解説エリア */
+.result-box {
+  display: none;
+  padding: 28px;
+  background-color: #0f172a;
+  border-top: 2px solid #334155;
+}
+
+.result-title {
+  font-size: 1.5rem; /* サイズ拡大 */
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.result-explain {
+  font-size: 1.1rem; /* サイズ拡大 */
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+/* 最終結果画面 */
+.final-screen {
+  display: none;
+  padding: 40px 28px;
+  text-align: center;
+}
+
+.final-screen h2 {
+  font-size: 1.8rem;
+}
+
+.final-score {
+  font-size: 3.5rem; /* 2.5rem → 3.5rem に拡大 */
+  font-weight: bold;
+  color: var(--warning-yellow);
+  margin: 20px 0;
+}
+
+#final-comment {
+  font-size: 1.15rem;
+}

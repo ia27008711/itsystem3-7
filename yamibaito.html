@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メール</title>
+    <link rel="stylesheet" href="./CSS/yamibaito.css">
+    <style>
+        #yami-full-page {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0b0a0f; color: #fff; z-index: 9999;
+            display: flex; flex-direction: column; font-family: sans-serif;
+        }
+        .app-header {
+            background: #1f1f24; padding: 15px 20px; display: flex;
+            align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #2d2d33; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .chat-main-view {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 16px; max-width: 800px; width: 100%; margin: 0 auto;
+        }
+        .choice-bottom-bar {
+            background: #1f1f24; padding: 20px; border-top: 1px solid #2d2d33;
+            display: flex; flex-direction: column; gap: 10px; align-items: center;
+        }
+        .input-mock-area {
+            max-width: 800px; width: 100%; background: #141419; border: 1px solid #3d3d45;
+            border-radius: 25px; padding: 12px 20px; color: #666; font-size: 14px; margin-bottom: 5px;
+        }
+        .full-choice-container { max-width: 800px; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+        @keyframes fullPageShake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-5px, -2px); }
+            20%, 40%, 60%, 80% { transform: translate(5px, 2px); }
+        }
+        .page-shake-active { animation: fullPageShake 0.4s ease-in-out infinite; }
+        @keyframes typingPulse { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+        .t-dot { animation: typingPulse 1.4s infinite both; font-weight: bold; font-size: 18px; }
+        .t-dot:nth-child(2) { animation-delay: .2s; }
+        .t-dot:nth-child(3) { animation-delay: .4s; }
+        
+        .hide-view { display: none !important; }
+    </style>
+</head>
+<body>
+    <div id="email-app-view" style="display: flex; width: 100vw; height: 100vh;">
+        <aside class="sidebar">
+            <div class="logo">✉ メール</div>
+            <button class="compose-btn">＋ メールを作成</button>
+            <nav>
+                <div class="menu active-menu"><span>受信トレイ</span> <strong>3</strong></div>
+                <div class="menu"> <span>迷惑メール</span></div>
+                <div class="menu"> <span>送信済み</span></div>
+                <div class="menu"> <span>ゴミ箱</span></div>
+            </nav>
+        </aside>
+        <section class="mail-list">
+            <div class="list-header">
+                <h1>受信トレイ</h1>
+                <div class="mail-count">3件のメール</div>
+            </div>
+            <input type="text" class="search-box" placeholder=" メールを検索...">
+            <div class="mail-item unread" onclick='openMail(this, "admin-security", "2026/08/28", "【重要】業務委託契約書およびマニュアルの送付", "ご応募いただいた案件的契約書を送付いたします。必ずご確認ください。", "contract_secure.exe")'>
+                <div class="mail-top"><div class="sender">admin-security</div><div class="time">09:12</div></div>
+                <div class="title">【重要】業務契約マニュアル送付</div>
+                <div class="preview">ご応募いただいた案件の契約書を送付いたします...</div>
+            </div>
+            <div class="mail-item unread" onclick='openMail(this, "support-center", "2026/08/27", "【即日手渡し】完全非公開の短期高額アルバイトのご案内", "書類の回収・運搬スタッフを緊急募集いたします。詳細URLよりご応募ください。", "")'>
+                <div class="mail-top"><div class="sender">support-center</div><div class="time">10:24</div></div>
+                <div class="title">【即日金】高額バイトのご案内</div>
+                <div class="preview">書類の回収・運搬スタッフを緊急募集いたします...</div>
+            </div>
+            <div class="mail-item unread" onclick='openMail(this, "school-info", "2026/08/26", "部活の先輩からの連絡", "高収入のバイトを紹介してもらえることになった。近所の案件らしい。", "")'>
+                <div class="mail-top"><div class="sender">school-info</div><div class="time">08:15</div></div>
+                <div class="title">先輩からの紹介連絡</div>
+                <div class="preview">高収入のバイトを紹介するよ...</div>
+            </div>
+        </section>
+        <main class="mail-view">
+            <div class="empty-mail" id="empty-mail">
+                <div class="empty-icon"></div>
+                <h2>メールを選択してください</h2>
+                <p>左側からメールを選択すると内容が表示されます。</p>
+            </div>
+            <div id="mail-content" style="display:none;">
+                <div class="mail-header">
+                    <div class="mail-info">
+                        <p><span>From</span> <strong id="from"></strong></p>
+                        <p><span>To</span> <strong>user@example.com</strong></p>
+                        <p><span>Date</span> <strong id="date"></strong></p>
+                    </div>
+                </div>
+                <h1 id="subject">メールを選択してください</h1>
+                <p id="content" class="mail-body">メール本文</p>
+                <div class="attachment" id="attachment" style="display:none;">
+                    <div class="attachment-icon">📎</div>
+                    <div>
+                        <div class="attachment-name">ファイル</div>
+                        <div class="attachment-type">添付ファイル</div>
+                    </div>
+                    <div class="attachment-arrow">›</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="yami-full-page" class="hide-view">
+        <div class="app-header">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 44px; height: 44px; background: #3a3a45; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">👤</div>
+                <div>
+                    <div style="font-weight: bold; font-size: 16px; letter-spacing: 0.5px;" id="full-chat-sender">接続中...</div>
+                    <div style="font-size: 12px; color: #28a745; margin-top: 2px;">● エンドツーエンド暗号化通信システム</div>
+                </div>
+            </div>
+            <div style="font-size: 20px; color: #888; display: flex; gap: 20px;"><span>✆</span><span></span><span>⋮</span></div>
+        </div>
+        
+        <div class="chat-main-view" id="full-chat-log-area">
+        </div>
+
+        <div class="choice-bottom-bar">
+            <div class="input-mock-area" id="full-dummy-input">メッセージを選択してください...</div>
+            <div class="full-choice-container" id="full-choice-area"></div>
+        </div>
+    </div>
+    <script src="./JavaScript/yamibaito.js"></script>
+</body>
+</html>

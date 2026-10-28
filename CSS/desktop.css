@@ -1,0 +1,637 @@
+/* ==================================================
+   基本設定
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        "Yu Gothic",
+        sans-serif;
+}
+
+
+/* ==================================================
+   デスクトップ
+================================================== */
+
+#desktop {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #12355b,
+            #07111f
+        );
+
+    overflow: hidden;
+
+    transition:
+        background 0.3s;
+}
+
+
+/* ==================================================
+   偽デスクトップ
+================================================== */
+
+#desktop::before {
+
+    content: "DESKTOP";
+
+    position: absolute;
+
+    top: 15px;
+    left: 20px;
+
+    color: rgba(255,255,255,0.6);
+
+    font-size: 14px;
+
+    letter-spacing: 2px;
+}
+
+
+/* ==================================================
+   ファイル配置
+================================================== */
+
+.file-area {
+
+    position: absolute;
+
+    top: 60px;
+    left: 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 110px);
+
+    gap: 30px 25px;
+}
+
+
+/* ==================================================
+   ファイル
+================================================== */
+
+.file {
+
+    width: 100px;
+    height: 110px;
+
+    text-align: center;
+
+    color: white;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    transition:
+        transform 0.3s,
+        background 0.3s,
+        filter 0.3s;
+}
+
+
+/* ホバー */
+
+.file:hover {
+
+    background:
+        rgba(255,255,255,0.12);
+
+}
+
+
+/* ==================================================
+   ファイルアイコン
+================================================== */
+
+.file-icon {
+
+    font-size: 55px;
+
+    height: 65px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    transition:
+        filter 0.3s,
+        transform 0.3s;
+}
+
+
+/* ==================================================
+   ファイル名
+================================================== */
+
+.file-name {
+
+    font-size: 14px;
+
+    margin-top: 5px;
+
+    text-shadow:
+        0 1px 3px black;
+}
+
+
+/* ==================================================
+   ロックされたファイル
+================================================== */
+
+.file.locked {
+
+    animation:
+        fileLock 0.6s ease;
+
+}
+
+
+@keyframes fileLock {
+
+    0% {
+
+        transform:
+            scale(1);
+
+    }
+
+    30% {
+
+        transform:
+            scale(1.2)
+            rotate(-3deg);
+
+    }
+
+    60% {
+
+        transform:
+            scale(0.9)
+            rotate(3deg);
+
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+/* ロック後のアイコン */
+
+.file.locked .file-icon {
+
+    filter:
+        grayscale(1)
+        brightness(0.45);
+
+}
+
+
+/* ==================================================
+   ロックマーク
+================================================== */
+
+.file.locked::after {
+
+    content: "🔒";
+
+    position: absolute;
+
+    margin-left: -35px;
+
+    margin-top: 30px;
+
+    font-size: 25px;
+
+    filter:
+        drop-shadow(0 0 5px red);
+
+}
+
+
+/* ==================================================
+   感染メッセージ
+================================================== */
+
+#infection-message {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width: min(700px, 90%);
+
+    padding: 35px;
+
+    text-align: center;
+
+    background:
+        rgba(0,0,0,0.88);
+
+    border:
+        3px solid #ff0000;
+
+    box-shadow:
+        0 0 40px rgba(255,0,0,0.7);
+
+    color: white;
+
+    z-index: 10;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.5s;
+}
+
+
+/* 表示 */
+
+#infection-message.show {
+
+    opacity: 1;
+
+}
+
+
+/* ==================================================
+   警告アイコン
+================================================== */
+
+.warning-icon {
+
+    font-size: 60px;
+
+    color: red;
+
+    animation:
+        warningBlink 0.7s infinite;
+}
+
+
+@keyframes warningBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+}
+
+
+/* ==================================================
+   感染タイトル
+================================================== */
+
+#infection-message h1 {
+
+    color: red;
+
+    font-size: 32px;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 15px red;
+}
+
+
+#infection-message p {
+
+    font-size: 18px;
+
+    color: white;
+}
+
+
+/* ==================================================
+   プログレス
+================================================== */
+
+.progress-area {
+
+    margin-top: 25px;
+}
+
+
+.progress-bar {
+
+    width: 100%;
+
+    height: 20px;
+
+    background:
+        #222;
+
+    border:
+        1px solid #777;
+}
+
+
+#progress {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8b0000,
+            red
+        );
+
+    box-shadow:
+        0 0 15px red;
+
+    transition:
+        width 0.2s;
+}
+
+
+#progress-text {
+
+    margin-top: 10px;
+
+    color: red;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   完了メッセージ
+================================================== */
+
+#complete-message {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width: min(700px, 90%);
+
+    padding: 40px;
+
+    background:
+        rgba(0,0,0,0.95);
+
+    border:
+        4px solid red;
+
+    box-shadow:
+        0 0 50px red;
+
+    text-align: center;
+
+    color: white;
+
+    z-index: 20;
+
+    display: none;
+}
+
+
+/* ==================================================
+   完了アイコン
+================================================== */
+
+.complete-icon {
+
+    font-size: 70px;
+
+    animation:
+        lockPulse 1s infinite;
+}
+
+
+@keyframes lockPulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.15);
+
+    }
+
+}
+
+
+/* ==================================================
+   完了タイトル
+================================================== */
+
+#complete-message h1 {
+
+    color: red;
+
+    font-size: 32px;
+
+    text-shadow:
+        0 0 15px red;
+}
+
+
+/* ==================================================
+   説明
+================================================== */
+
+.demo-text {
+
+    color: #999 !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.8;
+}
+
+
+/* ==================================================
+   ボタン
+================================================== */
+
+#continue-button {
+
+    margin-top: 20px;
+
+    padding: 15px 30px;
+
+    background: red;
+
+    color: white;
+
+    border: none;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 15px rgba(255,0,0,0.5);
+}
+
+
+#continue-button:hover {
+
+    background: #cc0000;
+
+    box-shadow:
+        0 0 30px red;
+}
+
+
+/* ==================================================
+   画面フラッシュ
+================================================== */
+
+#flash {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background:
+        rgba(255,0,0,0.5);
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 100;
+}
+
+
+#flash.active {
+
+    animation:
+        flashAnimation 0.18s linear;
+}
+
+
+@keyframes flashAnimation {
+
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* ==================================================
+   スマホ
+================================================== */
+
+@media (max-width: 700px) {
+
+    .file-area {
+
+        grid-template-columns:
+            repeat(3, 90px);
+
+        gap: 20px 10px;
+
+        left: 10px;
+
+    }
+
+    .file {
+
+        width: 80px;
+
+    }
+
+    .file-icon {
+
+        font-size: 45px;
+
+    }
+
+    #infection-message {
+
+        padding: 25px;
+
+    }
+
+    #infection-message h1 {
+
+        font-size: 22px;
+
+    }
+
+    #complete-message h1 {
+
+        font-size: 22px;
+
+    }
+
+}
