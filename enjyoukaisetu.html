@@ -3,70 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ネットモラル解説と対策講座</title>
-    <link rel="stylesheet" href="./CSS/enjyoukaisetu.css">
+    <title>ネットモラル解説と対策講座 - 闇バイト編</title>
+    <!-- マルウェア側の既存CSSファイルを外部参照 -->
+    <link rel="stylesheet" href="CSS/malware.css">
 </head>
-<body>
+<body class="explanation-page-body">
 
-    <div class="container">
-        
-        <!-- 上部のヘッダー -->
-        <div class="page-header">
-            <span class="alert-badge">体験終了</span>
-            <h1>SNSの炎上リスクとその対策</h1>
-            <p>シミュレーターでの体験を通じて、ネットに潜む拡散の仕組みと正しい身の守り方を学びましょう。</p>
-        </div>
+    <!-- ベースコンテナ -->
+    <div id="summary-screen" class="standalone-summary">
+        <div class="summary-page">
 
-        <!-- 1. なぜ炎上したのか？（仕組み） -->
-        <div class="content-box">
-            <h2>1. なぜ一瞬で拡散されたのか？</h2>
-            <p>ネット上の批判やトラブルは、最初に身内の間で始まったものであっても、悪意を持った第三者やインフルエンサーの目に留まると一瞬で数万人にシェアされます。</p>
-            <p>一度拡散されてしまうと、たとえ元の投稿を削除したとしても、誰かが保存したスクリーンショット（魚拓）がまとめサイトなどに残り続け、完全に消すことは不可能になります（デジタルタトゥー）。</p>
-        </div>
+            <!-- ヘッダーエリア -->
+            <div class="summary-header">
+                <div class="summary-icon">✓</div>
+                <h1>疑似体験終了</h1>
+                <p>シミュレーターでの体験を通じて、ネットに潜む組織の仕組みと正しい身の守り方を学びましょう。</p>
+            </div>
 
-        <!-- 2. 防ぐためのルール（対策） -->
-        <div class="content-box">
-            <h2>2. 炎上トラブルを防ぐ3つの原則</h2>
-            
-            <div class="rule-item">
-                <span class="rule-number">原則 1</span>
-                <div class="rule-text">
-                    <h3>投稿する前に一呼吸置く</h3>
-                    <p>怒りやイライラなど、感情が高ぶっている時の投稿は最も危険です。一度画面を閉じ、10分後に読み直す癖をつけましょう。</p>
+            <!-- 01：闇バイトとは？ -->
+            <div class="summary-section">
+                <div class="section-number">01</div>
+                <div>
+                    <h2>1. なぜ一度始めたら抜け出せないのか？</h2>
+                    <p>闇バイトの犯人グループは、最初は親切な言葉で安心させてきます。しかし、あなたが「辞めたい」「不審だから確認したい」と言い出した瞬間に態度を豹変させます。</p>
+                    <p>事前に回収された免許証や学生証の画像、実家の住所、家族の連絡先を人質に取り、<strong style="color: #b00000;">「逃げたら実家に強盗を送り込む」「学校や警察にバラして人生を終わらせる」</strong> といった凶悪な脅迫（心理的監禁）を行い、逮捕されるまで使い捨ての駒として犯罪を強制し続けます。</p>
                 </div>
             </div>
 
-            <div class="rule-item">
-                <span class="rule-number">原則 2</span>
-                <div class="rule-text">
-                    <h3>写真の「背景特定」に注意する</h3>
-                    <p>電柱の住所、窓の外の風景、持ち物などから、自宅や学校が特定されるケースが多発しています。プライベートな写真は背景をぼかすなどの対策が必要です。</p>
+            <!-- 02：闇バイトの罠を見破り、防ぐ3つの原則 -->
+            <div class="summary-section">
+                <div class="section-number">02</div>
+                <div style="width: 100%;">
+                    <h2>2. 闇バイトの罠を見破り、防ぐ3つの原則</h2>
+                    
+                    <div class="danger-grid">
+                        <!-- 原則1 -->
+                        <div class="danger-card">
+                            <div class="danger-icon">!</div>
+                            <h3>原則 1</h3>
+                            <p><strong>「高収入」「ホワイト」の言葉を疑う</strong><br>「書類を運ぶだけで日給3万」「高額即日現金手渡し」など、仕事内容に対して報酬が異常に高い案件は100%犯罪です。世の中にそんな甘い話は絶対にありません。</p>
+                        </div>
+                        <!-- 原則2 -->
+                        <div class="danger-card">
+                            <div class="danger-icon">!</div>
+                            <h3>原則 2</h3>
+                            <p><strong>安易に身分証の画像や実家の情報を送らない</strong><br>「ドタキャン防止」「保証代わり」といった口実で、顔写真付きの身分証や家族構成を求められても絶対に送信してはいけません。それがそのまま脅迫の最大の材料になります。</p>
+                        </div>
+                        <!-- 原則3 -->
+                        <div class="danger-card">
+                            <div class="danger-icon">!</div>
+                            <h3>原則 3</h3>
+                            <p><strong>怪しい拡張子のファイルは実行しない</strong><br>マニュアルや契約書を装って送られてくる不審な添付ファイル（特に「.exe」などの実行ファイル）はウイルスです。開いた瞬間にスマホのデータをすべて抜かれる危険性があります。</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="rule-item">
-                <span class="rule-number">原則 3</span>
-                <div class="rule-text">
-                    <h3>鍵アカウントを過信しない</h3>
-                    <p>「フォロワー限定だから安心」と思っていても、その中の誰かがスクリーンショットを撮って外部に流出させるリスクは常にあります。</p>
+            <!-- 03：もし実際に脅迫されてしまったら？ -->
+            <div class="summary-section">
+                <div class="section-number">03</div>
+                <div style="width: 100%;">
+                    <h2>3. もし実際に脅迫されてしまったら？</h2>
+                    <p>犯人組織は「実家を襲う」「家族を殺す」と極限の恐怖を煽ってきますが、これらはターゲットを逃がさないための心理的なハッタリ（嘘）であることがほとんどです。恐怖に負けて現場に向かうのだけは絶対にやめてください。</p>
+                    
+                    <div class="action-list" style="margin-top: 20px;">
+                        <div class="action-item">
+                            <span>01</span>
+                            <div>
+                                <strong>何も言わずに即ブロック・完全無視</strong>
+                                <p>個人情報を渡す前であれば、これが最強の防衛策です。関わりを完全に断ち切りましょう。</p>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span>02</span>
+                            <div>
+                                <strong>今すぐ本物の警察に相談する（相談専用電話「#9110」や交番）</strong>
+                                <p>すでに身分証を渡してしまい、脅迫が続いている場合は、一人で抱え込まずにすべての履歴を見せて相談してください。犯罪を実行する前であれば、警察はあなたと家族を確実に保護してくれます.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 3. もし炎上したら（対処） -->
-        <div class="content-box warning-box">
-            <h2>3. もし実際に炎上してしまったら？</h2>
-            <p>慌てて言い訳をしたり、批判的なユーザーと言い争う（レスバする）のは絶対にやめてください。火に油を注ぐことになります。</p>
-            <p>まずは冷静になり、すぐにアカウントを「非公開（鍵アカ）」にするか一時的に利用を止め、通知を切ってください。その後、信頼できる大人や専門の相談窓口に相談しましょう。</p>
-        </div>
+            <!-- 今回の体験で覚えてほしいこと -->
+            <div class="important-section">
+                <div class="important-title">⚠ 今回の体験で覚えてほしいこと</div>
+                <p>闇バイトの世界は、一度足を踏み入れたら逮捕されるまで抜け出せません。<br>怪しいと気づいたら、<strong>絶対に現場に向かわず、その場で踏みとどまること</strong>が重要です。</p>
+                
+                <div class="stop-flow">
+                    <div>
+                        <span>STOP</span>
+                        <small>止まる</small>
+                    </div>
+                    <div class="stop-arrow">→</div>
+                    <div>
+                        <span>REPORT</span>
+                        <small>報告する</small>
+                    </div>
+                    <div class="stop-arrow">→</div>
+                    <div>
+                        <span>CONSULT</span>
+                        <small>相談する</small>
+                    </div>
+                </div>
+            </div>
 
-        <!-- 下部のボタンエリア -->
-        <div class="page-footer">
-            <p>ネットの世界は、現実の生活とつながっています。</p>
-            <a href="./index.html" class="btn-retry" onclick="sessionStorage.setItem('cyber_experience_sns_fire', 'completed')">ホームに戻る</a>
-        </div>
+            <!-- 最終メッセージボード（青いボックスの中身を「ホームに戻る」に入れ替え） -->
+            <div class="final-message">
+                <h2>サイバー攻撃や組織の罠から身を守るために</h2>
+                <p>甘い言葉の裏には、必ず恐ろしい罠が潜んでいます。<br>「知らなかった」ではなく、<strong>知っていること・冷静に行動すること</strong>が、あなたと大切な家族を守る第一歩です。</p>
+                <div class="final-mark">SECURITY AWARENESS</div>
+                
+                <div>
+                    <button class="restart-btn" onclick="window.location.href='./index.html'">ホームに戻る</button>
+                </div>
+            </div>
 
-    </div>
+        </div> <!-- /summary-page -->
+    </div> <!-- /standalone-summary -->
+
+    <!-- 外側の独立ボタン（画面の一番左下に「もう一度体験する」を配置） -->
+    <button class="restart-btn" onclick="window.location.href='./index.html'">もう一度体験する</button>
 
 </body>
 </html>
