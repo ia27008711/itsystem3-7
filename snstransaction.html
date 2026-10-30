@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#080d18">
   <title>CYBER CASE | 詐欺調査掲示板</title>
   <link rel="stylesheet" href="./CSS/test.css">
-  <script src="./JavaScript/test.js" defer></script>
+  <script src="./JS/test.js" defer></script>
 </head>
 <body>
   <div class="background-grid"></div>
 
   <header class="topbar">
-    <a class="brand" href="./index.html">
+    <a class="brand" href="./snstransaction.html">
       <span class="brand-icon">◆</span>
       CYBER<span class="brand-accent"> CASE</span>
     </a>
@@ -345,13 +345,20 @@
         <span class="modal-number" id="dialogNumber">01</span>
         <div><h2 id="dialogTitle">証拠のタイトル</h2><p id="dialogSubtitle"></p></div>
       </div>
-      <div class="dialog-content" id="dialogContent"></div>
-      <div class="analysis-box"><span>捜査メモ / ANALYSIS</span><p id="dialogAnalysis"></p></div>
-      <section class="suspicious-points" aria-labelledby="suspiciousPointsTitle">
-        <div class="suspicious-heading"><span>02 / FIND THE CLUES</span><h3 id="suspiciousPointsTitle">怪しいポイントを見つける</h3><p>本文の気になる箇所をクリックして赤丸を付けよう。どこにでも丸を付けられます。最後に「答え合わせ」を押してください。</p></div>
-        <div id="suspiciousPointsList" class="suspicious-points-list"></div>
-        <p id="suspiciousFeedback" class="suspicious-feedback" aria-live="polite">怪しいポイントを選ぶと、ここに進行状況が表示されます。</p>
-      </section>
+      <div class="evidence-workspace">
+        <div class="evidence-document-column">
+          <div class="dialog-content" id="dialogContent"></div>
+          <div class="analysis-box"><span>捜査メモ / ANALYSIS</span><p id="dialogAnalysis"></p></div>
+        </div>
+        <aside class="evidence-clue-column" aria-label="怪しいポイントの調査">
+          <section class="suspicious-points" aria-labelledby="suspiciousPointsTitle">
+            <div class="suspicious-heading"><span>02 / FIND THE CLUES</span><h3 id="suspiciousPointsTitle">怪しいポイントを見つける</h3><p>左側の本文を読み、気になる箇所をクリックして赤丸を付けよう。必要なポイントをすべて選んだら「答え合わせ」を押してください。</p></div>
+            <div id="suspiciousPointsList" class="suspicious-points-list"></div>
+            <p id="suspiciousFeedback" class="suspicious-feedback" aria-live="polite">本文の気になる部分を選ぶと、ここに進行状況が表示されます。</p>
+            <div id="suspiciousExplanation" class="suspicious-explanation hidden" aria-live="polite"></div>
+          </section>
+        </aside>
+      </div>
       <div class="modal-footer">
         <small id="dialogProgress">EVIDENCE 01 / 05</small>
         <button class="primary-button" id="confirmEvidence" type="button">答え合わせ</button>
