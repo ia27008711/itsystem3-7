@@ -738,6 +738,7 @@ document.addEventListener("keydown", (event) => {
 // 最終判定はプレイヤーが「詐欺」か「詐欺ではない」を選んでから解説を表示する。
 $$(".final-choice-button").forEach((button) => {
   button.addEventListener("click", () => {
+    sessionStorage.setItem("cyber_experience_transaction", "completed");
     const choseFraud = button.dataset.choice === "fraud";
     const title = $("#finalVerdictTitle");
     const lead = $("#finalVerdictLead");
