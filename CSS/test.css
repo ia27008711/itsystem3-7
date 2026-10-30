@@ -1734,3 +1734,291 @@ main {
 .final-choice-outcome { width:fit-content; max-width:100%; margin:18px auto 24px; padding:12px 20px; border:1px solid rgba(56,189,248,.45); border-radius:12px; color:#e0f2fe; background:rgba(8,145,178,.12); font-size:clamp(17px,2vw,22px); font-weight:900; text-align:center; }
 .final-verdict-icon.correct { border-color:rgba(74,222,128,.6); color:#86efac; }
 @media (max-width:640px) { .topbar-actions { gap:7px; } .topbar-actions .case-number { display:none; } .home-button { padding:7px 9px; font-size:12px; } .final-choice-buttons { grid-template-columns:1fr; } .final-choice-button { min-height:62px; } }
+
+/* =========================================================
+   調査画面のみ：写真付きの不規則な捜査掲示板
+   最初の事件ファイル画面は元のCSSデザインを維持
+   ========================================================= */
+@media (min-width: 1101px) {
+  .workspace {
+    width: 100%;
+    min-height: calc(100dvh - 64px);
+    padding: 0;
+    margin: 0;
+  }
+  .workspace-heading { display: none; }
+  .workspace-grid {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr) 250px;
+    gap: 0;
+    min-height: calc(100dvh - 64px);
+    align-items: stretch;
+  }
+  .left-sidebar, .right-sidebar {
+    min-width: 0;
+    padding: 16px 12px;
+    background: rgba(7,13,25,.98);
+    border-color: rgba(82,130,170,.25);
+  }
+  .left-sidebar { border-right: 1px solid rgba(82,130,170,.3); }
+  .right-sidebar { border-left: 1px solid rgba(82,130,170,.3); gap: 12px; }
+  .sidebar-panel { border-radius: 4px; }
+  .sidebar-title { padding: 14px 12px; }
+  .sidebar-title strong { font-size: 12px; }
+  .sidebar-title small { font-size: 9px; }
+  .case-cover { padding: 17px; }
+  .case-cover > strong { font-size: 14px; }
+  .case-facts span, .fact-list span { font-size: 11px; }
+  .case-facts strong, .fact-list strong { font-size: 12px; }
+  .sidebar-note p { font-size: 12px; }
+  .progress-heading { font-size: 11px; }
+  .left-progress > small { font-size: 10px; }
+
+  .forum-column {
+    min-width: 0;
+    padding: 18px 22px 30px;
+    position: relative;
+    overflow: hidden;
+    background-color: #090e18;
+    background-image:
+      radial-gradient(circle at 50% 42%,rgba(24,54,79,.22),transparent 58%),
+      linear-gradient(rgba(100,150,190,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(100,150,190,.045) 1px,transparent 1px);
+    background-size: auto, 30px 30px, 30px 30px;
+  }
+  .forum-column::before {
+    content: "CASE BOARD  /  EVIDENCE NETWORK";
+    display: block;
+    width: fit-content;
+    padding: 9px 14px;
+    margin: 0 0 15px;
+    border: 1px solid rgba(0,217,245,.35);
+    border-radius: 3px;
+    color: #b8d5e7;
+    background: rgba(9,18,32,.94);
+    font: 700 10px "IBM Plex Mono",monospace;
+    letter-spacing: .18em;
+  }
+  .forum-toolbar { padding: 13px 16px; border: 1px solid rgba(91,139,177,.28); border-radius: 3px; background: rgba(8,17,30,.94); }
+  .forum-heading h2 { font: 700 14px "IBM Plex Mono",monospace; letter-spacing: .12em; }
+  .forum-heading small { font-size: 9px; }
+  .thread-intro { margin: 14px 0 18px; padding: 14px 16px; border: 1px solid rgba(0,217,245,.22); border-radius: 3px; background: rgba(9,21,36,.9); }
+  .thread-intro strong { font-size: 13px; }
+  .thread-intro p { font-size: 12px; line-height: 1.8; }
+  .thread-intro small { font-size: 10px; }
+
+  /* カードを自由配置。証拠確認ボタン・ロック状態はJSの既存制御を利用 */
+  .forum-feed {
+    position: relative;
+    display: block;
+    min-height: 1080px;
+    padding: 8px 0 30px;
+  }
+  .forum-post {
+    position: absolute;
+    width: clamp(235px, 29%, 305px);
+    min-height: 300px;
+    margin: 0;
+    padding: 0 0 12px;
+    overflow: visible;
+    border: 7px solid #edf0ed;
+    border-bottom-width: 16px;
+    border-radius: 1px;
+    color: #172331;
+    background: #e8eceb;
+    box-shadow: 0 13px 30px rgba(0,0,0,.48), 0 2px 5px rgba(0,0,0,.3);
+    transform-origin: 50% 12%;
+    transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+  }
+  .forum-post::before {
+    content: "";
+    display: block;
+    height: 142px;
+    margin: 0 0 2px;
+    border: 1px solid rgba(18,34,48,.24);
+    background-color: #1a2730;
+    background-image:
+      linear-gradient(180deg,rgba(5,10,16,.05),rgba(4,9,15,.7)),
+      radial-gradient(ellipse at 72% 32%,rgba(135,177,190,.65) 0 3%,transparent 4%),
+      linear-gradient(135deg,transparent 35%,rgba(102,130,143,.7) 36% 42%,transparent 43%),
+      linear-gradient(0deg,#101923 0 24%,#263946 25% 38%,#111d29 39% 100%);
+    filter: grayscale(1) contrast(1.12);
+  }
+  .forum-post:nth-child(2)::before {
+    background-image: linear-gradient(180deg,rgba(5,10,16,.02),rgba(4,9,15,.72)), radial-gradient(ellipse at 25% 30%,#b2c2c5 0 3%,transparent 4%), linear-gradient(115deg,transparent 28%,#5c707c 29% 35%,transparent 36%), linear-gradient(0deg,#111923 0 30%,#30414b 31% 44%,#101a25 45%);
+  }
+  .forum-post:nth-child(3)::before {
+    background-image: linear-gradient(180deg,rgba(5,10,16,.02),rgba(4,9,15,.72)), repeating-linear-gradient(90deg,transparent 0 24px,rgba(173,195,201,.22) 25px 27px), linear-gradient(0deg,#101923 0 18%,#41515b 19% 28%,#15222d 29%);
+  }
+  .forum-post:nth-child(4)::before {
+    background-image: linear-gradient(180deg,rgba(5,10,16,.02),rgba(4,9,15,.72)), radial-gradient(ellipse at 60% 34%,#a9b7bc 0 12%,transparent 13%), linear-gradient(90deg,#1a2731 0 22%,#60717a 23% 25%,#1a2731 26%);
+  }
+  .forum-post:nth-child(5)::before {
+    background-image: linear-gradient(180deg,rgba(5,10,16,.02),rgba(4,9,15,.72)), repeating-linear-gradient(0deg,transparent 0 17px,rgba(172,194,203,.22) 18px 19px), linear-gradient(135deg,#17232e,#52616b 52%,#111b26);
+  }
+  .forum-post:nth-child(1) { left: 2%; top: 2%; transform: rotate(-4.2deg); }
+  .forum-post:nth-child(2) { left: 38%; top: 7%; transform: rotate(3.1deg); }
+  .forum-post:nth-child(3) { left: 13%; top: 40%; transform: rotate(2.2deg); }
+  .forum-post:nth-child(4) { right: 2%; top: 39%; transform: rotate(-3.4deg); }
+  .forum-post:nth-child(5) { left: 43%; top: 72%; transform: rotate(-1.8deg); }
+  .forum-post::after {
+    content: "";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%,#fff,#00cfe8 38%,#08718b 75%);
+    box-shadow: 0 2px 5px #0008, 0 0 10px #00d9f566;
+  }
+  .forum-post:nth-child(2)::after, .forum-post:nth-child(4)::after { background: radial-gradient(circle at 35% 30%,#fff,#ff657b 38%,#8e1c3c 75%); }
+  .forum-post:hover { z-index: 5; transform: translateY(-7px) rotate(0deg) scale(1.025); box-shadow: 0 20px 38px #000a,0 0 18px #00d9f533; }
+  .forum-post.available { border-top: 7px solid #edf0ed; }
+  .forum-post.locked { filter: grayscale(.55) brightness(.72); }
+  .post-head { padding: 10px 10px 8px; border-bottom: 1px solid rgba(30,50,70,.14); }
+  .post-avatar { width: 36px; height: 36px; flex-basis: 36px; }
+  .post-author strong { color: #162638; font-size: 12px; }
+  .post-author small { color: #5c6c7d; font-size: 9px; }
+  .post-number { color: #50657b; font-size: 10px; }
+  .post-body { padding: 12px 12px 7px; }
+  .post-category { color: #007d9b; font-size: 9px; }
+  .post-body h3 { margin: 6px 0 8px; color: #132336; font-size: 15px; line-height: 1.55; }
+  .post-body p { color: #314457; font-size: 12px; line-height: 1.75; }
+  .post-foot { padding: 9px 10px 0; border-top: 1px solid rgba(30,50,70,.14); }
+  .post-state { color: #52677c; font-size: 10px; }
+  .inspect-button { min-height: 32px; padding: 6px 10px; font-size: 10px; }
+  .forum-post.reviewed { background: #e3eee9; }
+  .forum-end { position: relative; z-index: 6; margin: 10px 0; padding: 22px; }
+}
+
+@media (max-width: 1100px) {
+  .workspace-grid { grid-template-columns: minmax(180px,.7fr) minmax(0,1.6fr); }
+  .right-sidebar { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items:start; }
+  .forum-feed { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:18px; }
+  .forum-post { margin:0; border:7px solid #edf0ed; border-bottom-width:14px; border-radius:1px; background:#e8eceb; color:#172331; box-shadow:0 10px 24px #0007; }
+  .forum-post::before { content:""; display:block; height:120px; margin-bottom:3px; background:linear-gradient(145deg,#182631,#647984 48%,#111c27); filter:grayscale(1); }
+  .forum-post:nth-child(2n) { transform:rotate(1.5deg); }
+  .forum-post:nth-child(3n) { transform:rotate(-1.8deg); }
+  .post-author strong,.post-body h3 { color:#172638; }
+  .post-author small,.post-body p { color:#42576a; }
+}
+@media (max-width: 700px) {
+  .workspace-grid { display:flex; flex-direction:column; }
+  .left-sidebar,.forum-column,.right-sidebar { width:100%; }
+  .right-sidebar { display:flex; }
+  .forum-feed { grid-template-columns:1fr; }
+  .forum-post { width:100%; }
+}
+
+/* 怪しいポイントの確認画面を横に広げ、答え合わせボタンを常時見える位置に固定 */
+.evidence-modal {
+  width: min(1120px, calc(100vw - 40px));
+  display: flex;
+  flex-direction: column;
+}
+
+.suspicious-points {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 22px;
+}
+
+.modal-footer {
+  position: sticky;
+  bottom: calc(-1 * clamp(20px, 4vw, 34px));
+  z-index: 5;
+  flex: 0 0 auto;
+  margin: 18px calc(-1 * clamp(20px, 4vw, 34px)) calc(-1 * clamp(20px, 4vw, 34px));
+  padding: 14px clamp(20px, 4vw, 34px) clamp(14px, 2vw, 20px);
+  border-top: 1px solid rgba(101, 170, 255, .28);
+  background: rgba(13, 22, 39, .98);
+  backdrop-filter: blur(12px);
+}
+
+.modal-footer .primary-button {
+  min-width: 190px;
+  min-height: 54px;
+  padding: 0 24px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.modal-footer small { font-size: 11px; }
+
+@media (max-width: 700px) {
+  .evidence-modal { width: calc(100vw - 20px); }
+  .modal-footer .primary-button { min-width: 150px; min-height: 48px; font-size: 13px; }
+}
+
+/* 正解後に表示する「なぜ怪しいのか」の解説 */
+.suspicious-explanation {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid rgba(110, 231, 183, .32);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(6, 78, 59, .20), rgba(8, 18, 30, .88));
+  animation: explanationReveal .35s ease both;
+}
+.suspicious-explanation.hidden { display: none; }
+.suspicious-explanation > h4 {
+  margin: 0 0 14px;
+  color: #6ee7b7;
+  font-size: 17px;
+  letter-spacing: .04em;
+}
+.explanation-item {
+  padding: 13px 0;
+  border-top: 1px solid rgba(148, 163, 184, .18);
+}
+.explanation-item h5 {
+  margin: 0 0 7px;
+  color: #f8d98a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.explanation-item p {
+  margin: 0;
+  color: #c6d2e2;
+  font-size: 13px;
+  line-height: 1.85;
+}
+@keyframes explanationReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 証拠本文を左、怪しいポイントの操作・解説を右に配置 */
+.evidence-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, .85fr);
+  align-items: start;
+  gap: clamp(18px, 2.4vw, 30px);
+  margin-top: 4px;
+}
+.evidence-document-column,
+.evidence-clue-column { min-width: 0; }
+.evidence-document-column {
+  padding: clamp(16px, 2vw, 24px);
+  border: 1px solid rgba(101, 170, 255, .2);
+  border-radius: 8px;
+  background: rgba(4, 10, 20, .42);
+}
+.evidence-document-column .dialog-content { font-size: 14px; line-height: 2.05; overflow-wrap: anywhere; }
+.evidence-document-column .analysis-box { margin-top: 22px; }
+.evidence-clue-column .suspicious-points {
+  position: sticky;
+  top: 0;
+  margin-top: 0;
+  padding: clamp(18px, 2vw, 24px);
+}
+.evidence-clue-column .suspicious-heading h3 { font-size: clamp(19px, 2vw, 24px); line-height: 1.5; }
+.evidence-clue-column .suspicious-heading p { font-size: 13px; }
+.evidence-clue-column .suspicious-feedback { padding: 12px; border-radius: 6px; background: rgba(3, 8, 17, .42); }
+.evidence-clue-column .suspicious-explanation { margin-top: 16px; padding: 16px; }
+.evidence-clue-column .explanation-item p { font-size: 13px; }
+@media (max-width: 760px) {
+  .evidence-workspace { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .evidence-clue-column .suspicious-points { position: static; }
+  .evidence-document-column .dialog-content { font-size: 13px; }
+}
