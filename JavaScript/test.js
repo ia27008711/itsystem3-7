@@ -185,6 +185,35 @@ const suspiciousPhrases = [
   ["コードがまだ届いていません。", "相手からの返信なし", "プロフィールを確認できなくなりました。"]
 ];
 
+// 正解後に表示する解説。各ポイントが「危険な兆候」なのか「被害を裏付ける証拠」なのかも区別する。
+const suspiciousExplanations = [
+  [
+    { phrase: "電子マネーで交換可能です。", reason: "電子マネーは送金後に取り戻すことが難しい場合があります。相手の身元や取引の安全性を確認できないまま送金するのは危険です。" },
+    { phrase: "先払いできる方優先！", reason: "商品・コードを受け取る前に支払いを求めています。代金だけを受け取り、約束したコードを渡さない先払い詐欺につながるおそれがあります。" },
+    { phrase: "過去の取引実績を確認できません。", reason: "過去に約束どおり取引したかを判断できる材料がありません。実績が見えない相手との個人間取引では、慎重な確認が必要です。" }
+  ],
+  [
+    { phrase: "先に電子マネーを送ってもらえば", reason: "コードの内容や利用可能性を確認する前に支払いを求めています。相手がコードを渡さなくても、先に送金してしまう形になります。" },
+    { phrase: "今すぐ送金できる人を優先します！", reason: "「ほかにも希望者がいる」と急がせ、考える時間を与えない言い方です。焦って確認を省かせるのは、詐欺で使われることのある手口です。" },
+    { phrase: "スクショを送ってください。", reason: "送金画面の画像を要求し、支払いを先に確定させようとしています。画像を送る前に、相手の信頼性や取引条件を確認しましょう。" }
+  ],
+  [
+    { phrase: "3,000円", reason: "金額そのものが詐欺の証拠というわけではありません。ただし、実際に支払った金額を確認できる重要な記録で、被害相談や返金の問い合わせに必要になる場合があります。" },
+    { phrase: "コード未受領", reason: "支払いが完了している一方で、約束されたコードを受け取れていません。代金と商品・サービスの受け渡しが一致していないことを示す重要な情報です。" },
+    { phrase: "ゲーム特典コードの交換", reason: "この記録によって、3,000円の送金が何のためだったのかを確認できます。取引内容と未受領の状態を結び付ける証拠になります。" }
+  ],
+  [
+    { phrase: "約２週間前", reason: "作成から日が浅いアカウントです。新しいことだけで詐欺とは断定できませんが、長期間の利用実績がなく、信頼性を判断する材料が少ない点に注意が必要です。" },
+    { phrase: "確認できず", reason: "過去の取引報告が見当たらず、約束どおりコードを渡した実績を確かめられません。取引相手を信用できるか判断しにくい状態です。" },
+    { phrase: "確認できず", reason: "本人確認情報が確認できず、アカウントの背後にいる人物を確かめられません。トラブル時に相手を特定する手がかりが乏しい点がリスクです。" }
+  ],
+  [
+    { phrase: "コードがまだ届いていません。", reason: "送金後も約束されたコードが届いていないことを、メッセージで伝えています。支払い後に商品が渡されていない状況を示しています。" },
+    { phrase: "相手からの返信なし", reason: "送金後の確認や問い合わせに相手が応じていません。単なる返信遅れの可能性もありますが、未受領の状態と重なると不審な兆候です。" },
+    { phrase: "プロフィールを確認できなくなりました。", reason: "相手のプロフィールまで確認できなくなり、連絡や相手の情報確認が難しくなっています。送金後に連絡手段を断たれた可能性を示す重要な状況です。" }
+  ]
+];
+
 const state = {
   reviewed: new Set(),
   identified: new Map(),
@@ -329,6 +358,16 @@ function openEvidence(index) {
 }
 
 function renderSuspiciousPoints(index) {
+  const isEvidenceCollection = index === 2;
+  const heading = $("#suspiciousPointsTitle");
+  const headingLabel = $(".suspicious-heading > span");
+  const headingDescription = $(".suspicious-heading > p");
+  heading.textContent = isEvidenceCollection ? "証拠を集める" : "怪しいポイントを見つける";
+  headingLabel.textContent = isEvidenceCollection ? "02 / COLLECT THE EVIDENCE" : "02 / FIND THE CLUES";
+  headingDescription.textContent = isEvidenceCollection
+    ? "左側の送金記録から、支払いの事実や取引内容を示す情報を選んで証拠として集めよう。必要な項目をすべて選んだら「証拠を確認する」を押してください。"
+    : "左側の本文を読み、気になる箇所をクリックして赤丸を付けよう。必要なポイントをすべて選んだら「答え合わせ」を押してください。";
+  $("#confirmEvidence").textContent = isEvidenceCollection ? "証拠を確認する" : "答え合わせ";
   const list = $("#suspiciousPointsList");
   list.replaceChildren();
 
@@ -450,6 +489,30 @@ function renderSuspiciousPoints(index) {
   updateSuspiciousFeedback(index, answerTargets);
 }
 
+function renderSuspiciousExplanations(index) {
+  const panel = $("#suspiciousExplanation");
+  panel.replaceChildren();
+  if (!state.answered.has(index)) {
+    panel.classList.add("hidden");
+    return;
+  }
+
+  const heading = document.createElement("h4");
+  heading.textContent = index === 2 ? "なぜ証拠になる？ / EVIDENCE ANALYSIS" : "なぜ怪しい？ / CLUE ANALYSIS";
+  panel.append(heading);
+  suspiciousExplanations[index].forEach((item, clueIndex) => {
+    const article = document.createElement("article");
+    article.className = "explanation-item";
+    const title = document.createElement("h5");
+    title.textContent = `${String(clueIndex + 1).padStart(2, "0")}　「${item.phrase}」`;
+    const reason = document.createElement("p");
+    reason.textContent = item.reason;
+    article.append(title, reason);
+    panel.append(article);
+  });
+  panel.classList.remove("hidden");
+}
+
 function updateSuspiciousFeedback(index, answerTargets = null) {
   const picks = state.identified.get(index) || new Set();
   const total = suspiciousPhrases[index].length;
@@ -457,14 +520,20 @@ function updateSuspiciousFeedback(index, answerTargets = null) {
   const feedback = $("#suspiciousFeedback");
 
   if (state.answered.has(index)) {
-    feedback.textContent = `✓ 正解！怪しいポイントをすべて見つけました（${total}/${total}）。「調査を完了して掲示板へ戻る」を押してください。`;
+    renderSuspiciousExplanations(index);
+    feedback.textContent = index === 2
+      ? `✓ 証拠をすべて集めました（${total}/${total}）。「調査を完了して掲示板へ戻る」を押してください。`
+      : `✓ 正解！怪しいポイントをすべて見つけました（${total}/${total}）。「調査を完了して掲示板へ戻る」を押してください。`;
     feedback.classList.add("complete");
     $("#confirmEvidence").disabled = false;
     $("#confirmEvidence").textContent = "調査を完了して掲示板へ戻る →";
     return;
   }
 
-  feedback.textContent = `文章の気になる部分を自由に赤丸で囲もう。選択中：${selectedCount}か所。丸を付け終えたら「答え合わせ」を押してください。`;
+  renderSuspiciousExplanations(index);
+  feedback.textContent = index === 2
+    ? `送金記録の重要な項目を選んで証拠として集めよう。選択中：${selectedCount}か所。選び終えたら「証拠を確認する」を押してください。`
+    : `文章の気になる部分を自由に赤丸で囲もう。選択中：${selectedCount}か所。丸を付け終えたら「答え合わせ」を押してください。`;
   feedback.classList.remove("complete");
   $("#confirmEvidence").disabled = false;
   $("#confirmEvidence").textContent = "答え合わせ";
@@ -497,7 +566,7 @@ function checkEvidenceAnswers(index) {
   if (foundCorrect.size === total && [...clueTokenIds.values()].every((ids) => ids.size > 0) && selectedOnlyCorrect) {
     state.answered.add(index);
     updateSuspiciousFeedback(index);
-    showToast("答え合わせ正解！すべての怪しいポイントを見つけました。");
+    showToast(index === 2 ? "証拠をすべて集めました！" : "答え合わせ正解！すべての怪しいポイントを見つけました。");
   } else {
     const missing = total - foundCorrect.size;
     const hasExtraSelections = [...picks].some((id) => !correctTokenIds.has(id));
@@ -505,7 +574,7 @@ function checkEvidenceAnswers(index) {
       ? `正解以外のフレーズも選択されています（正解 ${foundCorrect.size}/${total}）。必要な箇所だけに赤丸を付け直してください。`
       : `まだ正解がそろっていません（正解 ${foundCorrect.size}/${total}）。赤丸を付け直して、もう一度答え合わせしてください。`;
     $("#suspiciousFeedback").classList.remove("complete");
-    showToast(`まだ見つかっていない怪しいポイントが ${missing} か所あります。`);
+    showToast(index === 2 ? `まだ集めていない証拠が ${missing} つあります。` : `まだ見つかっていない怪しいポイントが ${missing} か所あります。`);
   }
 }
 
