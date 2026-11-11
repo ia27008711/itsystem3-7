@@ -1,386 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ネット危険性体験シミュレータ＆見極めクイズ</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./CSS/oss.css">
-</head> 
-<body class="font-size-large">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="SNSで知り合った相手と会う前に、危険なサインと安全な判断を体験する3D教育ホラーゲーム。">
+  <title>既読の向こう側 — 3D SNSホラーゲーム</title>
+  <link rel="stylesheet" href="CSS/oss.css">
 
-<div id="container">
+  <style>
+    /* エンディング見出しが「しま／った」のように途中で折り返されないようにする */
+    #ending-title {
+      font-size: clamp(22px, 5vw, 40px);
+      line-height: 1.25;
+      letter-spacing: 0;
+      white-space: nowrap;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+  </style>
 
-  <!-- ========================================================
-       1. ヘッダー
-       ======================================================== -->
-  <header>
-    <div id="logo">
-      <a href="index.html">
-        <div class="logo-badge">防犯</div>
-        <div>
-          <span class="logo-text">ネット安全体験シミュレータ</span>
-          <span class="logo-sub">なりすまし・写真要求・密会の危険を見極める</span>
-        </div>
+</head>
+<body>
+  <!-- ローディング画面 -->
+  <div id="boot" class="boot">
+    <div class="boot-mark">K / 01</div>
+    <div class="boot-line"><span></span></div>
+    <p id="boot-text">立体的な夕暮れの街並みとアセットを準備しています…</p>
+  </div>
+
+  <main id="app" class="app is-hidden">
+    <!-- 3Dレンダリング用キャンバスコンテナ -->
+    <div id="world" class="world" aria-label="3Dゲーム画面"></div>
+    <div class="world-grain" aria-hidden="true"></div>
+    <div id="world-vignette" class="world-vignette" aria-hidden="true"></div>
+    <div id="damage-flash" class="damage-flash hidden" aria-hidden="true"></div>
+
+    <!-- 上部ヘッダーバー -->
+    <header class="topbar">
+      <a class="brand" href="../index.html" aria-label="ポータルに戻る" title="メインポータルへ戻る">
+        <span><strong>既読の向こう側</strong><small>3D INTERACTIVE SAFETY SIMULATION</small></span>
       </a>
-    </div>
+      <div class="top-status">
+        <span class="live-dot"></span>
+        <span id="chapter-label">PROLOGUE　コンビニでの待ち合わせ</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="sound-mute-btn" class="icon-button" aria-label="サウンド切替" title="音量切替">🔊</button>
+        <button id="settings-open" class="icon-button" aria-label="設定を開く" title="設定">⚙</button>
+      </div>
+    </header>
 
-    <!-- メニューバー -->
-    <div id="menubar">
-      <nav>
-        <ul>
-          <li><button id="tab-btn-sim" class="active" data-tab="tab-sim">トーク体験</button></li>
-          <li><button id="tab-btn-quiz" data-tab="tab-quiz">見極めクイズ</button></li>
-          <li><button id="tab-btn-guide" data-tab="tab-guide">危険シグナル図鑑</button></li>
-          <li><button id="tab-btn-sos" data-tab="tab-sos">相談窓口</button></li>
-        </ul>
-      </nav>
-    </div>
+    <!-- ① タイトル画面 -->
+    <section id="title-screen" class="overlay title-screen">
+      <div class="title-center-wrap">
+        <div class="title-badge">WARNING: CYBER THREAT DETECTED</div>
+        <h1>【あなたは見抜けるか？】<br><em>日常に潜むSNSの危険</em><br>リアル3D体験</h1>
+        <p class="title-lead">画面の向こうの人を、どこまで信じますか？</p>
+        <p class="title-description">SNSで知り合った人物から「近くのコンビニの前で会おう」と呼び出された。ストーリーの選択肢、迫りくる追跡者、入り組んだ中道や路地。スマートフォンに届くメッセージに正しく返信し、信号の先にある交番へ逃げ切ってください。</p>
+                <!-- タイトル難易度選択 -->
+        <div class="title-difficulty-section">
+          <div class="title-difficulty-label">難易度を選択</div>
+          <div class="difficulty-btns title-diff-btns">
+            <button class="diff-btn diff-easy" data-diff="easy" type="button">
+              <span class="diff-icon">😌</span>
+              <span class="diff-name">かんたん</span>
+              <span class="diff-hint">ゆっくり逃走</span>
+            </button>
+            <button class="diff-btn diff-normal active" data-diff="normal" type="button">
+              <span class="diff-icon">😐</span>
+              <span class="diff-name">ふつう</span>
+              <span class="diff-hint">標準バランス</span>
+            </button>
+            <button class="diff-btn diff-hard" data-diff="hard" type="button">
+              <span class="diff-icon">😤</span>
+              <span class="diff-name">むずかしい</span>
+              <span class="diff-hint">本気で逃げろ</span>
+            </button>
+          </div>
+          <div class="title-difficulty-desc" id="title-difficulty-desc">標準的なバランス。油断するとすぐ追いつかれます。</div>
+        </div>
 
-    <!-- ツールボタン群 -->
-    <div class="header-actions">
-      <button id="btn-font-toggle" class="btn-header-tool" title="文字サイズ変更">
-        文字サイズ: <span id="font-status-text">大</span>
+        <div class="title-actions">
+          <button id="start-novel-btn" class="primary-button" style="background: linear-gradient(135deg, #0284c7, #38bdf8); color: #ffffff; box-shadow: 0 6px 22px rgba(56, 189, 248, 0.45); font-size: 15px;">
+            <span>📖 ストーリー（会話）から始める</span><b>▶</b>
+          </button>
+          <button id="start-direct-btn" class="secondary-button" style="border: 1px solid rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.1);">
+            <span>🎮 今すぐ3Dゲームを開始</span><b>›</b>
+          </button>
+          <button id="brief-button" class="text-button">操作方法・注意事項 <span>＋</span></button>
+        </div>
+        <div id="brief" class="brief hidden">
+          <p><b>PC操作</b>: WASD/矢印キーで移動、マウスで視点操作、Shiftでダッシュ（スタミナ消費）、Spaceでジャンプ、Tabでスマホ開閉、Escでポーズ。</p>
+          <p><b>スマホ通知</b>: 逃走中、特定地点でスマホが自動展開し、返信するまで敵も自分も一時停止します。安全な返信を選びましょう。</p>
+          <p><b>左上ミニマップ</b>: 自分（黄色矢印）、コンビニ（緑C）、交番（青K）、敵（赤ドット）の位置を確認しながら路地を進んでください。</p>
+        </div>
+        <div class="title-foot">
+          <span>ROBLOX-STYLE 3D ENGINE</span>
+          <span>EDUCATIONAL SAFETY SIMULATION</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② ノベルゲームパート -->
+    <section id="novel-screen" class="overlay novel-screen hidden">
+      <div class="novel-scene-visual">
+        <div class="novel-phone-mockup">
+          <div class="novel-phone-notch">
+            <span>18:42</span>
+            <span>LINE-STYLE SNS</span>
+            <span>94% 🔋</span>
+          </div>
+          <div class="novel-chat-header">
+            <div class="novel-chat-avatar">👤</div>
+            <div class="novel-chat-info">
+              <span class="novel-chat-name" id="novel-contact-name">まさはる（@daifuku_game）</span>
+              <span class="novel-chat-status">オンライン中</span>
+            </div>
+          </div>
+          <div class="novel-chat-stream" id="novel-chat-stream">
+            <!-- チャット履歴 -->
+          </div>
+        </div>
+      </div>
+
+      <div class="novel-window">
+        <div class="novel-speaker-tag" id="novel-speaker">主人公</div>
+        <div class="novel-text-box">
+          <p id="novel-text" class="novel-text"></p>
+        </div>
+        <div id="novel-choices" class="novel-choices hidden"></div>
+        <div class="novel-footer">
+          <div class="novel-hint" id="novel-hint">クリック / スペースキーで次へ</div>
+          <button id="novel-skip-btn" class="secondary-button small-btn" style="background: rgba(56, 189, 248, 0.2); border-color: var(--cyan); color: #ffffff; font-size: 12px; padding: 6px 14px;">スキップして3Dゲームへ ⏩</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 3D逃走パート用HUD -->
+    <section id="game-ui" class="game-ui hidden" aria-live="polite">
+      <!-- 視点操作案内（マウスロック未取得時に表示） -->
+      <div id="pointer-lock-hint" class="pointer-lock-hint hidden">
+        <span>🖱️ 画面をクリックして視点を操作（マウスロック） / 矢印キー左右でも見回せます</span>
+      </div>
+
+      <!-- １．左上大型ミニマップ（約220pxに拡大、VALORANT風） -->
+      <div id="minimap-container" class="minimap-container">
+        <div class="minimap-frame">
+          <canvas id="minimap-canvas" width="240" height="240"></canvas>
+          <div class="minimap-legend">
+            <span><i class="dot-koban"></i>交番</span>
+            <span><i class="dot-enemy"></i>追跡者</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 内部HUD参照用。ミッションカードは画面に表示しない -->
+      <div class="objective-card glass hidden" aria-hidden="true">
+        <div id="objective-title" class="objective-title"></div>
+        <div id="objective-sub" class="objective-sub"></div>
+        <div class="objective-progress"><span id="progress-fill"></span></div>
+        <div class="objective-meta"><span id="objective-meta"></span><span id="route-indicator"></span></div>
+      </div>
+
+      <!-- ステータス（危険度・スタミナ） -->
+      <div class="status-stack">
+        <div class="status-card glass">
+          <div class="status-head">
+            <span>危険度 / 敵速度</span>
+            <strong id="risk-value">15%</strong>
+          </div>
+          <div class="meter"><span id="risk-meter"></span></div>
+          <div id="risk-description" class="status-description">安全な判断を維持中</div>
+        </div>
+        <div class="status-card glass">
+          <div class="status-head">
+            <span>体力（ダッシュ）</span>
+            <strong id="stamina-value">100%</strong>
+          </div>
+          <div class="meter stamina-meter"><span id="stamina-meter"></span></div>
+        </div>
+      </div>
+
+      <!-- 中央プロンプト & 警告 -->
+      <div id="center-prompt" class="center-prompt hidden">
+        <span class="prompt-key">E</span>
+        <span id="prompt-copy">調べる</span>
+      </div>
+      <div id="chase-warning" class="chase-warning hidden">
+        <span class="warning-symbol">!</span>
+        <span>
+          <b id="warning-head">後ろに気配がする！</b>
+          <small id="warning-sub">立ち止まらず、交番を目指せ</small>
+        </span>
+      </div>
+
+      <!-- ボトムHUD -->
+      <div class="bottom-hud">
+        <div class="log-card glass">
+          <p id="live-log">コンビニの前から逃げ出した！後ろから足音が迫る…</p>
+        </div>
+        <div class="control-hint">
+          <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>移動</span>
+          <kbd>SHIFT</kbd><span>ダッシュ</span>
+          <kbd>TAB</kbd><span>スマホ開閉</span>
+        </div>
+      </div>
+
+      <!-- スマホトグルボタン -->
+      <button id="phone-toggle-btn" class="phone-toggle-btn" aria-label="スマートフォンを開く">
+        <span class="phone-icon">📱</span>
+        <span class="phone-btn-label">スマホ</span>
+        <span id="phone-badge" class="phone-badge hidden">!</span>
       </button>
-      <button id="btn-ruby-toggle" class="btn-header-tool" title="ふりがな表示切替">
-        ふりがな: <span id="ruby-status-text">ON</span>
-      </button>
-      <button id="btn-sound-toggle" class="btn-sound-action" title="効果音切替">
-        効果音: <span id="sound-status-text">ON</span>
-      </button>
-    </div>
-  </header>
 
-  <!-- ========================================================
-       2. コンテンツエリア
-       ======================================================== -->
-  <div id="contents">
-    <main>
+      <!-- スマホ強制返信時の背景半透明オーバーレイ（フェード対応） -->
+      <div id="phone-modal-backdrop" class="phone-modal-backdrop hidden"></div>
 
-      <!-- ========================================================
-           TAB 1: LINE風 チャット体験シミュレータ
-           ======================================================== -->
-      <section id="tab-sim" class="tab-panel active">
-        <div class="panel-header-row">
-          <h2 class="page-title">ネット危険性 疑似体験トーク</h2>
-          <span class="page-subtitle">Online Safety Simulation</span>
+      <!-- ④ 右下スマートフォンUI -->
+      <aside id="smartphone-widget" class="smartphone-widget collapsed">
+        <div class="phone-shell">
+          <div class="phone-top-notch">
+            <span class="phone-clock" id="phone-clock">18:45</span>
+            <span id="phone-must-reply" class="phone-must-reply hidden">⚠️ 返信必須！</span>
+            <span class="phone-battery">88% 🔋</span>
+          </div>
+          <div class="phone-header">
+            <div class="phone-sender-avatar">👤</div>
+            <div class="phone-sender-info">
+              <strong id="phone-contact-name">まさはる</strong>
+              <small id="phone-contact-status" class="status-alert">接近中 / 追跡中</small>
+            </div>
+            <button id="phone-close-btn" class="phone-close-btn" title="スマホを閉じる">✕</button>
+          </div>
+          
+          <div class="phone-body" id="phone-chat-body">
+            <!-- メッセージ履歴 -->
+          </div>
+
+          <!-- スマホ返信選択肢エリア -->
+          <div id="phone-reply-area" class="phone-reply-area hidden">
+            <div class="reply-timer-bar-wrap">
+              <div class="reply-timer-header">
+                <span class="timer-title">⏱️ 返信猶予時間</span>
+                <span id="reply-countdown-text" class="timer-countdown">10s</span>
+              </div>
+              <div class="reply-timer-bar">
+                <span id="reply-timer-fill"></span>
+              </div>
+            </div>
+            <div class="reply-header">返信の選択肢（焦らず安全な判断を選ぼう）:</div>
+            <div id="phone-choice-buttons" class="phone-choice-buttons"></div>
+          </div>
+
+          <div class="phone-home-indicator"></div>
         </div>
+      </aside>
 
-        <!-- シナリオ選択バー -->
-        <div class="scenario-selector-box">
-          <span class="scenario-label">体験ケースを選択：</span>
-          <div class="scenario-chips-list" id="scenario-chips">
-            <!-- JSで動的生成 -->
+      <!-- スマホ用操作パッド -->
+      <div class="mobile-pad" id="mobile-pad">
+        <div class="pad-arrows">
+          <button data-move="forward" aria-label="前進">▲</button>
+          <div>
+            <button data-move="left" aria-label="左へ">◀</button>
+            <button data-move="back" aria-label="後退">▼</button>
+            <button data-move="right" aria-label="右へ">▶</button>
           </div>
         </div>
-
-        <!-- スマホシミュレータ + サイド解説パネル -->
-        <div class="phone-simulator-wrapper">
-
-          <!-- スマホ本体モックアップ -->
-          <div class="phone-mockup">
-            <div class="phone-screen">
-
-              <!-- スマホ最上部 ステータスバー（15:22等） -->
-              <div class="phone-status-bar">
-                <span id="phone-clock" class="phone-time-text">15:22</span>
-                <div class="phone-notch"></div>
-                <div class="phone-status-right">
-                  <span class="signal-tag">5G</span>
-                  <span class="battery-tag">100%</span>
-                </div>
-              </div>
-
-              <!-- LINE風 トークルームヘッダー -->
-              <div class="line-header">
-                <div class="line-header-left">
-                  <span class="line-btn-back">戻る</span>
-                  <div class="line-partner-info">
-                    <div class="line-partner-avatar" id="line-partner-avatar">さ</div>
-                    <div class="line-partner-name-col">
-                      <span class="line-partner-name" id="line-partner-name">さくら (小5女子)</span>
-                      <span class="line-partner-status" id="line-partner-status">最終ログイン: たった今</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="line-header-actions">
-                  <button class="header-action-btn">通話</button>
-                  <button class="header-action-btn">メニュー</button>
-                </div>
-              </div>
-
-              <!-- 危険度アラートバナー -->
-              <div class="danger-alert-banner">
-                <div class="danger-meter-row">
-                  <span class="danger-label-text">危険度:</span>
-                  <span id="danger-percent-text" class="danger-percent-text">0%</span>
-                  <span class="danger-tag safe" id="danger-status-badge">安全</span>
-                </div>
-                <span class="scene-step-text" id="sim-scene-step">放課後のトーク</span>
-              </div>
-
-              <!-- トークメッセージ表示エリア -->
-              <div class="line-chat-body" id="chat-messages-container">
-                <div class="line-date-divider" id="chat-date-divider">今日 2026年8月28日(金)</div>
-                <!-- JSで動的生成 -->
-              </div>
-
-              <!-- タイピング中インジケータ -->
-              <div class="line-typing-row" id="typing-indicator" style="display: none;">
-                <div class="line-dots"><span></span><span></span><span></span></div>
-                <span id="typing-username">さくら</span> が入力中...
-              </div>
-
-              <!-- 返信・選択肢ドック -->
-              <div class="line-footer-dock" id="chat-options-bar">
-                <div class="line-dock-title">
-                  <span>みらい君の返信を選んでください：</span>
-                </div>
-                <div class="line-options-container" id="options-buttons-grid">
-                  <!-- JSで動的生成 -->
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- スマホ横のリアルタイム防犯解説パネル -->
-          <div class="sim-side-panel">
-            
-            <div class="side-card">
-              <h3 class="side-card-title">現在のやり取りの防犯ポイント</h3>
-              <div class="redflag-live-card" id="redflag-live-box">
-                <div class="redflag-live-title" id="redflag-live-title">
-                  <span>観察ポイント</span>
-                </div>
-                <p class="redflag-live-desc" id="redflag-live-desc">
-                  トークが進むと、相手の言葉に潜む「あやしいサイン（危険シグナル）」がここにリアルタイムで表示されます。
-                </p>
-              </div>
-            </div>
-
-            <div class="side-card">
-              <h3 class="side-card-title">トーク相手のプロフィール</h3>
-              <div class="target-profile-grid">
-                <span class="profile-label">自称：</span>
-                <span class="profile-val" id="side-fake-name">さくら (小学5年生)</span>
-                <span class="profile-label">ステータス：</span>
-                <span class="profile-val" id="side-fake-status">ゲーム大好き！仲良くしてね</span>
-                <span class="profile-label">LINE ID：</span>
-                <span class="profile-val" id="side-fake-id">sakura_game_love</span>
-                <span class="profile-label">相手の正体：</span>
-                <span class="profile-val" style="color: #dc2626; font-weight: 700;">（※体験終了後にネタばらし）</span>
-              </div>
-            </div>
-
-            <div class="side-card safe-card">
-              <h4 class="safe-card-title">ネット防犯の重要ルール</h4>
-              <ul class="safe-rules-list">
-                <li>ネット上の「子供」の正体は大人の可能性がある</li>
-                <li>「親に内緒」「二人だけの秘密」は警戒すべきサイン</li>
-                <li>写真の要求や「会おう」と言われたらすぐに親や警察へ相談</li>
-              </ul>
-            </div>
-
-          </div>
-
+        <div class="pad-actions">
+          <button id="mobile-run">走る</button>
+          <button id="mobile-interact">警戒</button>
+          <button id="mobile-phone">スマホ</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ========================================================
-           TAB 2: 見極めクイズ
-           ======================================================== -->
-      <section id="tab-quiz" class="tab-panel">
-        <div class="panel-header-row">
-          <h2 class="page-title">ネット防犯 見極めクイズ</h2>
-          <span class="page-subtitle">Safety Knowledge Quiz</span>
+    <!-- ポーズメニュー -->
+    <section id="pause-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card compact-card">
+        <div class="modal-top">
+          <span>SYSTEM PAUSED</span>
+          <span>ESC</span>
         </div>
+        <h2>一時停止</h2>
+        <p class="event-body">
+          落ち着いて状況を確認しましょう。現実でも違和感や恐怖を感じたら、無理に相手とのやり取りを続けず、信頼できる人に助けを求めてください。
+        </p>
+        <button id="resume-button" class="primary-button full-button"><span>ゲームに戻る</span><b>▶</b></button>
+        <button id="quit-button" class="secondary-button full-button" style="margin-top:10px;">タイトルに戻る</button>
+      </div>
+    </section>
 
-        <div class="quiz-wrapper">
-          <div class="quiz-top-card">
-            <div class="quiz-bar-info">
-              <span id="quiz-progress-text">第 1 問 / 全 12 問</span>
-              <span id="quiz-score-live">スコア: 0 点</span>
-            </div>
-            <div class="quiz-track">
-              <div class="quiz-fill" id="quiz-progress-fill" style="width: 8%;"></div>
-            </div>
-          </div>
+    <!-- 設定モーダル -->
+    <section id="settings-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card compact-card">
+        <div class="modal-top">
+          <span>SETTINGS</span>
+          <span>設定</span>
+        </div>
+        <h2>ゲーム環境設定</h2>
 
-          <div id="quiz-play-view" class="quiz-card">
-            <div class="quiz-chat-preview" id="quiz-chat-card">
-              <div class="preview-sender" id="quiz-sender-name">相手からのメッセージ</div>
-              <div class="preview-bubble" id="quiz-chat-bubble">「メッセージ」</div>
-            </div>
-
-            <div>
-              <div class="q-label" id="quiz-question-num">第 1 問</div>
-              <h3 class="q-title" id="quiz-question-text">質問文</h3>
-            </div>
-
-            <div class="quiz-choices" id="quiz-answers-grid">
-              <!-- JSで動的生成 -->
-            </div>
-          </div>
-
-          <div id="quiz-result-view" class="cert-box" style="display: none;">
-            <div class="cert-badge">認定証</div>
-            <h3 class="cert-main-title">ネット防犯見極めマスター</h3>
-            <div class="cert-score-num" id="cert-score-val">100 点</div>
-            <div class="cert-rank" id="cert-rank-badge">Sランク：防犯の達人</div>
-            <p class="cert-desc" id="cert-comment-text">コメント文</p>
-            <div class="cert-date-text" id="cert-date-text">認定日: 2026年</div>
-            <button id="btn-quiz-restart" class="btn-restart-action">
-              もう一度挑戦する
+        <!-- 難易度プリセット -->
+        <div class="difficulty-section">
+          <div class="difficulty-label">難易度プリセット</div>
+          <div class="difficulty-desc" id="difficulty-desc">現在の設定を選択してください</div>
+          <div class="difficulty-btns">
+            <button class="diff-btn diff-easy"  id="diff-easy"  data-diff="easy">
+              <span class="diff-icon">😌</span>
+              <span class="diff-name">かんたん</span>
+              <span class="diff-hint">ゆっくり学ぼう</span>
+            </button>
+            <button class="diff-btn diff-normal" id="diff-normal" data-diff="normal">
+              <span class="diff-icon">😐</span>
+              <span class="diff-name">ふつう</span>
+              <span class="diff-hint">標準バランス</span>
+            </button>
+            <button class="diff-btn diff-hard"  id="diff-hard"  data-diff="hard">
+              <span class="diff-icon">😤</span>
+              <span class="diff-name">むずかしい</span>
+              <span class="diff-hint">本気で逃げろ</span>
             </button>
           </div>
         </div>
-      </section>
 
-      <!-- ========================================================
-           TAB 3: 危険シグナル図鑑
-           ======================================================== -->
-      <section id="tab-guide" class="tab-panel">
-        <div class="panel-header-row">
-          <h2 class="page-title">危険シグナル図鑑</h2>
-          <span class="page-subtitle">Grooming Steps & Red Flags</span>
+        <label class="setting-row">
+          <span><b>効果音・サウンド</b><small>足音、バイブ、環境音</small></span>
+          <input type="checkbox" id="sound-toggle" checked>
+        </label>
+        <label class="setting-row">
+          <span><b>街灯のちらつき</b><small>光の点滅効果</small></span>
+          <input type="checkbox" id="flicker-toggle" checked>
+        </label>
+        <label class="setting-row">
+          <span><b>返信タイマー表示</b><small>スマホ返信の10秒カウントダウン（デフォルト：OFF）</small></span>
+          <input type="checkbox" id="timer-toggle">
+        </label>
+        <label class="setting-row">
+          <span><b>ナイトモード（夜景）</b><small>夜の街並みと蛍光灯照明（デフォルト：ON）</small></span>
+          <input type="checkbox" id="night-toggle" checked>
+        </label>
+        <label class="setting-row">
+          <span><b>マウス視点感度</b><small>初期設定：低めで扱いやすい設定</small></span>
+          <input type="range" id="sensitivity" min="1" max="10" value="1">
+        </label>
+        <button id="settings-close" class="primary-button full-button" style="margin-top:16px;"><span>設定を保存して閉じる</span><b>✓</b></button>
+      </div>
+    </section>
+
+    <!-- ⑤ エンディング画面 -->
+    <section id="ending-screen" class="overlay ending-screen hidden">
+      <div class="ending-copy">
+        <div id="ending-stamp" class="ending-stamp">CASE RESOLVED</div>
+        <div class="eyebrow" style="margin:14px 0 6px;color:var(--cyan);font:700 11px var(--mono);">SIMULATION RESULT REPORT</div>
+        <h1 id="ending-title">交番に逃げ込み、保護された</h1>
+        <p id="ending-lead" class="title-lead"></p>
+        
+        <div id="ending-narrative" class="ending-narrative"></div>
+        <p id="ending-description" class="title-description" style="color:#cbd5e1;font-size:14px;line-height:1.8;"></p>
+
+        <div class="report-grid">
+          <div><span>正しい判断</span><b id="ending-clues">0 / 4</b></div>
+          <div><span>最終危険度</span><b id="ending-risk">0%</b></div>
+          <div><span>逃走タイム</span><b id="ending-time">00:00</b></div>
+          <div><span>到達ルート</span><b id="ending-route">中道〜大通りルート</b></div>
         </div>
 
-        <div class="guide-wrapper">
-          <h3 class="guide-section-title">グルーミング（手なずけ）の5つのステップ</h3>
-          <div id="grooming-steps-container" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- JSで動的生成 -->
-          </div>
+        <div id="ending-advice" class="ending-advice"></div>
 
-          <h3 class="guide-section-title" style="margin-top: 24px;">危険ワード（警戒サイン）辞典</h3>
-          <div id="redflag-words-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
-            <!-- JSで動的生成 -->
-          </div>
+        <div class="ending-actions">
+          <button id="retry-button" class="primary-button"><span>最初からやり直す</span><b>↻</b></button>
+          <a class="secondary-button" href="snskaisetsu.html">詳しい解説レポートを読む ↗</a>
+          <a class="secondary-button" href="../index.html">ポータルTOPへ戻る</a>
         </div>
-      </section>
-
-      <!-- ========================================================
-           TAB 4: SOS相談窓口
-           ======================================================== -->
-      <section id="tab-sos" class="tab-panel">
-        <div class="panel-header-row">
-          <h2 class="page-title">各種相談窓口・緊急連絡先</h2>
-          <span class="page-subtitle">Helpline & Emergency Contacts</span>
-        </div>
-
-        <div class="sos-wrapper">
-          <div class="sos-intro-box">
-            <p style="margin: 0; font-weight: 700; line-height: 1.6;">
-              「写真を送ってしまった」「脅されて怖い」「ネットの人に会おうと言われた」など、一人で抱え込まずにすぐに専門機関や警察に相談してください。警察や相談員は必ずあなたの味方になって安全を守ります。
-            </p>
-          </div>
-
-          <div class="sos-grid" id="sos-cards-container">
-            <!-- JSで動的生成 -->
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- ========================================================
-       3. フッター
-       ======================================================== -->
-  <ul id="footermenu">
-    <li><a href="#" onclick="window.safetyApp.switchTab('tab-sim'); return false;">トーク体験</a></li>
-    <li><a href="#" onclick="window.safetyApp.switchTab('tab-quiz'); return false;">見極めクイズ</a></li>
-    <li><a href="#" onclick="window.safetyApp.switchTab('tab-guide'); return false;">危険シグナル図鑑</a></li>
-    <li><a href="#" onclick="window.safetyApp.switchTab('tab-sos'); return false;">相談窓口</a></li>
-  </ul>
-
-  <footer>
-    <small>ネット安全体験シミュレータ - 青少年ネット防犯教育教材</small>
-  </footer>
-
-</div>
-
-<!-- ========================================================
-     モーダル: 解説ダイアログ
-     ======================================================== -->
-<div class="explanation-modal-backdrop" id="modal-explanation" style="display: none;">
-  <div class="explanation-modal-card">
-    <div class="exp-header">
-      <div class="exp-title-row">
-        <span class="exp-badge">解説</span>
-        <h3 class="exp-title">ここでチェック！</h3>
+        <p class="safety-reminder">
+          現実で危険を感じたときは、決して一人で解決しようとせず、すぐに近くの大人・交番・お店に駆け込むか、警察（110番）に相談してください。
+        </p>
       </div>
-    </div>
+    </section>
 
-    <div class="exp-body">
-      <p class="exp-text" id="exp-modal-text">解説文</p>
-      <div class="exp-callout" id="exp-modal-callout-box">
-        <span class="callout-lead-badge" id="callout-lead-badge">注意</span>
-        <span id="exp-modal-callout">アドバイス文</span>
-      </div>
-      <div class="exp-footnote">
-        ※ここから先は、危険性を学習するための疑似体験です。実際の送受信は行われません。
-      </div>
-    </div>
+    <div id="toast" class="toast hidden"></div>
+  </main>
 
-    <div class="exp-footer">
-      <button id="btn-exp-back" class="btn-exp-back">戻る</button>
-      <button id="btn-exp-proceed" class="btn-exp-proceed">解説を確認して進む</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========================================================
-     モーダル: 正体ネタばらし ＆ 防犯エンディング
-     ======================================================== -->
-<div class="explanation-modal-backdrop" id="modal-reveal" style="display: none;">
-  <div class="reveal-modal-card">
-    <div class="reveal-header">
-      <div class="reveal-badge perfect" id="reveal-badge">完全防犯クリア</div>
-      <h3 class="reveal-title" id="reveal-title">相手の企みを完全に見破った！</h3>
-      <p class="reveal-sub" id="reveal-sub">冷静な判断で身を守ることができました。</p>
-    </div>
-
-    <div class="reveal-body">
-      <div class="compare-container">
-        <div class="compare-heading">ネット上の相手の「真の正体」</div>
-        <div class="compare-grid">
-          <div class="compare-box">
-            <div class="compare-box-label">LINE上の自称</div>
-            <div class="compare-avatar-circle" id="reveal-fake-avatar">さ</div>
-            <div class="compare-name" id="reveal-fake-name">さくら (小5女子)</div>
-            <p class="compare-desc" id="reveal-fake-desc">プロフィール</p>
-          </div>
-          <div class="compare-box danger-box">
-            <div class="compare-box-label">実際の正体</div>
-            <div class="compare-avatar-circle danger-avatar" id="reveal-real-avatar">男</div>
-            <div class="compare-name danger" id="reveal-real-name">48歳 無職男性</div>
-            <p class="compare-desc" id="reveal-real-desc">犯罪目的</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal-story-box">
-        <h4 class="reveal-box-title">結末ストーリー</h4>
-        <p class="reveal-story-text" id="reveal-story-text">結末文章</p>
-      </div>
-
-      <div class="reveal-lesson-box">
-        <h4 class="reveal-box-title lesson-title">このケースの防犯ポイント</h4>
-        <ul class="lesson-items" id="reveal-lessons-list"></ul>
-      </div>
-    </div>
-
-    <div class="reveal-footer">
-      <button id="btn-reveal-restart" class="btn-exp-back" style="padding: 10px 18px;">やり直す</button>
-      <button id="btn-reveal-next" class="btn-exp-proceed" style="padding: 10px 22px;">次のケースへ</button>
-    </div>
-  </div>
-</div>
-
-<script src="./JavaScript/scenarios.js"></script>
-<script src="./JavaScript/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+  <script src="JavaScript/game.js"></script>
 </body>
 </html>

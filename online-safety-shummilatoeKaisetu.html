@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNS出会い・面会要求の危険性 - 解説</title>
+<style>
+/* ==================================================
+   解説ページ共通デザイン（malwarekaisetsuフォーマット準拠）
+================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body.explanation-page-body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f4f6f8;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+}
+
+.standalone-summary {
+  display: block !important;
+  min-height: 100vh;
+  padding: 50px 20px 80px;
+}
+
+.summary-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ヘッダー */
+.summary-header {
+  text-align: center;
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.summary-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #2e8b57;
+  color: #ffffff;
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-header h1 {
+  margin: 0;
+  font-size: 34px;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+}
+
+.summary-header p {
+  color: #64748b;
+  font-size: 17px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* 警告・体験終了バナー */
+.fake-payment-result {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #edf8f1;
+  border: 2px solid #5bad78;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin-bottom: 25px;
+}
+
+.result-icon {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #2e8b57;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fake-payment-result strong {
+  display: block;
+  color: #247044;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.fake-payment-result p {
+  color: #4b5563;
+  font-size: 14px;
+  margin: 5px 0 0;
+  line-height: 1.6;
+}
+
+/* セクション共通 */
+.summary-section {
+  display: flex;
+  gap: 25px;
+  background: #ffffff;
+  padding: 32px 30px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.section-number {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+  background: #315b8c;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary-section-content {
+  flex: 1;
+}
+
+.summary-section h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #315b8c;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.summary-section p {
+  color: #444444;
+  font-size: 16px;
+  line-height: 1.85;
+  margin: 0;
+}
+
+/* 体験フロー */
+.experience-flow {
+  margin-top: 22px;
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 18px;
+  background: #f5f7fa;
+  border-left: 5px solid #315b8c;
+  border-radius: 0 8px 8px 0;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.flow-item span {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #315b8c;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+
+.flow-arrow {
+  text-align: center;
+  color: #315b8c;
+  font-size: 22px;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* 危険性グリッドカード */
+.danger-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.danger-card {
+  background: #fff5f5;
+  border: 1px solid #e8aaaa;
+  border-radius: 10px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.danger-icon {
+  width: 38px;
+  height: 38px;
+  background: #d9534f;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.danger-card h3 {
+  color: #a83232;
+  font-size: 17px;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.danger-card p {
+  font-size: 14px;
+  color: #555555;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* アクションリスト */
+.action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.action-item {
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+  background: #f5f8fb;
+  border-radius: 10px;
+  border-left: 5px solid #315b8c;
+  align-items: flex-start;
+}
+
+.action-item > span {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background: #315b8c;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.action-item strong {
+  color: #315b8c;
+  font-size: 17px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.action-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* 重要セクション（黄色ハイライト） */
+.important-section {
+  background: #fffbea;
+  border: 3px solid #e2b93b;
+  border-radius: 15px;
+  padding: 35px 30px;
+  text-align: center;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 20px rgba(226, 185, 59, 0.15);
+}
+
+.important-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #876b00;
+  margin-bottom: 12px;
+}
+
+.important-section > p {
+  color: #334155;
+  font-size: 17px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.important-section strong {
+  color: #b00000;
+}
+
+/* STOPフロー */
+.stop-flow {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 15px;
+  margin-top: 28px;
+}
+
+.stop-flow > div:not(.stop-arrow) {
+  flex: 1;
+  max-width: 250px;
+  padding: 18px 14px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 2px solid #d0aa30;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stop-flow span {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #315b8c;
+}
+
+.stop-flow small {
+  display: block;
+  margin-top: 6px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.stop-arrow {
+  font-size: 26px;
+  color: #876b00;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ファイナルメッセージ（ブルーカード） */
+.final-message {
+  background: #315b8c;
+  color: #ffffff;
+  border-radius: 15px;
+  padding: 45px 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(49, 91, 140, 0.25);
+}
+
+.final-message h2 {
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.final-message p {
+  color: #e2e8f0;
+  font-size: 16px;
+  margin: 6px 0;
+  line-height: 1.8;
+}
+
+.final-message strong {
+  color: #fef08a;
+}
+
+.final-mark {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+/* ボタン */
+.restart-btn {
+  margin-top: 24px;
+  padding: 13px 28px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #315b8c;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.restart-btn:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 820px) {
+  .danger-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-section {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+  }
+  .stop-flow {
+    flex-direction: column;
+    align-items: center;
+  }
+  .stop-flow > div:not(.stop-arrow) {
+    max-width: 100%;
+    width: 100%;
+  }
+  .stop-arrow {
+    transform: rotate(90deg);
+    padding: 2px;
+  }
+}
+</style>
+</head>
+
+<body class="explanation-page-body">
+  <div id="summary-screen" class="standalone-summary">
+    <div class="summary-page">
+      
+      <!-- ヘッダー -->
+      <div class="summary-header">
+        <div class="summary-icon">✓</div>
+        <h1>模擬体験終了</h1>
+        <p>今回の体験で、SNSの面会要求・個人情報特定・オフライン誘い出しの安全な対応を学ぶ</p>
+      </div>
+
+      <!-- 体験結果・安全アナウンス -->
+      <div class="fake-payment-result">
+        <div class="result-icon">!</div>
+        <div>
+          <strong>会ってしまえば逃げ切れる保証はありません</strong>
+          <p>
+            これは青少年のネット安全学習を目的とした教育用の模擬体験です。<br>
+            実際の待ち合わせや個人情報の流出、危害は発生していません。
+          </p>
+        </div>
+      </div>
+
+      <!-- セクション 00 -->
+      <section class="summary-section">
+        <div class="section-number">00</div>
+        <div class="summary-section-content">
+          <h2>今回の体験で学ぶこと</h2>
+          <p>
+            このシミュレーションでは、オンラインゲームのチャットで親しくなった人物から「駅前の明るいコンビニの前でちょっとだけ会おう」と呼び出され、怪しい人物から逃走しながらスマートフォンで危険な判断・安全な判断を行う流れを疑似体験しました。<br>
+            目的は、ネットで親しくなった相手からの甘い誘いや脅しに対して、雰囲気に流されず毅然と断り、自らの身の安全を最優先で守る判断力を身につけることです。
+          </p>
+        </div>
+      </section>
+
+      <!-- セクション 01 -->
+      <section class="summary-section">
+        <div class="section-number">01</div>
+        <div class="summary-section-content">
+          <h2>SNSを通じたオフライン連れ去り・面会要求とは？</h2>
+          <p>
+            オンラインゲーム、メッセージアプリ、写真共有SNSなどで共通の趣味を口実に近づき、毎晩チャットをして親密な関係（信頼関係＝グルーミング）を築いた後に、「会いたい」「プレゼントをあげる」と直接呼び出す犯罪手口です。<br>
+            相手のプロフィール写真や年齢は完全に偽装されていることが多く、一度会ってしまうと車への連れ去り、監禁、性被害、金銭脅迫といった重大犯罪に直結する極めて危険な行為です。
+          </p>
+        </div>
+      </section>
+
+      <!-- セクション 02 -->
+      <section class="summary-section">
+        <div class="section-number">02</div>
+        <div class="summary-section-content">
+          <h2>今回の模擬体験で起きたこと</h2>
+          <div class="experience-flow">
+            <div class="flow-item"><span>1</span>オンラインゲーム仲間として毎晩SNSチャットし、完全に信用させた</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-item"><span>2</span>「近くにいるから駅前コンビニで会おう」と急に呼び出された</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-item"><span>3</span>待ち合わせ場所に現れたのは写真と全く違う大柄な不審者だった</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-item"><span>4</span>逃走中もスマホに「居場所を教えろ」「写真を送れ」と脅迫DMが連打された</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-item"><span>5</span>写真や目印を送ると追跡者に位置が特定され急接近された</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-item"><span>6</span>嘘の抜け道誘導を無視し、大通りを通って交番（KOBAN）に保護された</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- セクション 03 -->
+      <section class="summary-section">
+        <div class="section-number">03</div>
+        <div class="summary-section-content">
+          <h2>なぜ「コンビニの前なら安全」ではないのか？</h2>
+          <div class="danger-grid">
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>死角や夜間の人通りの減少</h3>
+              <p>「明るいコンビニの前」と言われても、駐車場や店舗脇は死角が多く、夜間は周囲の人通りもまばらです。無理やり車に引きずり込まれる事例が後を絶ちません。</p>
+            </div>
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>「断りづらい心理」の罠</h3>
+              <p>「わざわざ会いに来てくれた」「ゲームで仲良くしてくれた」という恩義や罪悪感を悪用し、断れない状況に追い込む心理的誘導が使われます。</p>
+            </div>
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>プロフィールの完全な偽装</h3>
+              <p>写真が同年代や爽やかな人物であっても、他人の画像を無断転載しているケースが大半です。画面の向こうの正体を確かめる方法は存在しません。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- セクション 04 -->
+      <section class="summary-section">
+        <div class="section-number">04</div>
+        <div class="summary-section-content">
+          <h2>危険な誘導メッセージの典型パターン</h2>
+          <div class="danger-grid">
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>「周辺の写真を送って」</h3>
+              <p>看板、電柱の番号、自販機、道路標識などから、AIや位置検索で数分以内にあなたの正確な逃走ルートが特定されます。</p>
+            </div>
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>「誰にも言わないでね」</h3>
+              <p>「2人だけの秘密」にさせようとするのは、家族や警察に相談されるのを防ぎ、孤立させて支配するための典型的な手口です。</p>
+            </div>
+            <div class="danger-card">
+              <div class="danger-icon">!</div>
+              <h3>「断るなら晒す・通報する」</h3>
+              <p>「今まであげたアイテム代を払え」「会話を晒すぞ」といった脅しは全て嘘のブラフです。応じるほど要求はエスカレートします。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- セクション 05 -->
+      <section class="summary-section">
+        <div class="section-number">05</div>
+        <div class="summary-section-content">
+          <h2>怪しい誘い・危険を感じたときの5つの安全行動</h2>
+          <div class="action-list">
+            <div class="action-item">
+              <span>01</span>
+              <div>
+                <strong>1対1で会おうとする誘いは100%断る</strong>
+                <p>「近くまで来た」「プレゼントをあげる」「ゲームを教えてあげる」などの口実は全て無視し、絶対に会いに行ってはいけません。</p>
+              </div>
+            </div>
+            <div class="action-item">
+              <span>02</span>
+              <div>
+                <strong>居場所や写真を絶対に送らない</strong>
+                <p>「今どこ？」「目印教えて」に対して目印や写真を送ってはいけません。「警察に通報した」「近くの交番にいる」と毅然と返信するか、通信を切断します。</p>
+              </div>
+            </div>
+            <div class="action-item">
+              <span>03</span>
+              <div>
+                <strong>暗い路地や袋小路を避け、明るい大通りを進む</strong>
+                <p>相手の「こっちの小道においで」という誘導は罠です。人通りのある大通りや明かりを目指し、迷わず人のいる店舗や交番へ駆け込みます。</p>
+              </div>
+            </div>
+            <div class="action-item">
+              <span>04</span>
+              <div>
+                <strong>やり取りの証拠（スクショ）を残す</strong>
+                <p>ブロックやアカウント削除を行う前に、脅迫や面会要求のチャット画面、相手のID、日時が分かるスクリーンショットを必ず保存します。</p>
+              </div>
+            </div>
+            <div class="action-item">
+              <span>05</span>
+              <div>
+                <strong>躊躇せず警察・信頼できる大人に助けを求める</strong>
+                <p>「怒られるかもしれない」と一人で抱え込まず、警察（#9110や110番）や学校・保護者にすぐに相談してください。あなたは被害者であり、悪くありません。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 重要メッセージ（STOPフロー） -->
+      <section class="important-section">
+        <div class="important-title">⚠ 今回の体験で覚えてほしいこと</div>
+        <p>
+          ネットでどんなに仲良くなっても、<strong>相手は「素性の分からない他人」</strong>です。<br>
+          違和感を覚えたら、相手への遠慮を捨てて自分の身の安全を最優先してください。
+        </p>
+
+        <div class="stop-flow">
+          <div><span>STOP</span><small>立ち止まる<br>（要求に応じない）</small></div>
+          <div class="stop-arrow">→</div>
+          <div><span>REFUSE</span><small>きっぱり拒否<br>（会わない・送らない）</small></div>
+          <div class="stop-arrow">→</div>
+          <div><span>ESCAPE / REPORT</span><small>逃げる・相談<br>（交番・大人・警察）</small></div>
+        </div>
+      </section>
+
+      <!-- ファイナルメッセージ -->
+      <div class="final-message">
+        <h2>SNSの出会い被害から身を守るために</h2>
+        <p>ネット犯罪は、誰にでも起こる身近な危険です。</p>
+        <p>
+          「自分は大丈夫」「相手はいい人だから」ではなく、<br>
+          <strong>危険の手口を知り・冷静に距離を置き・助けを呼ぶこと</strong>が命を守る第一歩です。
+        </p>
+        <div class="final-mark">CYBER SAFETY & CRIME PREVENTION</div>
+        <br>
+        <div class="btn-group">
+          <button class="restart-btn" onclick="location.href='index.html'">もう一度体験する</button>
+          <button class="restart-btn" style="background: #e2e8f0; color: #1e293b;" onclick="sessionStorage.setItem('cyber_experience_sns','completed'); window.location.href='../index.html';">ホームに戻る</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
