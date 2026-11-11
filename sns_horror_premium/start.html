@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="青少年のためのインターネット・SNS安全学習ポータル。3D体験ゲームを通じて、SNSで知り合った人とオフラインで会う危険性を学ぶことができます。">
+  <title>SNSセーフティラボ — ネット安全学習ポータル</title>
+  <style>
+    :root {
+      --bg: #0b111e;
+      --card-bg: rgba(15, 23, 42, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+      --card-hover: rgba(56, 189, 248, 0.6);
+      --text-main: #ffffff;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --cyan: #38bdf8;
+      --cyan-bright: #00f2fe;
+      --cyan-glow: rgba(56, 189, 248, 0.35);
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 50% 15%, #1e293b 0%, var(--bg) 75%);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 44px 24px 38px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--cyan);
+      border-radius: 30px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0 auto 12px;
+      font-size: clamp(26px, 4.4vw, 42px);
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      font-weight: 900;
+      line-height: 1.35;
+      text-wrap: balance;
+    }
+
+    .header-sub {
+      color: var(--text-sub);
+      font-size: 15px;
+      max-width: 720px;
+      margin: 0 auto;
+      text-wrap: pretty;
+      line-height: 1.75;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 40px auto 60px;
+      padding: 0 24px;
+    }
+
+    /* セクションヘッダー */
+    .section-block {
+      width: 100%;
+    }
+
+    .section-header {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-tag-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-num {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.08em;
+    }
+
+    .step-num.step-doc {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+    }
+
+    .section-category {
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .section-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    /* ＝＝＝＝ ① 3Dゲーム：ヒーローワイドカード ＝＝＝＝ */
+    .hero-game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      display: grid;
+      grid-template-columns: minmax(340px, 1.15fr) 1.25fr;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .hero-game-card:hover {
+      border-color: var(--card-hover);
+      box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25);
+    }
+
+    .hero-game-media {
+      position: relative;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .hero-game-thumb {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .hero-game-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .hero-game-card:hover .hero-game-thumb img {
+      transform: scale(1.05);
+    }
+
+    .thumb-badge-top {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .badge-live {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .badge-time {
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 17, 30, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.3s ease;
+    }
+
+    .hero-game-thumb:hover .play-overlay {
+      opacity: 1;
+      background: rgba(11, 17, 30, 0.55);
+    }
+
+    .play-icon-circle {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      padding-left: 4px;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.6);
+      transition: transform 0.2s ease;
+    }
+
+    .hero-game-thumb:hover .play-icon-circle {
+      transform: scale(1.1);
+    }
+
+    .play-text {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-game-content {
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-badge-sub {
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    .status-indicator {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .hero-game-title {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .hero-game-title a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .hero-game-title a:hover {
+      color: var(--cyan-bright);
+    }
+
+    .hero-game-desc {
+      color: var(--text-sub);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .feature-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .tag-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    .hero-action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-primary-glow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 12px 22px;
+      border-radius: 30px;
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-primary-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(56, 189, 248, 0.6);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary-glass {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 30px;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-secondary-glass:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* ＝＝＝＝ ② 学習資料：ナレッジ＆セーフティハブ ＝＝＝＝ */
+    .learning-hub-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.75));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 34px 38px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .learning-hub-card:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 20px 48px rgba(56, 189, 248, 0.2);
+    }
+
+    .learning-hub-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+      margin-bottom: 26px;
+    }
+
+    .learning-hub-icon-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.25));
+      border: 1px solid rgba(6, 182, 212, 0.5);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 18px rgba(6, 182, 212, 0.2);
+    }
+
+    .learning-hub-title-box {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hub-category-chip {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #34d399;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .learning-hub-title {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .learning-hub-title a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .learning-hub-title a:hover {
+      color: #34d399;
+    }
+
+    .learning-hub-desc {
+      color: var(--text-sub);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    /* 4大リスクミニ要点グリッド */
+    .risk-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .risk-summary-item {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .risk-summary-item:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .risk-num {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 6px;
+      padding: 2px 7px;
+      line-height: 1.4;
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+
+    .risk-info h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .risk-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .learning-hub-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      flex-wrap: wrap;
+    }
+
+    .learning-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-learning {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 11px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-learning:hover {
+      background: #e2e8f0;
+      transform: translateX(2px);
+      box-shadow: 0 6px 22px rgba(255, 255, 255, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px;
+      color: #94a3b8;
+      font-size: 13px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    @media (max-width: 860px) {
+      .hero-game-card {
+        grid-template-columns: 1fr;
+      }
+      .hero-game-thumb {
+        aspect-ratio: 16 / 9;
+      }
+      .hero-game-content {
+        padding: 24px;
+      }
+      .learning-hub-card {
+        padding: 24px;
+      }
+      .learning-hub-header {
+        flex-direction: column;
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 30px 18px; }
+      main { margin: 26px auto 40px; padding: 0 16px; }
+      .hero-game-title { font-size: 20px; }
+      .learning-hub-title { font-size: 19px; }
+      .hero-action-row { flex-direction: column; width: 100%; }
+      .btn-primary-glow, .btn-secondary-glass { width: 100%; justify-content: center; }
+      .learning-hub-footer { flex-direction: column; align-items: stretch; gap: 14px; }
+      .btn-learning { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">その出会い、本当に安全ですか？</div>
+    <h1>SNSでの出会いに潜む危険を体験しよう</h1>
+    <p class="header-sub">SNSで知り合った相手と実際に会う場面を想定した体験型教材です。3D逃走シミュレーションと公式解説レポートを通して、ネット上に潜む危険の手口と、身を守るための正しい判断力を身につけます。</p>
+  </header>
+
+  <main>
+    <!-- ① メイン教材：3D体験ゲーム（迫力あるワイドヒーローカード） -->
+    <section class="section-block">
+      <div class="section-header">
+        <div class="section-tag-wrap">
+          <span class="step-num">STEP 01</span>
+          <span class="section-category">体験型シミュレーション</span>
+        </div>
+        <h2 class="section-heading">危険を疑似体験して察知力を養う</h2>
+      </div>
+
+      <article class="hero-game-card">
+        <div class="hero-game-media">
+          <a class="hero-game-thumb" href="実際のゲームの中身/index.html?direct=1" title="3D体験ゲームを直接開始">
+            <img src="./image/onlinemeet.png" alt="ネットの人とオフラインで会う危険について 3Dゲーム画面">
+            <div class="thumb-badge-top">
+              <span class="badge-live"><span class="live-dot"></span>3D 体験ゲーム</span>
+              <span class="badge-time">所要 約5〜10分</span>
+            </div>
+            <div class="play-overlay">
+              <span class="play-icon-circle">▶</span>
+              <span class="play-text">クリックですぐにプレイ</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="hero-game-content">
+          <div>
+            <div class="hero-meta-row">
+              <span class="game-badge-sub">3D INTERACTIVE SIMULATION</span>
+              <span class="status-indicator">● 即時プレイ対応</span>
+            </div>
+            <h3 class="hero-game-title">
+              <a href="実際のゲームの中身/index.html">ネットの人とオフラインで会う危険について</a>
+            </h3>
+            <p class="hero-game-desc">
+              SNSで知り合った親切そうな人物からの「コンビニ前で会おう」という突然の誘い。
+              LINE風チャットでの選択肢分岐と、夕暮れの路地を逃走する一人称3Dパートを通じて、個人情報の送信リスクや相手の豹変、交番へ駆け込む重要性をリアルに体験します。
+            </p>
+
+            <div class="feature-tags-list">
+              <span class="tag-chip">🎮 3D逃走アクション</span>
+              <span class="tag-chip">💬 SNS選択肢分岐</span>
+              <span class="tag-chip">⚠️ 危険度・追跡加速システム</span>
+              <span class="tag-chip">🗺️ ミニマップ探索</span>
+            </div>
+          </div>
+
+          <div class="hero-action-row">
+            <a class="btn-primary-glow" href="実際のゲームの中身/index.html">
+              <span>📖</span>
+              <span>ストーリーから開始</span>
+              <span>↗</span>
+            </a>
+            <a class="btn-secondary-glass" href="実際のゲームの中身/index.html?direct=1">
+              <span>🎮</span>
+              <span>すぐにゲーム開始（3D直行）</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ② 学習資料：SNSリスク学習解説レポート（専用ナレッジ＆セーフティハブ） -->
+    <section class="section-block" style="margin-top: 48px;">
+      <div class="section-header">
+        <div class="section-tag-wrap">
+          <span class="step-num step-doc">STEP 02</span>
+          <span class="section-category">解説・公的相談窓口</span>
+        </div>
+        <h2 class="section-heading">手口の仕組みと防犯対策を学ぶ</h2>
+      </div>
+
+      <article class="learning-hub-card">
+        <div class="learning-hub-header">
+          <div class="learning-hub-icon-badge">
+            <span>📚</span>
+          </div>
+          <div class="learning-hub-title-box">
+            <span class="hub-category-chip">公式学習テキスト＆ガイドライン</span>
+            <h3 class="learning-hub-title">
+              <a href="実際のゲームの中身/snskaisetsu.html">SNSリスク学習解説レポート</a>
+            </h3>
+            <p class="learning-hub-desc">
+              ゲーム内で直面した「4大リスク」の背景にある具体的な犯罪手口と、トラブルに巻き込まれた際の公的相談窓口（警察 #9110 / 110番など）について詳しく解説しています。
+            </p>
+          </div>
+        </div>
+
+        <!-- 4大リスクの要点ミニプレビュー -->
+        <div class="risk-summary-grid">
+          <div class="risk-summary-item">
+            <div class="risk-num">01</div>
+            <div class="risk-info">
+              <h4>📍 位置情報の特定リスク</h4>
+              <p>何気ない周辺の建物や標識から現在地が相手に特定される危険性。</p>
+            </div>
+          </div>
+          <div class="risk-summary-item">
+            <div class="risk-num">02</div>
+            <div class="risk-info">
+              <h4>📸 写真送信の罠</h4>
+              <p>制服や瞳の反射、背景情報から個人情報が特定・悪用される手口。</p>
+            </div>
+          </div>
+          <div class="risk-summary-item">
+            <div class="risk-num">03</div>
+            <div class="risk-info">
+              <h4>🤫 秘密の要求と心理誘導</h4>
+              <p>「二人だけの秘密」「親に言わないで」による孤立化の心理テクニック。</p>
+            </div>
+          </div>
+          <div class="risk-summary-item">
+            <div class="risk-num">04</div>
+            <div class="risk-info">
+              <h4>🚨 危険時の優先と通報</h4>
+              <p>相手への遠慮を捨て、すぐに大人・交番・警察（#9110）へ逃げる鉄則。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="learning-hub-footer">
+          <div class="learning-meta">
+            <span class="meta-chip">⏱️ 読了目安: 約3分</span>
+            <span class="meta-chip">🎯 対象: 中学生・高校生・保護者</span>
+          </div>
+          <a class="btn-learning" href="実際のゲームの中身/snskaisetsu.html">
+            <span>解説レポートを読む</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 SNS Safety Interactive Project. 教育目的のシミュレーション教材です。</p>
+  </footer>
+
+</body>
+</html>
