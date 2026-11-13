@@ -199,45 +199,34 @@ body {
 .hide {
     display: none !important;
 }
-body.is-warninf-shake {
-    animation: mild-shake 0.12s ease-in-out infinite, slow-bg-red 2.5s forwards; overflow: hiddem;
+
+/* ==========================================
+   調整済み：炎上パニック演出（エリア拡大版）
+   ========================================== */
+body.is-enjo-panic {
+    background-color: #ffeef0 !important;
+    animation: shake 0.15s infinite;
+    transition: background-color 0.5s ease;
 }
-
-body.is-warning-shake.timeline-container,
-body.is-warning-shake.sidebox,
-body.is-warning-shake.timeline-header,
-body.is-warning-shake.input-box,
-body.is-warning-shake .tweet-box,
-body.is-warning-shake .reply-box {
-  border-color: #4a1c21 !important; /* 枠線を馴染みの良い暗い煉瓦色に */
-  background-color: transparent !important; 
-  color: #eabfc2 !important; /* 文字は眩しくない、くすんだ淡いピンクに */
-  transition: all 1.0s ease; /* 1秒かけて滑らかに色を変化させる */
+/* 入力エリア、リプライエリア、各種枠線も連動して赤くする */
+body.is-enjo-panic .timeline-container,
+body.is-enjo-panic .timeline-header,
+body.is-enjo-panic .tweet-box,
+body.is-enjo-panic .reply-box,
+body.is-enjo-panic .input-box {
+    border-color: #ffccd0 !important;
 }
-
-/* タイムラインヘッダーの背景も同期 */
-body.is-warning-shake .timeline-header {
-  background-color: rgba(36, 16, 18, 0.85) !important;
-  transition: background-color 1.0s ease;
+body.is-enjo-panic .timeline-header,
+body.is-enjo-panic .reply-area,
+body.is-enjo-panic #user-input {
+    background-color: rgba(255, 238, 240, 0.85) !important;
+    transition: background-color 0.5s ease;
 }
-
-
-/* 🛠️ アニメーションの定義（目に優しい調整版） */
-
-/* ① 揺れ幅をわずか「2px〜3px」に抑え、回転（rotate）を無くして3D酔いを防止 */
-@keyframes mild-shake {
-  0%   { transform: translate(0, 0) scale(1.02); }
-  25%  { transform: translate(-2px, 2px) scale(1.02); }
-  50%  { transform: translate(3px, -2px) scale(1.02); }
-  75%  { transform: translate(-3px, -1px) scale(1.02); }
-  100% { transform: translate(0, 0) scale(1.02); }
-}
-
-/* ② 激しい点滅は完全カット。白から高級感のあるダークボルドーへ「じわじわ」変化 */
-@keyframes slow-bg-red {
-  0%   { background-color: #ffffff; }
-  100% { 
-    background-color: #241012; /* 目が疲れない、非常に深くて暗い上品な赤黒さ */
-    filter: brightness(95%) contrast(105%); /* 眩しさを抑える調整 */
-  }
+@keyframes shake {
+    0% { transform: translate(0px, 0px); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0px, 0px); }
 }
