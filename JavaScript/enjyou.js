@@ -63,10 +63,8 @@ postButton.addEventListener('click', () => {
 });
 
 function startFlameSimulation() {
-
     if (meterTimer !== null) clearInterval(meterTimer);
     if (replyTimer !== null) clearInterval(replyTimer);
-
 
     replyContainer.innerHTML = "";
 
@@ -75,37 +73,46 @@ function startFlameSimulation() {
     let likes = 0;
     let notifications = 0;
     let replyIndex = 0;
+    let hasPanicked = false;
 
     notiCount.classList.remove('hide');
 
+    // 数字の増加タイマー（100msごと）
     meterTimer = setInterval(() => {
-        replies += Math.floor(Math.random() * 5) + 2;
-        reposts += Math.floor(Math.random() * 10) + 4;
-        likes += Math.floor(Math.random() * 2);
-        notifications += Math.floor(Math.random() * 12) + 5;
-
-        countReply.textContent = replies;
-        countRepost.textContent = reposts;
-        countLike.textContent = likes;
-        notiCount.textContent = notifications;
-        if(reposts >= 500 && reposts < 1500) {
-            document.body.classList.add("is-warning-shake");
+        if (reposts < 1500) {
+            replies += Math.floor(Math.random() * 8) + 5;
+            reposts += Math.floor(Math.random() * 20) + 15;
+            likes += Math.floor(Math.random() * 2);
+            notifications += Math.floor(Math.random() * 25) + 15;
+        } else {
+            // パニック突入後はさらに数字が爆発（数万〜数十万規模へ）
+            replies += Math.floor(Math.random() * 150) + 100;
+            reposts += Math.floor(Math.random() * 400) + 250;
+            likes += Math.floor(Math.random() * 15) + 5;
+            notifications += Math.floor(Math.random() * 500) + 300;
         }
 
-        if (reposts >= 1500) {
-            clearInterval(meterTimer);
-            clearInterval(replyTimer);
+        countReply.textContent = replies.toLocaleString();
+        countRepost.textContent = reposts.toLocaleString();
+        countLike.textContent = likes.toLocaleString();
+        notiCount.textContent = notifications.toLocaleString();
 
-            document.body.classList.add("is-enjo-panic")
+        // 1,500リポスト付近で画面パニックが発動
+        if (reposts >= 1500 && !hasPanicked) {
+            hasPanicked = true;
+            document.body.classList.add("is-enjo-panic");
 
+            // 【調整点】パニック演出が始まってから「10秒」で移動するように再調整
             setTimeout(() => {
+                clearInterval(meterTimer);
+                clearInterval(replyTimer);
                 window.location.href = './enjyoukaisetu.html'; 
-            }, 1000);
+            }, 10000); // 10000ms = 10秒
         }
     }, 100);
 
+    // クソリプの追加タイマー
     replyTimer = setInterval(() => {
-        
         if (replyIndex >= kusoReplies.length) {
             replyIndex = 0;
         }
@@ -130,5 +137,5 @@ function startFlameSimulation() {
         replyContainer.prepend(replyBox);
         replyIndex++;
         
-    }, 1000); 
+    }, 400); 
 }
